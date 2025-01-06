@@ -9,12 +9,19 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class WeatherViewModel(private val weatherRepository: WeatherRepository): ViewModel() {
-    private val _forecast: MutableStateFlow<WeatherData> = MutableStateFlow(WeatherData(emptyList(), emptyList()))
-    val forecast: StateFlow<WeatherData> = _forecast
+    private val _forecast: MutableStateFlow<ForecastResult> = MutableStateFlow(ForecastResult.Loading)
+    val forecast: StateFlow<ForecastResult> = _forecast
 
     fun loadWeather() = viewModelScope.launch {
         weatherRepository.getIpAddress()?.let {
-            _forecast.value = weatherRepository.getForecast(it)
+            val forecastResult = weatherRepository.getForecast(it)
+            _forecast.value = ForecastResult.Success(forecastResult)
         }
+    }
+
+    sealed class ForecastResult {
+        data object Loading: ForecastResult()
+        data class Success(val data: WeatherData): ForecastResult()
+        data class Failure(val message: String): ForecastResult()
     }
 }

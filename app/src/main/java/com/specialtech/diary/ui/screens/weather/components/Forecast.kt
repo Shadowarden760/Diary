@@ -36,10 +36,21 @@ import com.specialtech.diary.R
 import com.specialtech.diary.data.datasources.weather.models.FutureWeatherModel
 import com.specialtech.diary.data.datasources.weather.models.HourlyWeatherModel
 import com.specialtech.diary.data.datasources.weather.models.WeatherData
+import com.specialtech.diary.ui.screens.weather.WeatherViewModel
 import com.specialtech.diary.ui.theme.MainOrange
 
 @Composable
-fun WeatherData(weatherData: WeatherData, isVisible: Boolean = true) {
+fun Forecast(forecastResult: WeatherViewModel.ForecastResult) {
+    var isVisible = false
+    val weatherData = when(forecastResult) {
+        is WeatherViewModel.ForecastResult.Success -> {
+            isVisible = true
+            forecastResult.data
+        }
+        else -> {
+            WeatherData(emptyList(), emptyList())
+        }
+    }
     AnimatedVisibility(
         visible = isVisible,
         enter = fadeIn(),

@@ -4,8 +4,8 @@ import com.specialtech.diary.data.datasources.weather.WeatherDataSource
 
 class WeatherRepository(private val weatherDataSource: WeatherDataSource) {
 
-    fun getHourlyWeather() = weatherDataSource.getHourlyWeather()
+    suspend fun getIpAddress() = weatherDataSource.getIpAddress()
 
-    fun getFutureWeather() = weatherDataSource.getFutureWeather()
+    suspend fun getForecast(ipAddress: String) = weatherDataSource.getForecast(ipAddress)
 
 }

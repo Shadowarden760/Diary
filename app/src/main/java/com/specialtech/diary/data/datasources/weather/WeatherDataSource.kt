@@ -1,13 +1,11 @@
 package com.specialtech.diary.data.datasources.weather
 
-import com.specialtech.diary.data.datasources.weather.models.FutureWeatherModel
-import com.specialtech.diary.data.datasources.weather.models.HourlyWeatherModel
-import kotlinx.coroutines.flow.Flow
+import com.specialtech.diary.data.datasources.weather.models.WeatherData
 
 interface WeatherDataSource {
 
-    fun getHourlyWeather(): Flow<List<HourlyWeatherModel>>
+    suspend fun getIpAddress(): String?
 
-    fun getFutureWeather(): Flow<List<FutureWeatherModel>>
+    suspend fun getForecast(ipAddress: String): WeatherData
 
 }

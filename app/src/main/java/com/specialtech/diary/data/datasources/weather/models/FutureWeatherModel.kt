@@ -1,4 +1,4 @@
-package com.specialtech.diary.ui.screens.weather.models
+package com.specialtech.diary.data.datasources.weather.models
 
 data class FutureWeatherModel(
     val day: String,

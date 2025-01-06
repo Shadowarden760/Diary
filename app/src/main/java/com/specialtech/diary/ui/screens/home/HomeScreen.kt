@@ -26,21 +26,17 @@ import com.specialtech.diary.BuildConfig
 @Preview(showSystemUi = true)
 @Composable
 fun HomeScreen(innerPaddingValues: PaddingValues = PaddingValues(8.dp)) {
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .padding(innerPaddingValues),
+    Column(
+        modifier = Modifier.fillMaxSize().padding(innerPaddingValues),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.weight(0.5f))
-
         Image(
             imageVector = Icons.Default.AccountCircle,
             contentDescription = null,
             modifier = Modifier.size(300.dp).padding(top = 10.dp)
         )
-
         Spacer(modifier = Modifier.weight(1f))
-
         Text(
             text = "Version:${BuildConfig.VERSION_NAME}(${BuildConfig.VERSION_CODE})",
             fontSize = 14.sp,

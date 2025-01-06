@@ -19,6 +19,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,42 +31,31 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.specialtech.diary.R
-import com.specialtech.diary.ui.screens.weather.models.FutureWeatherModel
-import com.specialtech.diary.ui.screens.weather.models.HourlyWeatherModel
+import com.specialtech.diary.data.datasources.weather.models.FutureWeatherModel
+import com.specialtech.diary.data.datasources.weather.models.HourlyWeatherModel
 import com.specialtech.diary.ui.theme.MainOrange
-
-val hourlyWeatherModels = listOf(
-    HourlyWeatherModel(hour = "11:00", temperature = 10, picturePath = "cloudy"),
-    HourlyWeatherModel(hour = "12:00", temperature = 12, picturePath = "sunny"),
-    HourlyWeatherModel(hour = "13:00", temperature = 14, picturePath = "rainy"),
-    HourlyWeatherModel(hour = "14:00", temperature = 15, picturePath = "wind"),
-    HourlyWeatherModel(hour = "14:00", temperature = 15, picturePath = "wind"),
-    HourlyWeatherModel(hour = "14:00", temperature = 15, picturePath = "wind"),
-    HourlyWeatherModel(hour = "14:00", temperature = 15, picturePath = "wind"),
-    HourlyWeatherModel(hour = "14:00", temperature = 15, picturePath = "wind"),
-    HourlyWeatherModel(hour = "15:00", temperature = 11, picturePath = "storm")
-)
-
-val futureWeatherModels = listOf(
-    FutureWeatherModel(day = "06.01.2025", status = "Sunny", highTemp = 25, lowTemp = 18, "sunny"),
-    FutureWeatherModel(day = "07.01.2025", status = "Cloudy", highTemp = 27, lowTemp = 17, "cloudy"),
-    FutureWeatherModel(day = "08.01.2025", status = "Storm", highTemp = 21, lowTemp = 15, "storm"),
-    FutureWeatherModel(day = "08.01.2025", status = "Storm", highTemp = 21, lowTemp = 15, "storm"),
-    FutureWeatherModel(day = "08.01.2025", status = "Storm", highTemp = 21, lowTemp = 15, "storm"),
-    FutureWeatherModel(day = "08.01.2025", status = "Storm", highTemp = 21, lowTemp = 15, "storm"),
-    FutureWeatherModel(day = "08.01.2025", status = "Storm", highTemp = 21, lowTemp = 15, "storm"),
-    FutureWeatherModel(day = "08.01.2025", status = "Storm", highTemp = 21, lowTemp = 15, "storm"),
-    FutureWeatherModel(day = "08.01.2025", status = "Storm", highTemp = 21, lowTemp = 15, "storm"),
-    FutureWeatherModel(day = "09.01.2025", status = "Rainy", highTemp = 24, lowTemp = 17, "rainy")
-)
+import org.koin.androidx.compose.koinViewModel
 
 @Preview
 @Composable
-fun WeatherScreen(innerPaddingValues: PaddingValues = PaddingValues(8.dp)) {
+fun WeatherScreen(
+    innerPaddingValues: PaddingValues = PaddingValues(8.dp),
+    viewModel: WeatherViewModel = koinViewModel()
+) {
+    val hourlyWeather = viewModel.hourlyWeather.collectAsStateWithLifecycle()
+    val futureWeather = viewModel.futureWeather.collectAsStateWithLifecycle()
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.loadWeather()
+    }
+
     Column(modifier = Modifier.fillMaxSize().padding(innerPaddingValues)) {
-        LazyColumn(modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             item {
                 Text(
                     text = "Some text",
@@ -91,7 +81,6 @@ fun WeatherScreen(innerPaddingValues: PaddingValues = PaddingValues(8.dp)) {
                         .fillMaxWidth()
                         .padding(top = 8.dp),
                     textAlign = TextAlign.Center
-
                 )
                 Text(
                     text = "25°",
@@ -156,12 +145,11 @@ fun WeatherScreen(innerPaddingValues: PaddingValues = PaddingValues(8.dp)) {
                         .fillMaxWidth()
                         .padding(horizontal = 24.dp, vertical = 8.dp)
                 )
-
                 LazyRow(modifier = Modifier.fillMaxWidth(),
                     contentPadding = PaddingValues(horizontal = 20.dp),
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    items(hourlyWeatherModels) { item ->
+                    items(hourlyWeather.value) { item ->
                         HourlyWeatherItem(item)
                     }
                 }
@@ -177,7 +165,7 @@ fun WeatherScreen(innerPaddingValues: PaddingValues = PaddingValues(8.dp)) {
                 )
             }
 
-            items(futureWeatherModels) { item ->
+            items(futureWeather.value) { item ->
                 FutureWeatherItem(item)
             }
         }
@@ -211,15 +199,14 @@ fun WeatherDetailedItem(icon: Int, value: String, label: String) {
 
 @Composable
 fun HourlyWeatherItem(hourlyWeather: HourlyWeatherModel) {
-    Column(modifier = Modifier
-        .width(90.dp)
-        .wrapContentHeight()
-        .padding(4.dp)
-        .background(
-            color = MainOrange,
-            shape = RoundedCornerShape(8.dp)
-        ),
-        horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        modifier = Modifier
+            .width(90.dp)
+            .wrapContentHeight()
+            .padding(4.dp)
+            .background(color = MainOrange, shape = RoundedCornerShape(8.dp)),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Text(
             text = hourlyWeather.hour,
             fontSize = 16.sp,
@@ -229,7 +216,6 @@ fun HourlyWeatherItem(hourlyWeather: HourlyWeatherModel) {
                 .padding(8.dp),
             textAlign = TextAlign.Center
         )
-
         Image(
             painter = painterResource(getDrawableResource(hourlyWeather.picturePath)),
             contentDescription = null,
@@ -238,7 +224,6 @@ fun HourlyWeatherItem(hourlyWeather: HourlyWeatherModel) {
                 .padding(8.dp),
             contentScale = ContentScale.Crop
         )
-
         Text(
             text = "${hourlyWeather.temperature}°",
             fontSize = 16.sp,
@@ -254,9 +239,9 @@ fun HourlyWeatherItem(hourlyWeather: HourlyWeatherModel) {
 @Composable
 fun FutureWeatherItem(futureWeather: FutureWeatherModel) {
     Row(
-        Modifier
-        .fillMaxWidth()
-        .padding(horizontal = 24.dp, vertical = 4.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp, vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(

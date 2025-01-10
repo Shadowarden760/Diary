@@ -19,8 +19,8 @@ android {
         applicationId = "com.specialtech.diary"
         minSdk = 26
         targetSdk = 35
-        versionCode = 7
-        versionName = "0.0.4"
+        versionCode = 9
+        versionName = "0.0.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -75,6 +75,9 @@ dependencies {
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.client.logging)
     implementation(libs.ktor.client.android)
+
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.ktor3)
 
 
     testImplementation(libs.junit)

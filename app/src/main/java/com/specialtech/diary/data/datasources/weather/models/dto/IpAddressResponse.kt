@@ -1,4 +1,4 @@
-package com.specialtech.diary.data.datasources.weather.models
+package com.specialtech.diary.data.datasources.weather.models.dto
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

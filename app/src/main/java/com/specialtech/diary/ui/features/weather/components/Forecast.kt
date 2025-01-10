@@ -1,5 +1,6 @@
 package com.specialtech.diary.ui.features.weather.components
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -26,12 +27,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import com.specialtech.diary.R
 import com.specialtech.diary.data.datasources.weather.models.FutureWeatherModel
 import com.specialtech.diary.data.datasources.weather.models.HourlyWeatherModel
@@ -48,7 +53,7 @@ fun Forecast(forecastResult: WeatherViewModel.ForecastResult) {
             forecastResult.data
         }
         else -> {
-            WeatherData(emptyList(), emptyList())
+            WeatherData()
         }
     }
     AnimatedVisibility(
@@ -62,7 +67,7 @@ fun Forecast(forecastResult: WeatherViewModel.ForecastResult) {
         ) {
             item {
                 Text(
-                    text = "Some text",
+                    text = weatherData.weatherStatus,
                     fontSize = 20.sp,
                     color = Color.White,
                     modifier = Modifier
@@ -70,15 +75,19 @@ fun Forecast(forecastResult: WeatherViewModel.ForecastResult) {
                         .padding(top = 24.dp),
                     textAlign = TextAlign.Center
                 )
-                Image(
-                    painter = painterResource(R.drawable.cloudy_sunny),
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(weatherData.weatherStatusImg)
+                        .crossfade(true)
+                        .build(),
                     contentDescription = null,
+                    contentScale = ContentScale.FillBounds,
                     modifier = Modifier
                         .size(150.dp)
                         .padding(8.dp)
                 )
                 Text(
-                    text = "Mon Jun | 10:00 AM",
+                    text = weatherData.dateAndTime,
                     fontSize = 19.sp,
                     color = Color.White,
                     modifier = Modifier
@@ -87,7 +96,7 @@ fun Forecast(forecastResult: WeatherViewModel.ForecastResult) {
                     textAlign = TextAlign.Center
                 )
                 Text(
-                    text = "25°",
+                    text = weatherData.currentTemperature,
                     fontSize = 63.sp,
                     color = Color.White,
                     modifier = Modifier
@@ -96,7 +105,7 @@ fun Forecast(forecastResult: WeatherViewModel.ForecastResult) {
                     textAlign = TextAlign.Center
                 )
                 Text(
-                    text = "Gagarin",
+                    text = weatherData.region,
                     fontSize = 20.sp,
                     color = Color.White,
                     modifier = Modifier
@@ -123,17 +132,17 @@ fun Forecast(forecastResult: WeatherViewModel.ForecastResult) {
                     ) {
                         WeatherDetailedItem(
                             icon = R.drawable.rain,
-                            value = "22%",
+                            value = weatherData.rainPct,
                             label = "Rain"
                         )
                         WeatherDetailedItem(
                             icon = R.drawable.wind,
-                            value = "22%",
+                            value = weatherData.windSpeed,
                             label = "Wind Speed"
                         )
                         WeatherDetailedItem(
                             icon = R.drawable.humidity,
-                            value = "18%",
+                            value = weatherData.humidityPct,
                             label = "Humidity"
                         )
                     }
@@ -178,6 +187,30 @@ fun Forecast(forecastResult: WeatherViewModel.ForecastResult) {
 }
 
 @Composable
+fun WeatherDetailedItem(icon: Int, value: String, label: String) {
+    Column(modifier = Modifier.padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            painter = painterResource(icon),
+            contentDescription = null,
+            modifier = Modifier.size(35.dp)
+        )
+        Text(
+            text = value,
+            fontWeight = FontWeight.Bold,
+            color = colorResource(R.color.white),
+            textAlign = TextAlign.Center
+        )
+        Text(
+            text = label,
+            color = colorResource(R.color.white),
+            textAlign = TextAlign.Center
+        )
+    }
+}
+
+@Composable
 fun HourlyWeatherItem(hourlyWeather: HourlyWeatherModel) {
     Column(
         modifier = Modifier
@@ -196,45 +229,24 @@ fun HourlyWeatherItem(hourlyWeather: HourlyWeatherModel) {
                 .padding(8.dp),
             textAlign = TextAlign.Center
         )
-        Image(
-            painter = painterResource(getDrawableResource(hourlyWeather.picturePath)),
+        AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(hourlyWeather.picturePath)
+                .crossfade(true)
+                .build(),
             contentDescription = null,
             modifier = Modifier
-                .size(45.dp)
+                .size(65.dp)
                 .padding(8.dp),
             contentScale = ContentScale.Crop
         )
         Text(
-            text = "${hourlyWeather.temperature}°",
+            text = hourlyWeather.temperature,
             fontSize = 16.sp,
             color = Color.White,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp),
-            textAlign = TextAlign.Center
-        )
-    }
-}
-
-@Composable
-fun WeatherDetailedItem(icon: Int, value: String, label: String) {
-    Column(modifier = Modifier.padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Image(
-            painter = painterResource(icon),
-            contentDescription = null,
-            modifier = Modifier.size(34.dp)
-        )
-        Text(
-            text = value,
-            fontWeight = FontWeight.Bold,
-            color = colorResource(R.color.white),
-            textAlign = TextAlign.Center
-        )
-        Text(
-            text = label,
-            color = colorResource(R.color.white),
             textAlign = TextAlign.Center
         )
     }
@@ -249,16 +261,19 @@ fun FutureWeatherItem(futureWeather: FutureWeatherModel) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = futureWeather.day,
+            text = futureWeather.date,
             color = Color.White,
             fontSize = 14.sp
         )
-        Image(
-            painter = painterResource(getDrawableResource(futureWeather.picturePath)),
+        AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(futureWeather.picturePath)
+                .crossfade(true)
+                .build(),
             contentDescription = null,
             modifier = Modifier
                 .padding(start = 32.dp)
-                .size(45.dp)
+                .size(65.dp)
         )
         Text(
             text = futureWeather.status,
@@ -270,20 +285,9 @@ fun FutureWeatherItem(futureWeather: FutureWeatherModel) {
             textAlign = TextAlign.Center
         )
         Text(
-            text = "${futureWeather.highTemp}°/${futureWeather.lowTemp}°",
+            text = "${futureWeather.highTemp}/${futureWeather.lowTemp}",
             color = Color.White,
             fontSize = 14.sp
         )
-    }
-}
-
-fun getDrawableResource(label: String): Int {
-    return when(label) {
-        "cloudy" -> R.drawable.cloudy
-        "sunny" -> R.drawable.sunny
-        "rainy" -> R.drawable.rainy
-        "wind" -> R.drawable.wind
-        "storm" -> R.drawable.storm
-        else -> android.R.drawable.ic_menu_help
     }
 }

@@ -13,9 +13,13 @@ class WeatherViewModel(private val weatherRepository: WeatherRepository): ViewMo
     val forecast: StateFlow<ForecastResult> = _forecast
 
     fun loadWeather() = viewModelScope.launch {
-        weatherRepository.getIpAddress()?.let {
-            val forecastResult = weatherRepository.getForecast(it)
+        _forecast.value = ForecastResult.Loading
+        val ipResponse = weatherRepository.getIpAddress()
+        if (ipResponse != null) {
+            val forecastResult = weatherRepository.getForecast(ipResponse)
             _forecast.value = ForecastResult.Success(forecastResult)
+        } else {
+            _forecast.value = ForecastResult.Failure(message = "error message")
         }
     }
 

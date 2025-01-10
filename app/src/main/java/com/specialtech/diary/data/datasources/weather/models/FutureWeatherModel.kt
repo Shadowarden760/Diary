@@ -4,6 +4,6 @@ data class FutureWeatherModel(
     val date: String,
     val picturePath: String,
     val status: String,
-    val highTemp: String,
-    val lowTemp: String
+    val highTemp: Double,
+    val lowTemp: Double
 )

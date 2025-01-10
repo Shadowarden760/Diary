@@ -23,7 +23,7 @@ data class ForecastResponse(
             it.hour.forEach { hourData ->
                 val data = HourlyWeatherModel(
                     hour = hourData.time,
-                    temperature = "${hourData.temp_c}°",
+                    temperature = hourData.temp_c,
                     picturePath = ImageUtils.getImageUrl(hourData.condition.icon)
                 )
                 hourlyData.add(data)
@@ -34,8 +34,8 @@ data class ForecastResponse(
                 date = future.date,
                 picturePath = ImageUtils.getImageUrl(future.day.condition.icon),
                 status = future.day.condition.text,
-                highTemp = "${future.day.maxtemp_c}°",
-                lowTemp = "${future.day.mintemp_c}°"
+                highTemp = future.day.maxtemp_c,
+                lowTemp = future.day.mintemp_c
             )
             futureData.add(data)
         }
@@ -43,11 +43,11 @@ data class ForecastResponse(
             weatherStatus = this.currentForecast.condition.text,
             weatherStatusImg = ImageUtils.getImageUrl(this.currentForecast.condition.icon),
             dateAndTime = this.location.localtime,
-            currentTemperature = "${this.currentForecast.temp_c}°",
+            currentTemperature = this.currentForecast.temp_c,
             region = "${this.location.name}/${this.location.country}",
-            rainPct = "${this.fullForecast.forecastday.firstOrNull()?.day?.daily_chance_of_rain}%",
-            windSpeed = "${this.currentForecast.wind_kph}km/h",
-            humidityPct = "${this.currentForecast.humidity}%",
+            rainPct = this.fullForecast.forecastday.firstOrNull()?.day?.daily_chance_of_rain ?: 0,
+            windSpeed = this.currentForecast.wind_kph,
+            humidityPct = this.currentForecast.humidity,
             hourlyWeatherModel = hourlyData,
             futureWeatherModel = futureData
         )

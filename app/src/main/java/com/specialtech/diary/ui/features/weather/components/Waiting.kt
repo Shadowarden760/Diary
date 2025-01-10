@@ -15,9 +15,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.specialtech.diary.R
 import com.specialtech.diary.ui.theme.MainDark
 import com.specialtech.diary.ui.theme.MainOrange
 
@@ -37,7 +39,7 @@ fun Waiting(isVisible: Boolean) {
                 strokeWidth = 5.dp,
             )
             Text(
-                text = "Wait until we get weather data",
+                text = stringResource(R.string.weather_text_wait_until_we_get_data),
                 fontSize = 20.sp,
                 color = Color.White,
                 modifier = Modifier

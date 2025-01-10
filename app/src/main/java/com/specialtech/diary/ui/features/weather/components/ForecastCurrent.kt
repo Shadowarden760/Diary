@@ -21,6 +21,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -104,17 +105,17 @@ fun ForecastCurrent(weatherData: WeatherData ) {
             WeatherDetailedItem(
                 icon = R.drawable.rain,
                 value = "${weatherData.rainPct}%",
-                label = "Rain"
+                label = stringResource(R.string.weather_text_rain)
             )
             WeatherDetailedItem(
                 icon = R.drawable.wind,
-                value = "${weatherData.windSpeed}km/h",
-                label = "Wind Speed"
+                value = "${weatherData.windSpeed}${stringResource(R.string.weather_text_kmh)}",
+                label = stringResource(R.string.weather_text_wind_speed)
             )
             WeatherDetailedItem(
                 icon = R.drawable.humidity,
                 value = "${weatherData.humidityPct}%",
-                label = "Humidity"
+                label = stringResource(R.string.weather_text_humidity)
             )
         }
     }

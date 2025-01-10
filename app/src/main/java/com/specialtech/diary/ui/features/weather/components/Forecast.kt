@@ -13,8 +13,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.specialtech.diary.R
 import com.specialtech.diary.data.datasources.weather.models.WeatherData
 import com.specialtech.diary.ui.features.weather.WeatherViewModel
 
@@ -37,7 +39,7 @@ fun Forecast(isVisible: Boolean, forecastResult: WeatherViewModel.ForecastResult
 
             item {
                 Text(
-                    text = "Today",
+                    text = stringResource(R.string.weather_text_today),
                     fontSize = 20.sp,
                     color = Color.White,
                     modifier = Modifier
@@ -50,7 +52,7 @@ fun Forecast(isVisible: Boolean, forecastResult: WeatherViewModel.ForecastResult
 
             item {
                 Text(
-                    text = "Future",
+                    text = stringResource(R.string.weather_text_future),
                     fontSize = 20.sp,
                     color = Color.White,
                     modifier = Modifier

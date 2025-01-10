@@ -18,9 +18,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.specialtech.diary.R
 import com.specialtech.diary.ui.features.weather.WeatherViewModel
 import com.specialtech.diary.ui.theme.MainDark
 import com.specialtech.diary.ui.theme.MainOrange
@@ -34,7 +36,7 @@ fun WeatherError(
 ) {
     val errorMessage = when(forecastResult) {
         is WeatherViewModel.ForecastResult.Failure -> { forecastResult.message }
-        else -> { "Something went wrong..." }
+        else -> { stringResource(R.string.weather_text_unknown_error) }
     }
     AnimatedVisibility(
         visible = isVisible,
@@ -69,11 +71,10 @@ fun WeatherError(
                     .padding(bottom = 24.dp)
             ) {
                 Text(
-                    text = "Try Again",
+                    text = stringResource(R.string.weather_button_try_again),
                     fontSize = 16.sp
                 )
             }
-
             Button(
                 onClick = goHome,
                 shape = RoundedCornerShape(10.dp),
@@ -87,7 +88,7 @@ fun WeatherError(
                     .width(200.dp)
             ) {
                 Text(
-                    text = "Return",
+                    text = stringResource(R.string.weather_button_return),
                     fontSize = 16.sp
                 )
             }

@@ -1,5 +1,6 @@
 package com.specialtech.diary.data.datasources.weather.models.dto
 
+import android.annotation.SuppressLint
 import com.specialtech.diary.data.datasources.weather.models.FutureWeatherModel
 import com.specialtech.diary.data.datasources.weather.models.HourlyWeatherModel
 import com.specialtech.diary.data.datasources.weather.models.WeatherData
@@ -16,6 +17,7 @@ data class ForecastResponse(
     @SerialName("forecast") val fullForecast: Forecast,
     @SerialName("location") val location: Location
 ) {
+    @SuppressLint("DefaultLocale")
     fun toWeatherData(): WeatherData {
         val hourlyData: MutableList<HourlyWeatherModel> = mutableListOf()
         val futureData: MutableList<FutureWeatherModel> = mutableListOf()

@@ -12,14 +12,17 @@ class WeatherViewModel(private val weatherRepository: WeatherRepository): ViewMo
     private val _forecast: MutableStateFlow<ForecastResult> = MutableStateFlow(ForecastResult.Loading)
     val forecast: StateFlow<ForecastResult> = _forecast
 
-    fun loadWeather() = viewModelScope.launch {
+    fun loadWeather(userLocale: String) = viewModelScope.launch {
         _forecast.value = ForecastResult.Loading
         val ipResponse = weatherRepository.getIpAddress()
-        if (ipResponse != null) {
-            val forecastResult = weatherRepository.getForecast(ipResponse)
+        if (ipResponse.ip != null) {
+            val forecastResult = weatherRepository.getForecast(
+                ipAddress = ipResponse.ip,
+                userLocale = userLocale
+            )
             _forecast.value = ForecastResult.Success(forecastResult)
         } else {
-            _forecast.value = ForecastResult.Failure(message = "error message")
+            _forecast.value = ForecastResult.Failure(message = ipResponse.errorMessage)
         }
     }
 

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.specialtech.diary.ui.features.weather.components.Forecast
@@ -21,7 +22,7 @@ fun WeatherScreen(
     val forecast = viewModel.forecast.collectAsStateWithLifecycle()
 
     LaunchedEffect(key1 = Unit) {
-        viewModel.loadWeather()
+        viewModel.loadWeather(Locale.current.language)
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -31,7 +32,7 @@ fun WeatherScreen(
         WeatherError(
             isVisible = forecast.value is WeatherViewModel.ForecastResult.Failure,
             forecastResult = forecast.value,
-            tryAgain = { viewModel.loadWeather() },
+            tryAgain = { viewModel.loadWeather(Locale.current.region) },
             goHome = goHome
         )
         Forecast(

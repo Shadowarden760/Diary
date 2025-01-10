@@ -6,6 +6,6 @@ class WeatherRepository(private val weatherDataSource: WeatherDataSource) {
 
     suspend fun getIpAddress() = weatherDataSource.getIpAddress()
 
-    suspend fun getForecast(ipAddress: String) = weatherDataSource.getForecast(ipAddress)
+    suspend fun getForecast(ipAddress: String, userLocale: String) = weatherDataSource.getForecast(ipAddress, userLocale)
 
 }

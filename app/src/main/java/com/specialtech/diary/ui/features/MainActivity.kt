@@ -1,4 +1,4 @@
-package com.specialtech.diary.ui.screens
+package com.specialtech.diary.ui.features
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,9 +10,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import com.specialtech.diary.ui.screens.components.BottomBar
-import com.specialtech.diary.ui.screens.home.HomeScreen
-import com.specialtech.diary.ui.screens.weather.WeatherScreen
+import com.specialtech.diary.common.rememberAppState
+import com.specialtech.diary.ui.features.components.BottomBar
+import com.specialtech.diary.ui.features.components.DiaryNavHost
 import com.specialtech.diary.ui.theme.DiaryTheme
 import com.specialtech.diary.ui.theme.MainDark
 import com.specialtech.diary.ui.theme.MainOrange
@@ -22,17 +22,17 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val appState = rememberAppState()
             DiaryTheme {
                 Scaffold(
-                    bottomBar = { BottomBar() },
+                    bottomBar = { BottomBar(appState.navController) },
                     modifier = Modifier.fillMaxSize()
                 ) { innerPadding ->
                     Box(modifier = Modifier
                         .fillMaxSize()
                         .background(brush = Brush.horizontalGradient(listOf(MainDark, MainOrange)))
                     ) {
-                        WeatherScreen(innerPaddingValues = innerPadding)
-                        //HomeScreen(innerPadding)
+                        DiaryNavHost(appState, innerPadding)
                     }
                 }
             }

@@ -1,4 +1,4 @@
-package com.specialtech.diary.ui.screens.weather.components
+package com.specialtech.diary.ui.features.weather.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn

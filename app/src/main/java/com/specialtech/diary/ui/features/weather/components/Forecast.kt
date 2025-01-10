@@ -1,4 +1,4 @@
-package com.specialtech.diary.ui.screens.weather.components
+package com.specialtech.diary.ui.features.weather.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -36,7 +36,7 @@ import com.specialtech.diary.R
 import com.specialtech.diary.data.datasources.weather.models.FutureWeatherModel
 import com.specialtech.diary.data.datasources.weather.models.HourlyWeatherModel
 import com.specialtech.diary.data.datasources.weather.models.WeatherData
-import com.specialtech.diary.ui.screens.weather.WeatherViewModel
+import com.specialtech.diary.ui.features.weather.WeatherViewModel
 import com.specialtech.diary.ui.theme.MainOrange
 
 @Composable

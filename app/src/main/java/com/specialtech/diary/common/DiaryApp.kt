@@ -1,7 +1,7 @@
-package com.specialtech.diary
+package com.specialtech.diary.common
 
 import android.app.Application
-import com.specialtech.diary.di.appModule
+import com.specialtech.diary.common.di.appModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin

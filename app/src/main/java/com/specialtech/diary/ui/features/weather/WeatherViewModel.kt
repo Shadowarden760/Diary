@@ -1,4 +1,4 @@
-package com.specialtech.diary.ui.screens.weather
+package com.specialtech.diary.ui.features.weather
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

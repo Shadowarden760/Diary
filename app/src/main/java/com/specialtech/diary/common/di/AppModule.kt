@@ -1,6 +1,7 @@
 package com.specialtech.diary.common.di
 
 import com.specialtech.diary.data.datasources.money.local.LocalMoneyData
+import com.specialtech.diary.data.datasources.money.remote.MoneyApiService
 import com.specialtech.diary.data.datasources.network.ApiClient
 import com.specialtech.diary.data.datasources.weather.remote.WeatherApiService
 import com.specialtech.diary.data.repositories.MoneyRepository

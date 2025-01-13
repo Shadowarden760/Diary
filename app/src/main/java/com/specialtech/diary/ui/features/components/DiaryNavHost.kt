@@ -52,7 +52,7 @@ fun DiaryNavHost(appState: DiaryAppState, paddingValues: PaddingValues) {
         }
 
         composable(DiaryRoute.Money.route) {
-            MoneyScreen()
+            MoneyScreen(goHome = goBack)
         }
 
     }

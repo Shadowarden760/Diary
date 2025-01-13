@@ -12,10 +12,13 @@ import io.ktor.client.statement.bodyAsText
 
 class MoneyApiService(private val apiClient: ApiClient): MoneyDataSource {
 
-    override suspend fun getMoneyRates(base: String): MoneyData {
+    override suspend fun getMoneyRates(date: String, base: String): MoneyData {
         val response = apiClient.httpClient.get(MONEY_URL) {
             url {
                 parameters.append("access_key", BuildConfig.MONEY_API_KEY)
+                if (date.isNotEmpty()) {
+                    parameters.append("date", date)
+                }
                 parameters.append("base", base)
             }
         }

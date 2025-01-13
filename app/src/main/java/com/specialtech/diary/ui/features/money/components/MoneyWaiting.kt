@@ -1,10 +1,10 @@
-package com.specialtech.diary.ui.features.weather.components
+package com.specialtech.diary.ui.features.money.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -24,14 +24,17 @@ import com.specialtech.diary.ui.theme.MainDark
 import com.specialtech.diary.ui.theme.MainOrange
 
 @Composable
-fun Waiting(isVisible: Boolean) {
+fun MoneyWaiting(isVisible: Boolean) {
     AnimatedVisibility(
         visible = isVisible,
         enter = fadeIn(),
         exit = fadeOut()
     ) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            Spacer(modifier = Modifier.weight(1f))
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
             CircularProgressIndicator(
                 modifier = Modifier.size(50.dp).align(Alignment.CenterHorizontally),
                 color = MainOrange,
@@ -39,7 +42,7 @@ fun Waiting(isVisible: Boolean) {
                 strokeWidth = 5.dp,
             )
             Text(
-                text = stringResource(R.string.weather_text_wait_until_we_get_data),
+                text = stringResource(R.string.money_text_wait_until_we_get_data),
                 fontSize = 20.sp,
                 color = Color.White,
                 modifier = Modifier
@@ -47,10 +50,6 @@ fun Waiting(isVisible: Boolean) {
                     .padding(bottom = 24.dp),
                 textAlign = TextAlign.Center
             )
-            Spacer(modifier = Modifier.weight(1f))
         }
     }
-
 }
-
-

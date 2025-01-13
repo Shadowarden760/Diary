@@ -18,4 +18,8 @@
     <string name="weather_text_humidity">Humidity</string>
     <string name="weather_text_kmh">km/h</string>
 
+    <string name="money_text_wait_until_we_get_data">Wait until we get money data</string>
+    <string name="money_button_try_again">Try Again</string>
+    <string name="money_button_return">Return</string>
+
 </resources>

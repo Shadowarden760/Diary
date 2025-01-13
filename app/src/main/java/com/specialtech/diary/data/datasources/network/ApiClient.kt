@@ -1,4 +1,4 @@
-package com.specialtech.diary.data.datasources.weather.remote
+package com.specialtech.diary.data.datasources.network
 
 import android.util.Log
 import io.ktor.client.HttpClient

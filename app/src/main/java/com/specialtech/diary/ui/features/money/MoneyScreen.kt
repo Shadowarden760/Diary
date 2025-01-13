@@ -38,7 +38,7 @@ fun MoneyScreen(
         )
         MoneyRates(
             isVisible = moneyState.value is MoneyViewModel.MoneyResult.Success,
-            moneyData = moneyState.value.moneyData
+            convertMoneyData = viewModel::convertMoneyData
         )
     }
 }

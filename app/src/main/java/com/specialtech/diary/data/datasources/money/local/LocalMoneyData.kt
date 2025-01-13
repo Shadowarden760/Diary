@@ -9,32 +9,22 @@ class LocalMoneyData: MoneyDataSource {
     val moneyData1 = MoneyData(
         status = NetworkStatuses.SUCCESS,
         errorMessage = "",
-        date = "10.01.2024",
+        date = "2025-01-10",
         moneyRates = listOf(
-            MoneyItemData(name = "EUR", description = "desc", rate = 102.0),
-            MoneyItemData(name = "USD", description = "desc", rate = 100.0),
-            MoneyItemData(name = "EUR1", description = "desc", rate = 102.0),
-            MoneyItemData(name = "USD1", description = "desc", rate = 100.0),
-            MoneyItemData(name = "EUR2", description = "desc", rate = 102.0),
-            MoneyItemData(name = "USD2", description = "desc", rate = 100.0),
-            MoneyItemData(name = "EUR3", description = "desc", rate = 102.0),
-            MoneyItemData(name = "USD4", description = "desc", rate = 100.0),
+            MoneyItemData(name = "EUR", description = "desc", rate = 1.0),
+            MoneyItemData(name = "USD", description = "desc", rate = 0.95),
+            MoneyItemData(name = "RUB", description = "desc", rate = 102.0)
         )
     )
 
     val moneyData2 = MoneyData(
         status = NetworkStatuses.SUCCESS,
         errorMessage = "",
-        date = "10.01.2024",
+        date = "2024-01-11",
         moneyRates = listOf(
-            MoneyItemData(name = "EUR", description = "desc", rate = 103.0),
-            MoneyItemData(name = "USD", description = "desc", rate = 99.0),
-            MoneyItemData(name = "EUR1", description = "desc", rate = 102.0),
-            MoneyItemData(name = "USD1", description = "desc", rate = 100.0),
-            MoneyItemData(name = "EUR2", description = "desc", rate = 102.0),
-            MoneyItemData(name = "USD2", description = "desc", rate = 100.0),
-            MoneyItemData(name = "EUR3", description = "desc", rate = 102.0),
-            MoneyItemData(name = "USD4", description = "desc", rate = 100.0),
+            MoneyItemData(name = "EUR", description = "desc", rate = 1.0),
+            MoneyItemData(name = "USD", description = "desc", rate = 0.97),
+            MoneyItemData(name = "RUB", description = "desc", rate = 115.0),
         )
     )
 

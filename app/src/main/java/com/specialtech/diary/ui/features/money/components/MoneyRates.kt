@@ -3,12 +3,14 @@ package com.specialtech.diary.ui.features.money.components
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
@@ -31,16 +33,19 @@ import com.specialtech.diary.data.datasources.money.models.MoneyData
 import com.specialtech.diary.data.datasources.money.models.MoneyItemData
 import com.specialtech.diary.ui.theme.MainDark
 import com.specialtech.diary.ui.theme.MainOrange
+import com.specialtech.diary.utils.DateTimeUtils
 
-@Preview
 @Composable
 fun MoneyRates(
     isVisible: Boolean = true,
-    moneyData: Pair<MoneyData, MoneyData> = Pair(LocalMoneyData().moneyData1, LocalMoneyData().moneyData2)
+    moneyData: Pair<MoneyData, MoneyData> = Pair(LocalMoneyData().moneyData1, LocalMoneyData().moneyData2),
+    convertMoneyData: (base: String, target: String, data: MoneyData) -> MoneyData
 ) {
+    val moneyConvertedData1 = convertMoneyData("EUR", "RUB", moneyData.first)
+    val moneyConvertedData2 = convertMoneyData("EUR", "RUB", moneyData.second)
     val moneyRates: MutableList<Pair<MoneyItemData, MoneyItemData>> = mutableListOf()
-    moneyData.first.moneyRates.forEach { firstRate ->
-        val secondRate = moneyData.second.moneyRates.firstOrNull{ firstRate.name == it.name }
+    moneyConvertedData1.moneyRates.forEach { firstRate ->
+        val secondRate = moneyConvertedData2.moneyRates.firstOrNull{ firstRate.name == it.name }
         if (secondRate != null)
             moneyRates.add(Pair(firstRate, secondRate))
     }
@@ -58,7 +63,11 @@ fun MoneyRates(
             ) {
                 item {
                     Text(
-                        text = "Курсы валют по состоянию на:\n ${moneyData.first.date}",
+                        text = "Курсы валют по состоянию на:\n ${DateTimeUtils.formatDate(
+                            dateString = moneyData.first.date,
+                            dateFormat = "yyyy-MM-dd",
+                            returnFormat = "dd.MM.yyyy"
+                        )}",
                         fontSize = 20.sp,
                         color = Color.White,
                         textAlign = TextAlign.Center
@@ -96,45 +105,65 @@ fun MoneyRateItem(rate1: MoneyItemData, rate2: MoneyItemData) {
             .fillMaxWidth()
             .padding(top = 16.dp, start = 24.dp, end = 24.dp)
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 8.dp, vertical = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+        Row(
+            modifier = Modifier.fillMaxSize()
         ) {
-            Text(
-                text = "Money name: ${rate1.name}",
-                fontSize = 18.sp,
-                color = Color.White
+            Image(
+                painter = painterResource(getFlagDrawable(rate1.name)),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(width = 70.dp, height = 70.dp)
+                    .align(Alignment.CenterVertically)
+                    .padding(horizontal = 8.dp)
             )
-            Row(
-                modifier = Modifier.fillMaxSize(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            Column(
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .padding(end = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
-                    text = "Yesterday: ${rate1.rate}",
+                    text = rate1.name,
+                    fontSize = 16.sp,
+                    color = Color.White
+                )
+                Text(
+                    text = rate1.description,
+                    fontSize = 14.sp,
+                    color = Color.White
+                )
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .align(Alignment.CenterVertically),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = "${rate1.rate}",
                     fontSize = 18.sp,
-                    color = Color.White,
-                    modifier = Modifier.align(Alignment.CenterVertically)
+                    color = Color.White
                 )
                 Icon(
                     painter = painterResource(iconId),
                     tint = iconColor,
-                    contentDescription = null
+                    contentDescription = null,
+                    modifier = Modifier.padding(horizontal = 8.dp)
                 )
                 Text(
-                    text = "Today: ${rate2.rate}",
+                    text = "${rate2.rate}",
                     fontSize = 18.sp,
-                    color = Color.White,
-                    modifier = Modifier.align(Alignment.CenterVertically)
+                    color = Color.White
                 )
             }
-            Text(
-                text = "Description: ${rate1.description}",
-                fontSize = 14.sp,
-                color = Color.White
-            )
         }
+    }
+}
 
+fun getFlagDrawable(name: String): Int {
+    return when(name) {
+        "EUR" -> R.drawable.img_eur
+        "USD" -> R.drawable.img_usd
+        else -> R.drawable.storm
     }
 }

@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.sqldelight)
 }
 
 val localProperties = Properties()
@@ -58,6 +59,14 @@ android {
 
 }
 
+sqldelight {
+    databases {
+        create("DiaryDB") {
+            packageName.set("com.specialtech.diary")
+        }
+    }
+}
+
 dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.core.ktx)
@@ -71,6 +80,9 @@ dependencies {
 
     // KOIN
     implementation(libs.koin.androidx.compose)
+
+    // SQLDELIGHT
+    implementation(libs.android.sqldelight.driver)
 
     // KTOR
     implementation(libs.ktor.client.core)

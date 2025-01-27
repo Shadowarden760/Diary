@@ -19,7 +19,7 @@ fun MoneyScreen(
     val moneyState = viewModel.moneyState.collectAsStateWithLifecycle()
 
     LaunchedEffect(key1 = Unit) {
-        viewModel.loadMoneyData()
+        viewModel.loadMoneyData(base = "EUR")
     }
 
     Column(
@@ -32,12 +32,13 @@ fun MoneyScreen(
             isVisible = moneyState.value is MoneyViewModel.MoneyResult.Failed,
             errorMessage = moneyState.value.moneyData.first.errorMessage,
             tryAgain = {
-                viewModel.loadMoneyData()
+                viewModel.loadMoneyData(base = "EUR")
             },
             goHome = goHome
         )
         MoneyRates(
             isVisible = moneyState.value is MoneyViewModel.MoneyResult.Success,
+            moneyData = moneyState.value.moneyData,
             convertMoneyData = viewModel::convertMoneyData
         )
     }

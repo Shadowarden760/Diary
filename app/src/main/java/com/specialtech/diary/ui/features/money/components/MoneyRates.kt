@@ -23,12 +23,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.specialtech.diary.R
-import com.specialtech.diary.data.datasources.money.local.LocalMoneyData
 import com.specialtech.diary.data.datasources.money.models.MoneyData
 import com.specialtech.diary.data.datasources.money.models.MoneyItemData
 import com.specialtech.diary.ui.theme.MainDark
@@ -37,12 +36,15 @@ import com.specialtech.diary.utils.DateTimeUtils
 
 @Composable
 fun MoneyRates(
-    isVisible: Boolean = true,
-    moneyData: Pair<MoneyData, MoneyData> = Pair(LocalMoneyData().moneyData1, LocalMoneyData().moneyData2),
-    convertMoneyData: (base: String, target: String, data: MoneyData) -> MoneyData
+    isVisible: Boolean,
+    moneyData: Pair<MoneyData, MoneyData>,
+    convertMoneyData: (base: String, target: String, data: MoneyData,
+                       allMoneyRates: Array<String>, allMoneyDes: Array<String>) -> MoneyData
 ) {
-    val moneyConvertedData1 = convertMoneyData("EUR", "RUB", moneyData.first)
-    val moneyConvertedData2 = convertMoneyData("EUR", "RUB", moneyData.second)
+    val allMoneyRates = stringArrayResource(R.array.rates)
+    val allMoneyDes = stringArrayResource(R.array.rates_descriptions)
+    val moneyConvertedData1 = convertMoneyData("EUR", "RUB", moneyData.first, allMoneyRates, allMoneyDes)
+    val moneyConvertedData2 = convertMoneyData("EUR", "RUB", moneyData.second, allMoneyRates, allMoneyDes)
     val moneyRates: MutableList<Pair<MoneyItemData, MoneyItemData>> = mutableListOf()
     moneyConvertedData1.moneyRates.forEach { firstRate ->
         val secondRate = moneyConvertedData2.moneyRates.firstOrNull{ firstRate.name == it.name }
@@ -162,8 +164,15 @@ fun MoneyRateItem(rate1: MoneyItemData, rate2: MoneyItemData) {
 
 fun getFlagDrawable(name: String): Int {
     return when(name) {
-        "EUR" -> R.drawable.img_eur
-        "USD" -> R.drawable.img_usd
-        else -> R.drawable.storm
+        "EUR" -> R.drawable.ic_european_union
+        "BYN" -> R.drawable.ic_belarus
+        "KZT" -> R.drawable.ic_kazakhstan
+        "USD" -> R.drawable.ic_usa
+        "GBP" -> R.drawable.ic_great_britain
+        "INR" -> R.drawable.ic_india
+        "TRY" -> R.drawable.ic_turkey
+        "CNY" -> R.drawable.ic_china
+        "RUB" -> R.drawable.ic_russia
+        else -> R.drawable.ic_android_flag
     }
 }

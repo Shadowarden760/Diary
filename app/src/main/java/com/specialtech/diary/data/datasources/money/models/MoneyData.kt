@@ -3,8 +3,8 @@ package com.specialtech.diary.data.datasources.money.models
 import com.specialtech.diary.data.datasources.network.NetworkStatuses
 
 data class MoneyData(
-    val status: NetworkStatuses,
+    val status: NetworkStatuses = NetworkStatuses.UNKNOWN,
     val errorMessage: String = "",
     val date: String = "",
-    var moneyRates: List<MoneyItemData> = emptyList()
+    val moneyRates: List<MoneyItemData> = emptyList()
 )

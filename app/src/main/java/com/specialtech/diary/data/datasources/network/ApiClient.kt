@@ -34,7 +34,7 @@ class ApiClient {
         install(Logging) {
             logger = object : Logger {
                 override fun log(message: String) {
-                    Log.d("Logger Ktor -> ", message)
+                    Log.d("Logger Ktor:", message)
                 }
             }
             level = LogLevel.ALL

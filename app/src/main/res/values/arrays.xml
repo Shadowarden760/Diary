@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="rates">
+        <item>"EUR"</item>
+        <item>"BYN"</item>
+        <item>"KZT"</item>
+        <item>"USD"</item>
+        <item>"GBP"</item>
+        <item>"TRY"</item>
+        <item>"INR"</item>
+        <item>"CNY"</item>
+    </array>
+    <array name="rates_descriptions">
+        <item>"Euro"</item>
+        <item>"Belarusian ruble"</item>
+        <item>"Kazakhstan tenge"</item>
+        <item>"USA dollar"</item>
+        <item>"UK pound"</item>
+        <item>"Turkish lira"</item>
+        <item>"Indian rupees"</item>
+        <item>"Chinese yuan"</item>
+    </array>
+</resources>

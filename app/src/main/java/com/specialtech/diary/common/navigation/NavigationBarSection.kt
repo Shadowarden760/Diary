@@ -10,7 +10,7 @@ sealed class NavigationBarSection(
     val route: String
 ) {
     companion object {
-        val sections = listOf(Home, Notes, Weather, Money)
+        val sections = listOf(Home, Notes, Weather)
     }
 
     data object Home : NavigationBarSection(
@@ -29,12 +29,6 @@ sealed class NavigationBarSection(
         title = R.string.section_weather,
         icon = R.drawable.ic_weather,
         route = DiaryRoute.Weather.route
-    )
-
-    data object Money : NavigationBarSection(
-        title = R.string.section_money,
-        icon = R.drawable.ic_money,
-        route = DiaryRoute.Money.route
     )
 
 }

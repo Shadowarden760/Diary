@@ -20,26 +20,25 @@ android {
         applicationId = "com.specialtech.diary"
         minSdk = 26
         targetSdk = 35
-        versionCode = 14
-        versionName = "0.0.6"
+        versionCode = 16
+        versionName = "0.0.8"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
+            isDebuggable = false
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
             buildConfigField(type = "String", name = "WEATHER_API_KEY", value = localProperties.getProperty("WEATHER_API_KEY"))
-            buildConfigField(type = "String", name = "MONEY_API_KEY", value = localProperties.getProperty("MONEY_API_KEY"))
         }
         debug {
             isDebuggable = true
             isMinifyEnabled = false
             buildConfigField(type = "String", name = "WEATHER_API_KEY", value = localProperties.getProperty("WEATHER_API_KEY"))
-            buildConfigField(type = "String", name = "MONEY_API_KEY", value = localProperties.getProperty("MONEY_API_KEY"))
         }
     }
 

@@ -8,6 +8,7 @@ import com.specialtech.diary.data.datasources.weather.models.WeatherData
 import com.specialtech.diary.data.datasources.weather.models.dto.ForecastResponse
 import com.specialtech.diary.data.datasources.weather.models.dto.IpAddressResponse
 import io.ktor.client.call.body
+import io.ktor.client.plugins.HttpRequestTimeoutException
 import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsText
 
@@ -24,19 +25,23 @@ class WeatherApiService(private val apiClient: ApiClient): WeatherDataSource {
     }
 
     override suspend fun getForecast(ipAddress: String, userLocale: String): WeatherData {
-        val response = apiClient.httpClient.get(FORECAST_URL) {
-            url {
-                parameters.append("key", BuildConfig.WEATHER_API_KEY)
-                parameters.append("q", ipAddress)
-                parameters.append("days", 3.toString())
-                parameters.append("lang", userLocale)
+        try {
+            val response = apiClient.httpClient.get(FORECAST_URL) {
+                url {
+                    parameters.append("key", BuildConfig.WEATHER_API_KEY)
+                    parameters.append("q", ipAddress)
+                    parameters.append("days", 3.toString())
+                    parameters.append("lang", userLocale)
+                }
             }
-        }
-        return if (response.status.value == 200) {
-            val data = response.body<ForecastResponse>()
-            data.toWeatherData()
-        } else {
-            WeatherData()
+            return if (response.status.value == 200) {
+                val data = response.body<ForecastResponse>()
+                data.toWeatherData()
+            } else {
+                WeatherData()
+            }
+        } catch (ex: HttpRequestTimeoutException) {
+            return WeatherData()
         }
     }
 

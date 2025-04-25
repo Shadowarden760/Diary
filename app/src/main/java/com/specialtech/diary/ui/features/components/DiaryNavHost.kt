@@ -12,7 +12,6 @@ import com.specialtech.diary.common.navigation.NavigationBarSection
 import com.specialtech.diary.common.navigation.navigateSaved
 import com.specialtech.diary.common.navigation.popUp
 import com.specialtech.diary.ui.features.home.HomeScreen
-import com.specialtech.diary.ui.features.money.MoneyScreen
 import com.specialtech.diary.ui.features.notedetail.NoteDetailScreen
 import com.specialtech.diary.ui.features.notelist.NoteListScreen
 import com.specialtech.diary.ui.features.weather.WeatherScreen
@@ -49,10 +48,6 @@ fun DiaryNavHost(appState: DiaryAppState, paddingValues: PaddingValues) {
 
         composable(DiaryRoute.Weather.route) {
             WeatherScreen(goHome = goBack)
-        }
-
-        composable(DiaryRoute.Money.route) {
-            MoneyScreen(goHome = goBack)
         }
 
     }

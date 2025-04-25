@@ -11,9 +11,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.specialtech.diary.Note
 
+
 @Composable
-fun NoteList(noteList: List<Note>)
-{
+fun NoteList(
+    noteList: List<Note>
+) {
     LazyVerticalStaggeredGrid(
         columns = StaggeredGridCells.Fixed(2),
         verticalItemSpacing = 4.dp,
@@ -27,14 +29,13 @@ fun NoteList(noteList: List<Note>)
     }
 }
 
-
 @Preview
 @Composable
 private fun NoteListPreview() {
     NoteList(listOf(
-        Note(1, "category", "title1", "",0,  1287371236786),
-        Note(2, "category", "title2", "", 0,1287371236786),
-        Note(3, "category", "title3", "", 0, 1287371236786),
-        Note(4, "category", "title4", "", 0, 1287371236786)
+        Note(1, "category", "title1",0,  1287371236786),
+        Note(2, "category", "title2", 0,1287371236786),
+        Note(3, "category", "title3", 0, 1287371236786),
+        Note(4, "category", "title4", 0, 1287371236786)
     ))
 }

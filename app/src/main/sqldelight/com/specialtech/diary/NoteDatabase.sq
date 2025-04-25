@@ -1,6 +1,5 @@
 CREATE TABLE Note (
     noteId INTEGER PRIMARY KEY AUTOINCREMENT,
-    noteCategory TEXT NOT NULL,
     noteTitle TEXT NOT NULL,
     noteMessage TEXT NOT NULL,
     noteCreatedAt INTEGER NOT NULL,
@@ -17,12 +16,12 @@ FROM Note
 WHERE Note.noteId = ?;
 
 insertNewNote:
-INSERT INTO Note(noteCategory, noteTitle, noteMessage, noteCreatedAt, noteUpdatedAt)
-VALUES (?, ?, ?, ?, ?);
+INSERT INTO Note(noteTitle, noteMessage, noteCreatedAt, noteUpdatedAt)
+VALUES (?, ?, ?, ?);
 
 updateNote:
-REPLACE INTO Note(noteId, noteCategory, noteTitle, noteMessage, noteCreatedAt, noteUpdatedAt)
-VALUES (?, ?, ?, ?, ?, ?);
+REPLACE INTO Note(noteId, noteTitle, noteMessage, noteCreatedAt, noteUpdatedAt)
+VALUES (?, ?, ?, ?, ?);
 
 deleteNoteById:
 DELETE FROM Note

@@ -22,10 +22,11 @@ import com.specialtech.diary.R
 import com.specialtech.diary.ui.theme.MainDark
 import com.specialtech.diary.ui.theme.MainOrange
 
-@Preview
-@Composable
-fun NoteListHeader(noteNumber: Int = 5) {
 
+@Composable
+fun NoteListHeader(
+    noteNumber: Int
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -62,5 +63,10 @@ fun NoteListHeader(noteNumber: Int = 5) {
             )
         }
     }
+}
 
+@Preview
+@Composable
+private fun NoteListHeaderPreview() {
+    NoteListHeader(5)
 }

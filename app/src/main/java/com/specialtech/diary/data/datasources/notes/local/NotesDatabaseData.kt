@@ -31,7 +31,6 @@ class NotesDatabaseData(databaseDriver: DatabaseDriver): NotesDataSource {
 
     override fun createNewNote(): Long {
         queries.insertNewNote(
-            noteCategory = "",
             noteTitle = "",
             noteMessage = "",
             noteCreatedAt = System.currentTimeMillis(),
@@ -44,7 +43,6 @@ class NotesDatabaseData(databaseDriver: DatabaseDriver): NotesDataSource {
     override fun updateNote(note: Note): Long {
         queries.updateNote(
             noteId = note.noteId,
-            noteCategory = note.noteCategory,
             noteTitle = note.noteTitle,
             noteMessage = note.noteMessage,
             noteCreatedAt = System.currentTimeMillis(),

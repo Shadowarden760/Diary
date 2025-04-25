@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.specialtech.diary.ui.theme.MainDark
 import com.specialtech.diary.ui.theme.MainOrange
 
+
 @Preview
 @Composable
 fun NoteListEnd(

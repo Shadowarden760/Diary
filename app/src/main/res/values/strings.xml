@@ -18,4 +18,6 @@
     <string name="weather_text_humidity">Humidity</string>
     <string name="weather_text_kmh">km/h</string>
 
+    <string name="note_list_text_your_notes">Your Notes</string>
+
 </resources>

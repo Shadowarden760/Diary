@@ -1,9 +1,13 @@
 package com.specialtech.diary.data.datasources.notes.local
 
+import app.cash.sqldelight.coroutines.asFlow
+import app.cash.sqldelight.coroutines.mapToList
 import com.specialtech.diary.DiaryDB
 import com.specialtech.diary.Note
 import com.specialtech.diary.data.datasources.database.DatabaseDriver
 import com.specialtech.diary.data.datasources.notes.NotesDataSource
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 
 class NotesDatabaseData(databaseDriver: DatabaseDriver): NotesDataSource {
     private val database = DiaryDB(databaseDriver.createDatabaseDriver())
@@ -14,20 +18,39 @@ class NotesDatabaseData(databaseDriver: DatabaseDriver): NotesDataSource {
             .executeAsList()
     }
 
+    override fun getAllNotesFlow(): Flow<List<Note>> {
+        return queries.getAllNotes()
+            .asFlow()
+            .mapToList(Dispatchers.IO)
+    }
+
     override fun getNoteById(noteId: Long): Note? {
         return queries.getNoteById(noteId)
             .executeAsOneOrNull()
     }
 
-    override fun insertNote(newNote: Note): Long {
-        queries.insertNote(
-            noteId = newNote.noteId,
-            noteCategory = newNote.noteCategory,
-            noteTitle = newNote.noteTitle,
-            noteMessage = newNote.noteMessage
+    override fun createNewNote(): Long {
+        queries.insertNewNote(
+            noteCategory = "",
+            noteTitle = "",
+            noteMessage = "",
+            noteCreatedAt = System.currentTimeMillis(),
+            noteUpdatedAt = System.currentTimeMillis()
         )
         return queries.lastInsertedId()
             .executeAsOne()
+    }
+
+    override fun updateNote(note: Note): Long {
+        queries.updateNote(
+            noteId = note.noteId,
+            noteCategory = note.noteCategory,
+            noteTitle = note.noteTitle,
+            noteMessage = note.noteMessage,
+            noteCreatedAt = System.currentTimeMillis(),
+            noteUpdatedAt = System.currentTimeMillis()
+        )
+        return note.noteId
     }
 
     override fun deleteNoteById(noteId: Long) {

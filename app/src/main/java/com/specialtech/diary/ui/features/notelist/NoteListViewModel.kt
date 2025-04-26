@@ -8,4 +8,6 @@ class NoteListViewModel(private val notesRepository: NotesRepository): ViewModel
 
     fun createNewNote() = notesRepository.createNewNote()
 
+    fun deleteNote(noteId: Long) = notesRepository.deleteNote(noteId)
+
 }

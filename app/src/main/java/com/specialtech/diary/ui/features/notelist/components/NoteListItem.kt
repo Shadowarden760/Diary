@@ -1,5 +1,6 @@
 package com.specialtech.diary.ui.features.notelist.components
 
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,13 +24,18 @@ import com.specialtech.diary.utils.DateTimeUtils
 @Composable
 fun NoteListItem(
     note: Note,
-    onItemClick:() -> Unit = {}
+    onItemClick:() -> Unit = {},
+    onLongItemClick:() -> Unit = {}
 ) {
     Card(
         shape = RoundedCornerShape(6.dp),
         colors = CardDefaults.cardColors(containerColor = MainOrange),
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp, pressedElevation = 2.dp),
-        onClick = onItemClick
+        modifier = Modifier
+            .combinedClickable(
+                onClick = onItemClick,
+                onLongClick = onLongItemClick
+            )
     ) {
         Column(modifier = Modifier.padding(6.dp)) {
             Text(

@@ -22,7 +22,10 @@ fun NoteListScreen(
         modifier = Modifier.fillMaxSize()
     ) {
         NoteListHeader(noteNumber = notes.value.size)
-        NoteList(noteList = notes.value)
+        NoteList(
+            noteList = notes.value,
+            deleteNote = { noteId -> viewModel.deleteNote(noteId) }
+        )
     }
     NoteListEnd(
         goToNoteDetail = goToNoteDetail,

@@ -14,7 +14,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun NoteListScreen(
     viewModel: NoteListViewModel = koinViewModel(),
-    goToNoteDetail: () -> Unit = {}
+    goToNoteDetail:(noteId: Long) -> Unit = {}
 ) {
     val notes = viewModel.notesFlow.collectAsStateWithLifecycle(listOf())
 
@@ -24,6 +24,7 @@ fun NoteListScreen(
         NoteListHeader(noteNumber = notes.value.size)
         NoteList(
             noteList = notes.value,
+            goToNoteDetail = goToNoteDetail,
             deleteNote = { noteId -> viewModel.deleteNote(noteId) }
         )
     }

@@ -8,7 +8,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.specialtech.diary.R
 
 @Composable
 fun AlertDialogDiary(
@@ -34,14 +36,14 @@ fun AlertDialogDiary(
             TextButton(
                 onClick = onConfirm
             ) {
-                Text(text = "Confirm")
+                Text(text = stringResource(R.string.dialog_text_confirm))
             }
         },
         dismissButton = {
             TextButton(
                 onClick = onCancel
             ) {
-                Text(text = "Cancel")
+                Text(text = stringResource(R.string.dialog_text_cancel))
             }
         }
     )

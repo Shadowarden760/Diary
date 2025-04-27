@@ -5,4 +5,8 @@ sealed class DiaryRoute(val route: String) {
     data object Weather: DiaryRoute(route = "weather")
     data object NoteList: DiaryRoute(route = "note_list")
     data object NoteDetail: DiaryRoute(route = "note_detail")
+
+    companion object {
+        const val NOTE_DETAIL_ARG_NOTE_ID = "noteId"
+    }
 }

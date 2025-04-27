@@ -12,16 +12,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.koin.androidx.compose.koinViewModel
 
-@Preview(showSystemUi = true)
 @Composable
 fun NoteDetailScreen(
     viewModel: NoteDetailViewModel = koinViewModel(),
-    goToNoteList: () -> Unit = {}
+    noteId: Long,
+    goToNoteList: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -29,7 +28,7 @@ fun NoteDetailScreen(
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "NoteDetail",
+            text = "NoteId: $noteId",
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold,
             color = Color.White,

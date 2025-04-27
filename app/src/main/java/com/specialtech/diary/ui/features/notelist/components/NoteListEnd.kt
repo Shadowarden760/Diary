@@ -17,11 +17,10 @@ import com.specialtech.diary.ui.theme.MainDark
 import com.specialtech.diary.ui.theme.MainOrange
 
 
-@Preview
 @Composable
 fun NoteListEnd(
-    goToNoteDetail:() -> Unit = {},
-    createNewNote:() -> Unit = {},
+    goToNoteDetail:(noteId: Long) -> Unit = {},
+    createNewNote:() -> Long,
 ) {
     Box(
         contentAlignment = Alignment.BottomEnd,
@@ -32,13 +31,18 @@ fun NoteListEnd(
             containerColor = MainOrange,
             contentColor = MainDark,
             onClick = {
-                createNewNote()
-                goToNoteDetail()
+                val newId = createNewNote()
+                goToNoteDetail(newId)
             },
             modifier = Modifier.padding(16.dp)
         ) {
-            Icon(imageVector = Icons.Default.Add, contentDescription = "Add new note")
+            Icon(imageVector = Icons.Default.Add, contentDescription = "")
         }
     }
 }
 
+@Preview
+@Composable
+fun NoteListEndPreview() {
+    NoteListEnd({}, { 1L })
+}

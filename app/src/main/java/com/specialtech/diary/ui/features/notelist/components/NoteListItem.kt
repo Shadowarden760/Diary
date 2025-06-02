@@ -45,7 +45,6 @@ fun NoteListItem(
                 fontSize = 14.sp,
                 modifier = Modifier.padding(6.dp)
             )
-
             Text(
                 text = note.noteTitle,
                 fontWeight = FontWeight.Medium,
@@ -53,7 +52,6 @@ fun NoteListItem(
                 fontSize = 14.sp,
                 modifier = Modifier.padding(6.dp)
             )
-
             Text(
                 text = DateTimeUtils.timeMillisToDate(note.noteUpdatedAt),
                 fontWeight = FontWeight.Medium,

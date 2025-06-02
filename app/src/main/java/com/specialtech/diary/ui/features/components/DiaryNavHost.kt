@@ -59,5 +59,7 @@ fun DiaryNavHost(appState: DiaryAppState, paddingValues: PaddingValues) {
         composable(DiaryRoute.Weather.route) {
             WeatherScreen(goHome = goBack)
         }
+
     }
+
 }

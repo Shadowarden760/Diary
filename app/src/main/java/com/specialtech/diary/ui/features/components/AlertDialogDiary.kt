@@ -56,8 +56,8 @@ private fun AlertDialogDiaryPreview() {
         onDismissRequest = {},
         onConfirm = {},
         onCancel = {},
-        dialogTitle = "Delete Note",
-        dialogText = "Delete Note #5?",
+        dialogTitle = "Delete Note #5",
+        dialogText = "Delete Note with title 'Shopping'?",
         icon = Icons.Filled.Delete
     )
 }

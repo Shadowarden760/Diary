@@ -5,13 +5,15 @@ import kotlinx.coroutines.flow.Flow
 
 interface NotesDataSource {
 
+    fun createNewNote(): Long
+
     fun getAllNotes(): List<Note>
 
     fun getAllNotesFlow(): Flow<List<Note>>
 
-    fun getNoteById(noteId: Long): Note?
+    fun getNoteById(noteId: Long): Note
 
-    fun createNewNote(): Long
+    fun getNoteByIdFlow(noteId: Long): Flow<Note?>
 
     fun updateNote(note: Note): Long
 

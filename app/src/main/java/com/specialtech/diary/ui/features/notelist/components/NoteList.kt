@@ -35,7 +35,10 @@ fun NoteList(
                 openAlertDialogNoteId.longValue = 0L
             },
             onCancel = { openAlertDialogNoteId.longValue = 0L },
-            dialogTitle = stringResource(R.string.note_list_text_delete_note_title),
+            dialogTitle = stringResource(
+                R.string.note_list_text_delete_note_title,
+                openAlertDialogNoteId.longValue
+            ),
             dialogText = stringResource(
                 R.string.note_list_text_delete_note_content,
                 noteList.find { it.noteId == openAlertDialogNoteId.longValue }?.noteTitle.toString()
@@ -46,8 +49,8 @@ fun NoteList(
 
     LazyVerticalStaggeredGrid(
         columns = StaggeredGridCells.Fixed(2),
-        verticalItemSpacing = 4.dp,
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        verticalItemSpacing = 16.dp,
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier
             .padding(top = 16.dp, start = 16.dp, end = 16.dp)
     ) {

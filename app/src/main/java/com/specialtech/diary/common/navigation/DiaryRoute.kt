@@ -9,4 +9,5 @@ sealed class DiaryRoute(val route: String) {
     companion object {
         const val NOTE_DETAIL_ARG_NOTE_ID = "noteId"
     }
+
 }

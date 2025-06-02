@@ -41,9 +41,7 @@ fun NoteListHeader(
                 .padding(horizontal = 16.dp),
             textAlign = TextAlign.Start
         )
-
         Spacer(modifier = Modifier.weight(1f))
-
         Card(
             shape = RoundedCornerShape(5.dp),
             colors = CardDefaults.cardColors(MainDark),

@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
@@ -35,7 +36,7 @@ import com.specialtech.diary.ui.theme.MainOrange
 import com.specialtech.diary.utils.DateTimeUtils
 
 @Composable
-fun ForecastCurrent(weatherData: WeatherData ) {
+fun ForecastCurrent(weatherData: WeatherData) {
     Text(
         text = weatherData.weatherStatus,
         fontSize = 20.sp,
@@ -103,17 +104,17 @@ fun ForecastCurrent(weatherData: WeatherData ) {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             WeatherDetailedItem(
-                icon = R.drawable.rain,
+                icon = WeatherIcons.rain,
                 value = "${weatherData.rainPct}%",
                 label = stringResource(R.string.weather_text_rain)
             )
             WeatherDetailedItem(
-                icon = R.drawable.wind,
+                icon = WeatherIcons.wind,
                 value = "${weatherData.windSpeed}${stringResource(R.string.weather_text_kmh)}",
                 label = stringResource(R.string.weather_text_wind_speed)
             )
             WeatherDetailedItem(
-                icon = R.drawable.humidity,
+                icon = WeatherIcons.humidity,
                 value = "${weatherData.humidityPct}%",
                 label = stringResource(R.string.weather_text_humidity)
             )
@@ -122,12 +123,12 @@ fun ForecastCurrent(weatherData: WeatherData ) {
 }
 
 @Composable
-fun WeatherDetailedItem(icon: Int, value: String, label: String) {
+fun WeatherDetailedItem(icon: ImageVector, value: String, label: String) {
     Column(modifier = Modifier.padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-            painter = painterResource(icon),
+            imageVector = icon,
             contentDescription = null,
             modifier = Modifier.size(35.dp)
         )
@@ -144,3 +145,4 @@ fun WeatherDetailedItem(icon: Int, value: String, label: String) {
         )
     }
 }
+

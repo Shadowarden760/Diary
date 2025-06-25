@@ -2,7 +2,7 @@ package com.specialtech.diary.data.datasources.weather.models
 
 data class WeatherData(
     val weatherStatus: String = "",
-    val weatherStatusImg: String = "",
+    val weatherStatusCode: Int? = null,
     val dateAndTime: String = "",
     val currentTemperature: Double = 0.0,
     val region: String = "",

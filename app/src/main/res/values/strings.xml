@@ -2,10 +2,12 @@
 
     <string name="app_name">Diary</string>
 
+    <string name="dialog_text_confirm">Confirm</string>
+    <string name="dialog_text_cancel">Cancel</string>
+
     <string name="section_home">Home</string>
     <string name="section_notes">Notes</string>
     <string name="section_weather">Weather</string>
-    <string name="section_money">Money</string>
 
     <string name="weather_text_wait_until_we_get_data">Wait until we get weather data</string>
     <string name="weather_text_unknown_error">Something went wrong…</string>
@@ -18,8 +20,9 @@
     <string name="weather_text_humidity">Humidity</string>
     <string name="weather_text_kmh">km/h</string>
 
-    <string name="money_text_wait_until_we_get_data">Wait until we get money data</string>
-    <string name="money_button_try_again">Try Again</string>
-    <string name="money_button_return">Return</string>
+    <string name="note_list_text_your_notes">Your Notes</string>
+    <string name="note_list_text_note_number">Note #</string>
+    <string name="note_list_text_delete_note_title">Delete Note #%1$s</string>
+    <string name="note_list_text_delete_note_content">Note with title \"%1$s\" will be deleted.</string>
 
 </resources>

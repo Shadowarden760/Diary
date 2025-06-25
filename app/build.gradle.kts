@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.sqldelight)
 }
 
 val localProperties = Properties()
@@ -18,27 +19,26 @@ android {
     defaultConfig {
         applicationId = "com.specialtech.diary"
         minSdk = 26
-        targetSdk = 35
-        versionCode = 14
-        versionName = "0.0.6"
+        targetSdk = 36
+        versionCode = 21
+        versionName = "0.0.11"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
+            isDebuggable = false
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
             buildConfigField(type = "String", name = "WEATHER_API_KEY", value = localProperties.getProperty("WEATHER_API_KEY"))
-            buildConfigField(type = "String", name = "MONEY_API_KEY", value = localProperties.getProperty("MONEY_API_KEY"))
         }
         debug {
             isDebuggable = true
             isMinifyEnabled = false
             buildConfigField(type = "String", name = "WEATHER_API_KEY", value = localProperties.getProperty("WEATHER_API_KEY"))
-            buildConfigField(type = "String", name = "MONEY_API_KEY", value = localProperties.getProperty("MONEY_API_KEY"))
         }
     }
 
@@ -58,6 +58,14 @@ android {
 
 }
 
+sqldelight {
+    databases {
+        create("DiaryDB") {
+            packageName.set("com.specialtech.diary")
+        }
+    }
+}
+
 dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.core.ktx)
@@ -72,6 +80,10 @@ dependencies {
     // KOIN
     implementation(libs.koin.androidx.compose)
 
+    // SQLDELIGHT
+    implementation(libs.android.sqldelight.driver)
+    implementation(libs.coroutines.extensions)
+
     // KTOR
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.content.negotiation)
@@ -82,6 +94,9 @@ dependencies {
     // COIL
     implementation(libs.coil.compose)
     implementation(libs.coil.network.ktor3)
+
+    // ICONS
+    implementation(libs.erikflowers.weather.icons)
 
     // TESTS
     testImplementation(libs.junit)

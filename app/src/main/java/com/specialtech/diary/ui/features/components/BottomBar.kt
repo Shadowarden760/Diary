@@ -33,11 +33,11 @@ fun BottomBar(navHostController: NavHostController) {
                 },
                 colors = NavigationBarItemColors(
                     selectedIconColor = MainOrange,
-                    unselectedIconColor = Color.White,
                     selectedTextColor = MainOrange,
-                    unselectedTextColor = Color.Transparent,
+                    unselectedIconColor = Color.White,
+                    unselectedTextColor = Color.White,
                     selectedIndicatorColor = Color.Transparent,
-                    disabledIconColor = MainOrange,
+                    disabledIconColor = Color.Transparent,
                     disabledTextColor = Color.Transparent
                 ),
                 label = {

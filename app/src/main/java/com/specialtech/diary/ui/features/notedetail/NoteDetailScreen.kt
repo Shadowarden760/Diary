@@ -1,42 +1,29 @@
 package com.specialtech.diary.ui.features.notedetail
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.specialtech.diary.Note
+import com.specialtech.diary.ui.features.notedetail.components.NoteData
 import org.koin.androidx.compose.koinViewModel
 
-@Preview(showSystemUi = true)
 @Composable
 fun NoteDetailScreen(
     viewModel: NoteDetailViewModel = koinViewModel(),
-    goToNoteList: () -> Unit = {}
+    noteId: Long,
+    goToNoteList: () -> Unit
 ) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(
-            text = "NoteDetail",
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.White,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 24.dp),
-            textAlign = TextAlign.Center
-        )
-    }
+    val currentNote = viewModel.getCurrentNote(noteId = noteId)
+
+    NoteData(
+        noteData = currentNote,
+        updateNote = { newTitle: String, newMessage: String ->
+            val updatedNote = Note(
+                noteId = currentNote.noteId,
+                noteTitle = newTitle,
+                noteMessage = newMessage,
+                noteUpdatedAt = currentNote.noteUpdatedAt,
+                noteCreatedAt = currentNote.noteCreatedAt
+            )
+            viewModel.saveUpdatedNote(updatedNote)
+        }
+    )
 }

@@ -31,4 +31,5 @@ class WeatherViewModel(private val weatherRepository: WeatherRepository): ViewMo
         data class Success(val data: WeatherData): ForecastResult()
         data class Failure(val message: String): ForecastResult()
     }
+
 }

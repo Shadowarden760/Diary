@@ -9,9 +9,9 @@ class DatabaseDriver(private val context: Context) {
 
     fun createDatabaseDriver(): SqlDriver {
         return AndroidSqliteDriver(
-            DiaryDB.Schema,
-            context,
-            "notes.db"
+            schema = DiaryDB.Schema,
+            context = context,
+            name = "notes.db"
         )
     }
 

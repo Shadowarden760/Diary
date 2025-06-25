@@ -1,5 +1,6 @@
 package com.specialtech.diary.ui.features.weather.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -8,6 +9,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,6 +27,7 @@ import coil3.request.crossfade
 import com.specialtech.diary.data.datasources.weather.models.HourlyWeatherModel
 import com.specialtech.diary.ui.theme.MainOrange
 import com.specialtech.diary.utils.DateTimeUtils
+import kotlin.collections.get
 
 @Composable
 fun HourlyWeatherItem(hourlyWeather: HourlyWeatherModel) {
@@ -47,16 +51,13 @@ fun HourlyWeatherItem(hourlyWeather: HourlyWeatherModel) {
                 .padding(8.dp),
             textAlign = TextAlign.Center
         )
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(hourlyWeather.picturePath)
-                .crossfade(true)
-                .build(),
+        Image(
+            imageVector = WEATHER_ICONS[hourlyWeather.pictureCode] ?: Icons.Default.Warning,
             contentDescription = null,
+            contentScale = ContentScale.FillBounds,
             modifier = Modifier
                 .size(65.dp)
-                .padding(8.dp),
-            contentScale = ContentScale.Crop
+                .padding(8.dp)
         )
         Text(
             text = "${hourlyWeather.temperature}°",

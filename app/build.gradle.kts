@@ -19,9 +19,9 @@ android {
     defaultConfig {
         applicationId = "com.specialtech.diary"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 21
-        versionName = "0.0.10"
+        versionName = "0.0.11"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -94,6 +94,9 @@ dependencies {
     // COIL
     implementation(libs.coil.compose)
     implementation(libs.coil.network.ktor3)
+
+    // ICONS
+    implementation(libs.erikflowers.weather.icons)
 
     // TESTS
     testImplementation(libs.junit)

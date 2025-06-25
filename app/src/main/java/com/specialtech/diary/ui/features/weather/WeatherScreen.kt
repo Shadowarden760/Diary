@@ -32,7 +32,7 @@ fun WeatherScreen(
         WeatherError(
             isVisible = forecast.value is WeatherViewModel.ForecastResult.Failure,
             forecastResult = forecast.value,
-            tryAgain = { viewModel.loadWeather(Locale.current.region) },
+            tryAgain = { viewModel.loadWeather(Locale.current.language) },
             goHome = goHome
         )
         Forecast(

@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,21 +21,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil3.compose.AsyncImage
-import coil3.request.ImageRequest
-import coil3.request.crossfade
 import com.specialtech.diary.R
 import com.specialtech.diary.data.datasources.weather.models.WeatherData
 import com.specialtech.diary.ui.theme.MainOrange
 import com.specialtech.diary.utils.DateTimeUtils
+import compose.icons.WeatherIcons
+import compose.icons.weathericons.Humidity
+import compose.icons.weathericons.Umbrella
+import compose.icons.weathericons.Windy
 
 @Composable
 fun ForecastCurrent(weatherData: WeatherData) {
@@ -46,11 +47,8 @@ fun ForecastCurrent(weatherData: WeatherData) {
             .padding(top = 24.dp),
         textAlign = TextAlign.Center
     )
-    AsyncImage(
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(weatherData.weatherStatusImg)
-            .crossfade(true)
-            .build(),
+    Image(
+        imageVector = WEATHER_ICONS[weatherData.weatherStatusCode] ?: Icons.Default.Warning,
         contentDescription = null,
         contentScale = ContentScale.FillBounds,
         modifier = Modifier
@@ -104,17 +102,17 @@ fun ForecastCurrent(weatherData: WeatherData) {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             WeatherDetailedItem(
-                icon = WeatherIcons.rain,
+                icon = WeatherIcons.Umbrella,
                 value = "${weatherData.rainPct}%",
                 label = stringResource(R.string.weather_text_rain)
             )
             WeatherDetailedItem(
-                icon = WeatherIcons.wind,
+                icon = WeatherIcons.Windy,
                 value = "${weatherData.windSpeed}${stringResource(R.string.weather_text_kmh)}",
                 label = stringResource(R.string.weather_text_wind_speed)
             )
             WeatherDetailedItem(
-                icon = WeatherIcons.humidity,
+                icon = WeatherIcons.Humidity,
                 value = "${weatherData.humidityPct}%",
                 label = stringResource(R.string.weather_text_humidity)
             )

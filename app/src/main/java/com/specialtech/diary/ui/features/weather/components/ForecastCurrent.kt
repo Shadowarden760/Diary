@@ -1,7 +1,6 @@
 package com.specialtech.diary.ui.features.weather.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,17 +10,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -29,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.specialtech.diary.R
 import com.specialtech.diary.data.datasources.weather.models.WeatherData
-import com.specialtech.diary.ui.theme.MainOrange
 import com.specialtech.diary.utils.DateTimeUtils
 import compose.icons.WeatherIcons
 import compose.icons.weathericons.Humidity
@@ -41,7 +36,6 @@ fun ForecastCurrent(weatherData: WeatherData) {
     Text(
         text = weatherData.weatherStatus,
         fontSize = 20.sp,
-        color = Color.White,
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 24.dp),
@@ -60,7 +54,6 @@ fun ForecastCurrent(weatherData: WeatherData) {
             dateString = weatherData.dateAndTime
         ),
         fontSize = 19.sp,
-        color = Color.White,
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 8.dp),
@@ -69,7 +62,6 @@ fun ForecastCurrent(weatherData: WeatherData) {
     Text(
         text = "${weatherData.currentTemperature}°",
         fontSize = 63.sp,
-        color = Color.White,
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 8.dp),
@@ -78,7 +70,6 @@ fun ForecastCurrent(weatherData: WeatherData) {
     Text(
         text = weatherData.region,
         fontSize = 20.sp,
-        color = Color.White,
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 8.dp),
@@ -88,10 +79,6 @@ fun ForecastCurrent(weatherData: WeatherData) {
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 24.dp, vertical = 16.dp)
-            .background(
-                color = MainOrange,
-                shape = RoundedCornerShape(25.dp)
-            )
     ) {
         Row(
             modifier = Modifier
@@ -133,12 +120,10 @@ fun WeatherDetailedItem(icon: ImageVector, value: String, label: String) {
         Text(
             text = value,
             fontWeight = FontWeight.Bold,
-            color = colorResource(R.color.white),
             textAlign = TextAlign.Center
         )
         Text(
             text = label,
-            color = colorResource(R.color.white),
             textAlign = TextAlign.Center
         )
     }

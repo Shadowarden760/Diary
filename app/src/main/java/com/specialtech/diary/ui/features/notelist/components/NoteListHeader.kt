@@ -1,6 +1,5 @@
 package com.specialtech.diary.ui.features.notelist.components
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,16 +10,12 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.specialtech.diary.R
-import com.specialtech.diary.ui.theme.MainDark
-import com.specialtech.diary.ui.theme.MainOrange
 
 
 @Composable
@@ -35,8 +30,6 @@ fun NoteListHeader(
         Text(
             text = stringResource(R.string.note_list_text_your_notes),
             fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.White,
             modifier = Modifier
                 .padding(horizontal = 16.dp),
             textAlign = TextAlign.Start
@@ -44,17 +37,12 @@ fun NoteListHeader(
         Spacer(modifier = Modifier.weight(1f))
         Card(
             shape = RoundedCornerShape(5.dp),
-            colors = CardDefaults.cardColors(MainDark),
             elevation = CardDefaults.cardElevation(disabledElevation = 5.dp),
-            border = BorderStroke(1.dp, MainOrange),
-            modifier = Modifier
-                .padding(horizontal = 16.dp)
+            modifier = Modifier.padding(horizontal = 16.dp)
         ) {
             Text(
                 text = noteNumber.toString(),
                 fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.White,
                 modifier = Modifier
                     .padding(horizontal = 16.dp),
                 textAlign = TextAlign.Start,

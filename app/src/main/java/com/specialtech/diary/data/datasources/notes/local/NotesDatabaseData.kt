@@ -60,7 +60,7 @@ class NotesDatabaseData(databaseDriver: DatabaseDriver): NotesDataSource {
     }
 
     override fun deleteNoteById(noteId: Long) {
-        return queries.deleteNoteById(noteId)
+        queries.deleteNoteById(noteId)
     }
 
 }

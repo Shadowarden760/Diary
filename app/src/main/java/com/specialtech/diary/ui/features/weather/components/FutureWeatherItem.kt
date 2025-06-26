@@ -11,7 +11,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -33,7 +32,6 @@ fun FutureWeatherItem(futureWeather: FutureWeatherModel) {
                 dateFormat = "yyyy-MM-dd",
                 returnFormat = "dd-MM-yyyy"
             ),
-            color = Color.White,
             fontSize = 14.sp
         )
         Image(
@@ -47,7 +45,6 @@ fun FutureWeatherItem(futureWeather: FutureWeatherModel) {
         Text(
             text = futureWeather.status,
             fontSize = 14.sp,
-            color = Color.White,
             modifier = Modifier
                 .weight(1f)
                 .padding(start = 16.dp),
@@ -55,7 +52,6 @@ fun FutureWeatherItem(futureWeather: FutureWeatherModel) {
         )
         Text(
             text = "${futureWeather.highTemp}°/${futureWeather.lowTemp}°",
-            color = Color.White,
             fontSize = 14.sp
         )
     }

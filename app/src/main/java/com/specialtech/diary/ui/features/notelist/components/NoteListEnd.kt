@@ -13,8 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.specialtech.diary.ui.theme.MainDark
-import com.specialtech.diary.ui.theme.MainOrange
 
 
 @Composable
@@ -28,8 +26,6 @@ fun NoteListEnd(
     ) {
         FloatingActionButton(
             shape = RoundedCornerShape(6.dp),
-            containerColor = MainOrange,
-            contentColor = MainDark,
             onClick = {
                 val newId = createNewNote()
                 goToNoteDetail(newId)

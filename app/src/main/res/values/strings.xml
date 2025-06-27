@@ -25,4 +25,7 @@
     <string name="note_list_text_delete_note_title">Delete Note #%1$s</string>
     <string name="note_list_text_delete_note_content">Note with title \"%1$s\" will be deleted.</string>
 
+    <string name="note_detail_text_enter_your_title">Enter your title</string>
+    <string name="note_detail_text_enter_your_message">Enter your message</string>
+
 </resources>

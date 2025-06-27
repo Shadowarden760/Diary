@@ -8,13 +8,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.specialtech.diary.R
 import com.specialtech.diary.data.datasources.weather.models.WeatherData
 import com.specialtech.diary.ui.features.weather.WeatherViewModel
@@ -31,18 +31,18 @@ fun Forecast(isVisible: Boolean, forecastResult: WeatherViewModel.ForecastResult
         exit = fadeOut()
     ) {
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxSize()
         ) {
             item { ForecastCurrent(weatherData = weatherData) }
 
             item {
                 Text(
                     text = stringResource(R.string.weather_text_today),
-                    fontSize = 20.sp,
+                    style = MaterialTheme.typography.headlineMedium,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 24.dp, vertical = 8.dp)
+                        .padding(start = 24.dp, top = 16.dp, end = 24.dp, bottom = 8.dp)
                 )
             }
 
@@ -51,10 +51,10 @@ fun Forecast(isVisible: Boolean, forecastResult: WeatherViewModel.ForecastResult
             item {
                 Text(
                     text = stringResource(R.string.weather_text_future),
-                    fontSize = 20.sp,
+                    style = MaterialTheme.typography.headlineMedium,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 24.dp, vertical = 8.dp)
+                        .padding(start = 24.dp, top = 16.dp, end = 24.dp, bottom = 8.dp)
                 )
             }
 

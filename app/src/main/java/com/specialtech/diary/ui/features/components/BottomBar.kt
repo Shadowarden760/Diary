@@ -1,6 +1,7 @@
 package com.specialtech.diary.ui.features.components
 
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
@@ -29,7 +30,8 @@ fun BottomBar(navHostController: NavHostController) {
                 },
                 label = {
                     Text(
-                        text = stringResource(section.title)
+                        text = stringResource(section.title),
+                        style = MaterialTheme.typography.bodyMedium
                     )
                 },
                 selected = selected,

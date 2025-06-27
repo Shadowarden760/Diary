@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -25,28 +26,27 @@ fun NoteListItem(
     onLongItemClick:() -> Unit = {}
 ) {
     Card(
-        shape = RoundedCornerShape(6.dp),
+        shape = MaterialTheme.shapes.medium,
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp, pressedElevation = 2.dp),
-        modifier = Modifier
-            .combinedClickable(
-                onClick = onItemClick,
-                onLongClick = onLongItemClick
-            )
+        modifier = Modifier.combinedClickable(
+            onClick = onItemClick,
+            onLongClick = onLongItemClick
+        )
     ) {
         Column(modifier = Modifier.padding(6.dp)) {
             Text(
                 text = "${stringResource(R.string.note_list_text_note_number)}${note.noteId}",
-                fontSize = 14.sp,
+                style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(6.dp)
             )
             Text(
                 text = note.noteTitle,
-                fontSize = 14.sp,
+                style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(6.dp)
             )
             Text(
                 text = DateTimeUtils.timeMillisToDate(note.noteUpdatedAt),
-                fontSize = 14.sp,
+                style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(6.dp)
             )
         }

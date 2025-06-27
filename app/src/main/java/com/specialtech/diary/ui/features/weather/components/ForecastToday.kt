@@ -14,9 +14,9 @@ import com.specialtech.diary.data.datasources.weather.models.HourlyWeatherModel
 @Composable
 fun ForecastToday(hourlyData: List<HourlyWeatherModel>) {
     LazyRow(
-        modifier = Modifier.fillMaxWidth(),
         contentPadding = PaddingValues(horizontal = 20.dp),
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        modifier = Modifier.fillMaxWidth()
     ) {
         items(hourlyData) { item ->
             HourlyWeatherItem(item)

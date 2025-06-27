@@ -14,14 +14,14 @@ localProperties.load(FileInputStream(rootProject.file("local.properties")))
 
 android {
     namespace = "com.specialtech.diary"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.specialtech.diary"
         minSdk = 26
         targetSdk = 36
-        versionCode = 21
-        versionName = "0.0.11"
+        versionCode = 23
+        versionName = "0.1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -97,6 +97,7 @@ dependencies {
 
     // ICONS
     implementation(libs.erikflowers.weather.icons)
+    implementation(libs.androidx.ui.text.google.fonts)
 
     // TESTS
     testImplementation(libs.junit)

@@ -18,8 +18,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Diary"
         android:windowSoftInputMode="adjustResize"
-        android:usesCleartextTraffic="true"
-        tools:targetApi="31">
+        android:usesCleartextTraffic="false"
+        tools:targetApi="36">
 
         <activity
             android:name=".ui.features.MainActivity"
@@ -32,6 +32,18 @@
             </intent-filter>
 
         </activity>
+
+        <service
+            android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
+            android:enabled="false"
+            android:exported="false">
+
+            <meta-data
+                android:name="autoStoreLocales"
+                android:value="true">
+            </meta-data>
+
+        </service>
 
     </application>
 

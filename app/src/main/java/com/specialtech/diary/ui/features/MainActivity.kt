@@ -15,8 +15,8 @@ import com.specialtech.diary.ui.theme.DiaryTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        super.onCreate(savedInstanceState)
         setContent {
             val appState = rememberAppState()
             DiaryTheme {

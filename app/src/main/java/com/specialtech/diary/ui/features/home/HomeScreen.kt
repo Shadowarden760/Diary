@@ -1,21 +1,28 @@
 package com.specialtech.diary.ui.features.home
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.specialtech.diary.BuildConfig
 import com.specialtech.diary.R
 import com.specialtech.diary.ui.features.home.components.DropDownLanguageMenu
+import com.specialtech.diary.ui.features.home.components.ThemeSwitcher
 import com.specialtech.diary.ui.features.home.components.featherIcon
 import org.koin.androidx.compose.koinViewModel
 
@@ -32,9 +40,12 @@ import org.koin.androidx.compose.koinViewModel
 fun HomeScreen(
     viewModel: HomeViewModel = koinViewModel()
 ) {
+    val darkMode = isSystemInDarkTheme()
+    val darkTheme = remember { mutableStateOf(darkMode) }
+
     Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxSize()
     ) {
         Row(
             horizontalArrangement = Arrangement.End,
@@ -48,6 +59,10 @@ fun HomeScreen(
                     viewModel.changeLanguage(newLanguage = selectedLanguage)
                 }
             )
+            ThemeSwitcher(
+                onClick = { darkTheme.value = !darkTheme.value },
+                darkTheme = darkTheme.value
+            )
         }
         Spacer(modifier = Modifier.weight(0.5f))
         Image(
@@ -55,6 +70,11 @@ fun HomeScreen(
             contentDescription = null,
             colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
             modifier = Modifier.size(200.dp)
+        )
+        Text(
+            text = stringResource(R.string.app_name),
+            style = MaterialTheme.typography.displayMedium,
+            color = MaterialTheme.colorScheme.primary
         )
         Spacer(modifier = Modifier.weight(1f))
         Text(

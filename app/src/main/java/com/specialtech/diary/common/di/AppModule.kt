@@ -21,7 +21,7 @@ val appModule = module {
     single { WeatherRepository(weatherDataSource = WeatherApiService(apiClient = get())) }
     single { NotesRepository(notesDataSource = NotesDatabaseData(databaseDriver = get())) }
 
-    viewModel { HomeViewModel() }
+    viewModel { HomeViewModel(appContext = androidContext()) }
     viewModel { NoteListViewModel(notesRepository = get()) }
     viewModel { NoteDetailViewModel(notesRepository = get()) }
     viewModel { WeatherViewModel(weatherRepository = get()) }

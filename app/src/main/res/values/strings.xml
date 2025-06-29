@@ -9,7 +9,8 @@
     <string name="section_notes">Notes</string>
     <string name="section_weather">Weather</string>
 
-    <string name="home_text_version">Version:</string>
+    <string name="home_text_version" translatable="false">Version:</string>
+    <string name="home_text_creator" translatable="false">Created by Shadowarden760</string>
 
     <string name="weather_text_wait_until_we_get_data">Wait until we get weather data</string>
     <string name="weather_text_unknown_error">Something went wrong…</string>

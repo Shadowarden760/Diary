@@ -5,7 +5,6 @@
     <string name="section_home">Домой</string>
     <string name="section_notes">Заметки</string>
     <string name="section_weather">Погода</string>
-    <string name="home_text_version">Версия:</string>
     <string name="weather_text_wait_until_we_get_data">Подождите пока мы получаем данные о погоде</string>
     <string name="weather_text_unknown_error">Что-то пошло не так…</string>
     <string name="weather_button_try_again">Попробовать еще раз</string>

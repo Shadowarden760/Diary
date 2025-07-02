@@ -1,5 +1,9 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.konan.properties.Properties
 import java.io.FileInputStream
+
+val localProperties = Properties()
+localProperties.load(FileInputStream(rootProject.file("local.properties")))
 
 plugins {
     alias(libs.plugins.android.application)
@@ -9,8 +13,11 @@ plugins {
     alias(libs.plugins.sqldelight)
 }
 
-val localProperties = Properties()
-localProperties.load(FileInputStream(rootProject.file("local.properties")))
+kotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_17
+    }
+}
 
 android {
     namespace = "com.specialtech.diary"
@@ -20,9 +27,24 @@ android {
         applicationId = "com.specialtech.diary"
         minSdk = 26
         targetSdk = 36
-        versionCode = 27
-        versionName = "0.3.1"
+        versionCode = 28
+        versionName = "0.3.2"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        getByName("debug") {
+            storeFile = file(localProperties.getProperty("DEBUG_STORE_FILE"))
+            storePassword = localProperties.getProperty("DEBUG_STORE_PASSWORD")
+            keyAlias = localProperties.getProperty("DEBUG_KEY_ALIAS")
+            keyPassword = localProperties.getProperty("DEBUG_KEY_PASSWORD")
+        }
+        create("release") {
+            storeFile = file(localProperties.getProperty("RELEASE_STORE_FILE"))
+            storePassword = localProperties.getProperty("RELEASE_STORE_PASSWORD")
+            keyAlias = localProperties.getProperty("RELEASE_KEY_ALIAS")
+            keyPassword = localProperties.getProperty("RELEASE_KEY_PASSWORD")
+        }
     }
 
     buildTypes {
@@ -34,21 +56,21 @@ android {
                 "proguard-rules.pro"
             )
             buildConfigField(type = "String", name = "WEATHER_API_KEY", value = localProperties.getProperty("WEATHER_API_KEY"))
+            applicationIdSuffix = ".release"
+            signingConfig = signingConfigs.getByName("release")
         }
         debug {
             isDebuggable = true
             isMinifyEnabled = false
             buildConfigField(type = "String", name = "WEATHER_API_KEY", value = localProperties.getProperty("WEATHER_API_KEY"))
+            applicationIdSuffix = ".debug"
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = "17"
     }
 
     buildFeatures {

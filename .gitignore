@@ -3,8 +3,11 @@
 .idea
 .DS_Store
 /build
+/app/release
 /captures
 .externalNativeBuild
 .cxx
 /local.properties
 local.properties
+debug-keystore.jks
+release-keystore.jks

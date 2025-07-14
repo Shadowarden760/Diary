@@ -1,6 +1,5 @@
 package com.specialtech.diary.data.datasources.weather.models.dto
 
-import android.annotation.SuppressLint
 import com.specialtech.diary.data.datasources.weather.models.FutureWeatherModel
 import com.specialtech.diary.data.datasources.weather.models.HourlyWeatherModel
 import com.specialtech.diary.data.datasources.weather.models.WeatherData
@@ -16,11 +15,11 @@ data class ForecastResponse(
     @SerialName("forecast") val fullForecast: Forecast,
     @SerialName("location") val location: Location
 ) {
-    @SuppressLint("DefaultLocale")
+
     fun toWeatherData(): WeatherData {
         val hourlyData: MutableList<HourlyWeatherModel> = mutableListOf()
         val futureData: MutableList<FutureWeatherModel> = mutableListOf()
-        this.fullForecast.forecastday.firstOrNull()?.let {
+        fullForecast.forecastday.firstOrNull()?.let {
             it.hour.forEach { hourData ->
                 val data = HourlyWeatherModel(
                     hour = hourData.time,
@@ -30,7 +29,7 @@ data class ForecastResponse(
                 hourlyData.add(data)
             }
         }
-        this.fullForecast.forecastday.forEach { future ->
+        fullForecast.forecastday.forEach { future ->
             val data = FutureWeatherModel(
                 date = future.date,
                 pictureCode = future.day.condition.code,
@@ -41,16 +40,17 @@ data class ForecastResponse(
             futureData.add(data)
         }
         return WeatherData(
-            weatherStatus = this.currentForecast.condition.text,
-            weatherStatusCode = this.currentForecast.condition.code,
-            dateAndTime = this.location.localtime,
-            currentTemperature = this.currentForecast.temp_c,
-            region = "${this.location.name}/${this.location.country}",
-            rainPct = this.fullForecast.forecastday.firstOrNull()?.day?.daily_chance_of_rain ?: 0,
-            windSpeed = this.currentForecast.wind_kph,
-            humidityPct = this.currentForecast.humidity,
+            weatherStatus = currentForecast.condition.text,
+            weatherStatusCode = currentForecast.condition.code,
+            dateAndTime = location.localtime,
+            currentTemperature = currentForecast.temp_c,
+            region = "${location.name}/${location.country}",
+            rainPct = fullForecast.forecastday.firstOrNull()?.day?.daily_chance_of_rain ?: 0,
+            windSpeed = currentForecast.wind_kph,
+            humidityPct = currentForecast.humidity,
             hourlyWeatherModel = hourlyData,
             futureWeatherModel = futureData
         )
     }
+
 }

@@ -5,8 +5,8 @@ import androidx.annotation.StringRes
 import com.specialtech.diary.R
 
 sealed class NavigationBarSection(
-    @StringRes val title: Int,
-    @DrawableRes val icon: Int,
+    @param:StringRes val title: Int,
+    @param:DrawableRes val icon: Int,
     val route: String
 ) {
     companion object {

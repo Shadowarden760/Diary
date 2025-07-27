@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-
 object DateTimeUtils {
 
     fun formatDate(
@@ -14,24 +13,20 @@ object DateTimeUtils {
     ): String {
         val formatter = SimpleDateFormat(dateFormat, Locale.getDefault())
         val returnFormatter = SimpleDateFormat(returnFormat, Locale.getDefault())
-        try {
+        return try {
             val date = formatter.parse(dateString)
-            return if (date != null) returnFormatter.format(date) else ""
+            if (date != null) returnFormatter.format(date) else ""
         } catch (_: Exception) {
-            return ""
+            ""
         }
     }
 
-    fun timeMillisToDate(
-        timeMillis: Long,
-        format: String = "dd-MM-yyyy HH:mm"
-    ): String {
+    fun timeMillisToDate(timeMillis: Long, format: String = "dd-MM-yyyy HH:mm"): String {
         val formatter = SimpleDateFormat(format, Locale.getDefault())
-        try {
-            val date = formatter.format(Date(timeMillis))
-            return date
+        return try {
+            formatter.format(Date(timeMillis))
         } catch (_: Exception) {
-            return ""
+            ""
         }
     }
 

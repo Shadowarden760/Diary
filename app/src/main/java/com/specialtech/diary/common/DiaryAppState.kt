@@ -6,7 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 
 class DiaryAppState(
-    val navController: NavHostController,
+    val navController: NavHostController
 )
 
 @Composable

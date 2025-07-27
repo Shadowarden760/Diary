@@ -40,7 +40,7 @@ class WeatherApiService(private val apiClient: ApiClient): WeatherDataSource {
             } else {
                 WeatherData()
             }
-        } catch (ex: HttpRequestTimeoutException) {
+        } catch (_: HttpRequestTimeoutException) {
             return WeatherData()
         }
     }

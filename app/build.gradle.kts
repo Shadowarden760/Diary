@@ -27,8 +27,8 @@ android {
         applicationId = "com.specialtech.diary"
         minSdk = 26
         targetSdk = 36
-        versionCode = 29
-        versionName = "0.3.3"
+        versionCode = 30
+        versionName = "0.3.4"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -130,6 +130,9 @@ dependencies {
     // ICONS
     implementation(libs.erikflowers.weather.icons)
     implementation(libs.androidx.ui.text.google.fonts)
+
+    // LEAK CANARY
+    debugImplementation(libs.leakcanary.android)
 
     // TESTS
     testImplementation(libs.junit)

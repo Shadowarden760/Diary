@@ -11,6 +11,8 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.sqldelight)
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 kotlin {
@@ -27,8 +29,8 @@ android {
         applicationId = "com.specialtech.diary"
         minSdk = 26
         targetSdk = 36
-        versionCode = 30
-        versionName = "0.3.4"
+        versionCode = 31
+        versionName = "0.3.5"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -133,6 +135,11 @@ dependencies {
 
     // LEAK CANARY
     debugImplementation(libs.leakcanary.android)
+
+    //FIREBASE ANALYTICS, CRASHLYTICS
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics.ndk)
+    implementation(libs.firebase.analytics)
 
     // TESTS
     testImplementation(libs.junit)

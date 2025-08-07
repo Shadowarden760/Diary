@@ -32,7 +32,9 @@ fun ThemeSwitcher(
             tint = MaterialTheme.colorScheme.primary,
             modifier = Modifier
                 .size(35.dp)
-                .graphicsLayer(rotationZ = rotationAngle.value),
+                .graphicsLayer {
+                    rotationZ = rotationAngle.value
+                }
         )
     }
 }

@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.specialtech.diary.Note
@@ -43,6 +44,13 @@ fun NoteListItem(
                 modifier = Modifier.padding(6.dp)
             )
             Text(
+                text = note.noteMessage,
+                style = MaterialTheme.typography.bodyMedium,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+                modifier = Modifier.padding(6.dp)
+            )
+            Text(
                 text = DateTimeUtils.timeMillisToDate(note.noteUpdatedAt),
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(6.dp)
@@ -54,5 +62,5 @@ fun NoteListItem(
 @Preview
 @Composable
 private fun NoteListItemPreview() {
-    NoteListItem(Note(0, "Title", "", 0, 1287371236786))
+    NoteListItem(Note(0, "Title", "Very loooooooooooooooooooooooooooooooooooooooong text", 0, 1287371236786))
 }

@@ -21,19 +21,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.specialtech.diary.R
-import com.specialtech.diary.ui.features.weather.WeatherViewModel
 
 @Composable
 fun WeatherError(
     isVisible: Boolean,
-    forecastResult: WeatherViewModel.ForecastResult,
+    errorMessage: String?,
     tryAgain: () -> Unit,
     goHome: () -> Unit
 ) {
-    val errorMessage = when(forecastResult) {
-        is WeatherViewModel.ForecastResult.Failure -> { forecastResult.message }
-        else -> { stringResource(R.string.weather_text_unknown_error) }
-    }
     AnimatedVisibility(
         visible = isVisible,
         enter = fadeIn(),
@@ -45,7 +40,7 @@ fun WeatherError(
             modifier = Modifier.fillMaxSize()
         ) {
             Text(
-                text = errorMessage,
+                text = errorMessage ?: stringResource(R.string.weather_text_unknown_error),
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
@@ -65,7 +60,8 @@ fun WeatherError(
             ) {
                 Text(
                     text = stringResource(R.string.weather_button_try_again),
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium,
+                    textAlign = TextAlign.Center
                 )
             }
             Button(
@@ -80,7 +76,8 @@ fun WeatherError(
             ) {
                 Text(
                     text = stringResource(R.string.weather_button_return),
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium,
+                    textAlign = TextAlign.Center
                 )
             }
         }
@@ -92,7 +89,7 @@ fun WeatherError(
 fun WeatherErrorPreview(){
     WeatherError(
         isVisible = true,
-        forecastResult = WeatherViewModel.ForecastResult.Failure(message = "Error save us!!!!"),
+        errorMessage = "Some error",
         tryAgain = {},
         goHome = {}
     )

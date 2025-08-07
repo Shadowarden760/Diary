@@ -6,13 +6,14 @@
     <string name="section_notes">Заметки</string>
     <string name="section_weather">Погода</string>
     <string name="weather_text_wait_until_we_get_data">Подождите пока мы получаем данные о погоде</string>
+    <string name="weather_text_cant_get_weather_data">Не удалось получить прогноз погоды, попробуйте позже</string>
     <string name="weather_text_unknown_error">Что-то пошло не так…</string>
     <string name="weather_button_try_again">Попробовать еще раз</string>
     <string name="weather_button_return">Вернуться</string>
     <string name="weather_text_today">Сегодня</string>
     <string name="weather_text_future">Будущее</string>
     <string name="weather_text_rain">Дождь</string>
-    <string name="weather_text_wind_speed">Скорость ветра</string>
+    <string name="weather_text_wind_speed">Скорость\nветра</string>
     <string name="weather_text_humidity">Влажность</string>
     <string name="weather_text_kmh">км/ч</string>
     <string name="note_list_text_your_notes">Ваши заметки</string>

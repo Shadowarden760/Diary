@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.specialtech.diary.data.datasources.weather.models.HourlyWeatherModel
 
-
 @Composable
 fun ForecastToday(hourlyData: List<HourlyWeatherModel>) {
     LazyRow(

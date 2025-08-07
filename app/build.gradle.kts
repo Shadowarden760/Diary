@@ -29,8 +29,8 @@ android {
         applicationId = "com.specialtech.diary"
         minSdk = 26
         targetSdk = 36
-        versionCode = 31
-        versionName = "0.3.5"
+        versionCode = 32
+        versionName = "1.0.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -52,24 +52,25 @@ android {
     buildTypes {
         release {
             isDebuggable = false
-            isShrinkResources = true
             isMinifyEnabled = true
+            isShrinkResources = true
+            applicationIdSuffix = ".release"
+            versionNameSuffix = "-release"
+            signingConfig = signingConfigs.getByName("release")
+            buildConfigField(type = "String", name = "WEATHER_API_KEY", value = localProperties.getProperty("WEATHER_API_KEY"))
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            buildConfigField(type = "String", name = "WEATHER_API_KEY", value = localProperties.getProperty("WEATHER_API_KEY"))
-            applicationIdSuffix = ".release"
-            versionNameSuffix = "-release"
-            signingConfig = signingConfigs.getByName("release")
         }
         debug {
             isDebuggable = true
             isMinifyEnabled = false
-            buildConfigField(type = "String", name = "WEATHER_API_KEY", value = localProperties.getProperty("WEATHER_API_KEY"))
+            isShrinkResources = false
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
             signingConfig = signingConfigs.getByName("debug")
+            buildConfigField(type = "String", name = "WEATHER_API_KEY", value = localProperties.getProperty("WEATHER_API_KEY"))
         }
     }
 
@@ -107,6 +108,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.ui.text.google.fonts)
 
     // KOIN
     implementation(libs.koin.androidx.compose)
@@ -125,13 +127,8 @@ dependencies {
     implementation(libs.ktor.client.logging)
     implementation(libs.ktor.client.android)
 
-    // COIL
-    implementation(libs.coil.compose)
-    implementation(libs.coil.network.ktor3)
-
     // ICONS
     implementation(libs.erikflowers.weather.icons)
-    implementation(libs.androidx.ui.text.google.fonts)
 
     // LEAK CANARY
     debugImplementation(libs.leakcanary.android)

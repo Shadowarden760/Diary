@@ -34,7 +34,7 @@ A minimalist Android app for **note-taking** and **weather tracking** in your re
 
 ## ⬇️ Installation  
 ### Option 1: Download APK  
-Grab the latest release from [Releases](https://github.com/your-repo/releases).  
+Grab the latest release from [Releases](https://github.com/Shadowarden760/Diary/releases).  
 
 ### Option 2: Build Locally  
 ```bash

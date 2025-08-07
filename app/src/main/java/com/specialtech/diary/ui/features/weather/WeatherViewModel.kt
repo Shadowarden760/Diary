@@ -1,14 +1,19 @@
 package com.specialtech.diary.ui.features.weather
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.specialtech.diary.R
 import com.specialtech.diary.data.datasources.weather.models.WeatherData
 import com.specialtech.diary.data.repositories.WeatherRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class WeatherViewModel(private val weatherRepository: WeatherRepository): ViewModel() {
+class WeatherViewModel(
+    private val weatherRepository: WeatherRepository,
+    private val appContext: Context
+): ViewModel() {
     private val _forecast: MutableStateFlow<ForecastResult> = MutableStateFlow(ForecastResult.Loading)
     val forecast: StateFlow<ForecastResult> = _forecast
 
@@ -20,7 +25,12 @@ class WeatherViewModel(private val weatherRepository: WeatherRepository): ViewMo
                 ipAddress = ipResponse.ip,
                 userLocale = userLocale
             )
-            _forecast.value = ForecastResult.Success(forecastResult)
+            when (forecastResult) {
+                is WeatherData -> _forecast.value = ForecastResult.Success(forecastResult)
+                null -> _forecast.value = ForecastResult.Failure(
+                    message = appContext.getString(R.string.weather_text_cant_get_weather_data)
+                )
+            }
         } else {
             _forecast.value = ForecastResult.Failure(message = ipResponse.errorMessage)
         }

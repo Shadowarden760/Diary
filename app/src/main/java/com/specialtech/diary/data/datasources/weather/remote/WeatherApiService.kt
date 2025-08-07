@@ -24,7 +24,7 @@ class WeatherApiService(private val apiClient: ApiClient): WeatherDataSource {
         }
     }
 
-    override suspend fun getForecast(ipAddress: String, userLocale: String): WeatherData {
+    override suspend fun getForecast(ipAddress: String, userLocale: String): WeatherData? {
         try {
             val response = apiClient.httpClient.get(FORECAST_URL) {
                 url {
@@ -38,10 +38,10 @@ class WeatherApiService(private val apiClient: ApiClient): WeatherDataSource {
                 val data = response.body<ForecastResponse>()
                 data.toWeatherData()
             } else {
-                WeatherData()
+                null
             }
         } catch (_: HttpRequestTimeoutException) {
-            return WeatherData()
+            return null
         }
     }
 

@@ -36,7 +36,7 @@ class LocalWeatherData: WeatherDataSource {
         return IpAddressData(ip = "212.3.130.238")
     }
 
-    override suspend fun getForecast(ipAddress: String, userLocale: String): WeatherData {
+    override suspend fun getForecast(ipAddress: String, userLocale: String): WeatherData? {
         return WeatherData(
             hourlyWeatherModel = hourlyWeatherModels,
             futureWeatherModel = futureWeatherModels

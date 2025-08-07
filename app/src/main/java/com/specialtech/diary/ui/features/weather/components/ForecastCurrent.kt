@@ -133,4 +133,3 @@ fun WeatherDetailedItem(icon: ImageVector, value: String, label: String) {
         )
     }
 }
-

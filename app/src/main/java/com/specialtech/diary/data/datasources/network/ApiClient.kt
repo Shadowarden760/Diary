@@ -12,9 +12,7 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
 class ApiClient {
-
     val httpClient = HttpClient(Android) {
-
         install(ContentNegotiation) {
             json(
                 Json {
@@ -24,28 +22,22 @@ class ApiClient {
                 }
             )
         }
-
         install(HttpTimeout) {
             requestTimeoutMillis = NETWORK_TIME_OUT
             connectTimeoutMillis = NETWORK_TIME_OUT
             socketTimeoutMillis = NETWORK_TIME_OUT
         }
-
         install(Logging) {
             logger = object : Logger {
-
                 override fun log(message: String) {
                     Log.d("Logger Ktor:", message)
                 }
-
             }
             level = LogLevel.ALL
         }
-
     }
 
     companion object {
         private const val NETWORK_TIME_OUT = 15_000L
     }
-
 }

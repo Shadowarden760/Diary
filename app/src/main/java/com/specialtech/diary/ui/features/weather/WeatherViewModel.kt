@@ -32,7 +32,11 @@ class WeatherViewModel(
                 )
             }
         } else {
-            _forecast.value = ForecastResult.Failure(message = ipResponse.errorMessage)
+            if (ipResponse.errorMessage.isNotEmpty()) {
+                _forecast.value = ForecastResult.Failure(message = ipResponse.errorMessage)
+            } else {
+                _forecast.value = ForecastResult.Failure(message = appContext.getString(R.string.weather_text_cant_get_ip_address))
+            }
         }
     }
 
@@ -41,5 +45,4 @@ class WeatherViewModel(
         data class Success(val data: WeatherData): ForecastResult()
         data class Failure(val message: String): ForecastResult()
     }
-
 }

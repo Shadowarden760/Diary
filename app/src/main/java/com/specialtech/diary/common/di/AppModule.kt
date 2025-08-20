@@ -27,6 +27,6 @@ val appModule = module {
 
     viewModel { HomeViewModel(settings = get(), appContext = androidContext()) }
     viewModel { NoteListViewModel(notesRepository = get()) }
-    viewModel { NoteDetailViewModel(notesRepository = get()) }
+    viewModel { NoteDetailViewModel(notesRepository = get(), appContext = androidContext()) }
     viewModel { WeatherViewModel(weatherRepository = get(), appContext = androidContext()) }
 }

@@ -18,9 +18,11 @@
     <string name="weather_text_humidity">Влажность</string>
     <string name="weather_text_kmh">км/ч</string>
     <string name="note_list_text_your_notes">Ваши заметки</string>
-    <string name="note_list_text_note_number">Заметка #</string>
     <string name="note_list_text_delete_note_title">Удалить заметку #%1$s</string>
     <string name="note_list_text_delete_note_content">Заметка с заголовком \"%1$s\" будет удалена.</string>
     <string name="note_detail_text_enter_your_title">Введите заголовок</string>
     <string name="note_detail_text_enter_your_message">Наберите текст заметки</string>
+    <string name="note_detail_text_file_was_saved">Файл был успешно сохранен</string>
+    <string name="note_detail_text_file_was_saved_cancellation">Отмена</string>
+    <string name="note_detail_text_file_was_not_saved">Не удалось сохранить файл</string>
 </resources>

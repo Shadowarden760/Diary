@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.specialtech.diary.R
 
+
 @Composable
 fun AlertDialogDiary(
     onDismissRequest:() -> Unit,
@@ -76,7 +77,7 @@ private fun AlertDialogDiaryPreview() {
         onDismissRequest = {},
         onConfirm = {},
         onCancel = {},
-        dialogTitle = "Delete Note #5",
+        dialogTitle = "Delete Note",
         dialogText = "Delete Note with title 'Shopping'?",
         icon = Icons.Filled.Info
     )

@@ -1,9 +1,6 @@
 package com.specialtech.diary.ui.features.components
 
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -19,12 +16,12 @@ import com.specialtech.diary.ui.features.notedetail.NoteDetailScreen
 import com.specialtech.diary.ui.features.notelist.NoteListScreen
 import com.specialtech.diary.ui.features.weather.WeatherScreen
 
+
 @Composable
-fun DiaryNavHost(appState: DiaryAppState, paddingValues: PaddingValues) {
+fun DiaryNavHost(appState: DiaryAppState) {
     NavHost(
         navController = appState.navController,
-        startDestination = NavigationBarSection.Home.route,
-        modifier = Modifier.padding(paddingValues)
+        startDestination = NavigationBarSection.Home.route
     ) {
         val goToNoteDetailFromNoteList:(noteId: Long) -> Unit = { noteId ->
             appState.navigateSaved(
@@ -52,6 +49,8 @@ fun DiaryNavHost(appState: DiaryAppState, paddingValues: PaddingValues) {
             val noteId = stackEntry.arguments?.getLong(NOTE_DETAIL_ARG_NOTE_ID)
             NoteDetailScreen(
                 noteId = noteId ?: 0L,
+                coroutineScope = appState.scope,
+                snackbarHostState = appState.snackbarHostState,
                 goToNoteList = goBack
             )
         }
@@ -59,7 +58,5 @@ fun DiaryNavHost(appState: DiaryAppState, paddingValues: PaddingValues) {
         composable(DiaryRoute.Weather.route) {
             WeatherScreen(goHome = goBack)
         }
-
     }
-
 }

@@ -22,6 +22,7 @@ import com.specialtech.diary.R
 import com.specialtech.diary.utils.AppLanguage
 import com.specialtech.diary.utils.appLanguages
 
+
 @Composable
 fun DropDownLanguageMenu(
     onItemClick: (language: AppLanguage) -> Unit

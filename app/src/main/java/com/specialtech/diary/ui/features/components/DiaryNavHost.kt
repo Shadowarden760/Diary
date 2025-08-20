@@ -9,7 +9,7 @@ import com.specialtech.diary.common.DiaryAppState
 import com.specialtech.diary.common.navigation.DiaryRoute
 import com.specialtech.diary.common.navigation.DiaryRoute.Companion.NOTE_DETAIL_ARG_NOTE_ID
 import com.specialtech.diary.common.navigation.NavigationBarSection
-import com.specialtech.diary.common.navigation.navigateSaved
+import com.specialtech.diary.common.navigation.navigate
 import com.specialtech.diary.common.navigation.popUp
 import com.specialtech.diary.ui.features.home.HomeScreen
 import com.specialtech.diary.ui.features.notedetail.NoteDetailScreen
@@ -24,9 +24,8 @@ fun DiaryNavHost(appState: DiaryAppState) {
         startDestination = NavigationBarSection.Home.route
     ) {
         val goToNoteDetailFromNoteList:(noteId: Long) -> Unit = { noteId ->
-            appState.navigateSaved(
-                route = "${DiaryRoute.NoteDetail.route}/$noteId",
-                popUp = DiaryRoute.NoteList.route
+            appState.navigate(
+                route = "${DiaryRoute.NoteDetail.route}/$noteId"
             )
         }
 

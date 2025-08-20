@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -44,6 +45,7 @@ fun NoteData(
             singleLine = true,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
+                capitalization = KeyboardCapitalization.Words,
                 imeAction = ImeAction.Done
             ),
             onValueChange = { newTitle ->
@@ -64,6 +66,7 @@ fun NoteData(
             singleLine = false,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
+                capitalization = KeyboardCapitalization.Sentences,
                 imeAction = ImeAction.Default
             ),
             onValueChange = { newMessage ->

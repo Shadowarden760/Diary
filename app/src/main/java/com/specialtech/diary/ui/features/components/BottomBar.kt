@@ -14,13 +14,16 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.specialtech.diary.common.navigation.NavigationBarSection
 
+
 @Composable
 fun BottomBar(navHostController: NavHostController) {
     val backStackEntry = navHostController.currentBackStackEntryAsState()
     val currentDestination = backStackEntry.value?.destination
     NavigationBar {
         NavigationBarSection.sections.forEach { section ->
-            val selected = currentDestination?.hierarchy?.any { it.route == section.route } == true
+            val selected = currentDestination?.hierarchy?.any {
+                it.route?.contains(section.route) == true
+            } == true
             NavigationBarItem(
                 icon = {
                     Icon(
@@ -37,11 +40,11 @@ fun BottomBar(navHostController: NavHostController) {
                 selected = selected,
                 onClick = {
                     navHostController.navigate(section.route) {
-                        launchSingleTop = true
-                        restoreState = true
                         popUpTo(navHostController.graph.findStartDestination().id) {
                             saveState = true
                         }
+                        launchSingleTop = true
+                        restoreState = true
                     }
                 }
             )

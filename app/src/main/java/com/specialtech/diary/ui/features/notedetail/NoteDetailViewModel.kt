@@ -5,38 +5,65 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.activity.result.ActivityResultLauncher
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import com.specialtech.diary.Note
 import com.specialtech.diary.R
 import com.specialtech.diary.data.repositories.NotesRepository
 import com.specialtech.diary.utils.DiaryFileManager
+import com.specialtech.diary.utils.DiaryShareManager
+import com.specialtech.diary.utils.DiarySnackBar.showSnackBar
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 class NoteDetailViewModel(
     private val notesRepository: NotesRepository,
     private val appContext: Context,
 ): ViewModel() {
     private val diaryFileManager = DiaryFileManager()
+    private val diaryShareManager = DiaryShareManager()
 
     fun getCurrentNote(noteId: Long) = notesRepository.getUserNoteById(noteId = noteId)
 
     fun saveUpdatedNote(updatedNote: Note) = notesRepository.updateNote(updatedNote)
 
-    fun saveNoteToFile(noteId: Long): String? {
+    fun shareNoteText(noteId: Long, chooserTitle: String, context: Context) {
         val note = getCurrentNote(noteId = noteId)
-        return diaryFileManager.saveDataToFile(
+        val result = diaryShareManager.shareTextData(
+            textData = note.noteMessage,
+            chooserTitle = chooserTitle,
+            context = context
+        )
+        println(result)
+    }
+
+    fun saveNoteToFile(
+        noteId: Long,
+        coroutineScope: CoroutineScope,
+        snackbarHostState: SnackbarHostState
+    ) {
+        val note = getCurrentNote(noteId = noteId)
+        val result = diaryFileManager.saveDataToFile(
             data = note,
             fileName = "${note.noteTitle.filterNot { it.isWhitespace() }}_${note.noteId}.json"
         )
-    }
-
-    fun deleteNoteFile(filePath: String?): Boolean {
-        return diaryFileManager.deleteFile(filePath = filePath)
+        var message: String
+        var actionLabel: String? = null
+        var action: () -> Unit = {}
+        if (result != null) {
+            message = appContext.getString(R.string.note_detail_text_file_was_saved)
+            actionLabel = appContext.getString(R.string.note_detail_text_file_was_saved_cancellation)
+            action = { deleteNoteFile(result) }
+        } else {
+            message = appContext.getString(R.string.note_detail_text_file_was_not_saved)
+        }
+        showSnackBar(
+            coroutineScope = coroutineScope,
+            snackbarHostState = snackbarHostState,
+            message = message,
+            actionLabel = actionLabel,
+            action = action
+        )
     }
 
     fun checkStoragePermissions(launcher: ActivityResultLauncher<Array<String>>): Boolean {
@@ -55,29 +82,7 @@ class NoteDetailViewModel(
         }
     }
 
-    fun showSnackBar(
-        eventResult: Boolean,
-        coroutineScope: CoroutineScope,
-        snackbarHostState: SnackbarHostState,
-        action: () -> Unit = {},
-    ) = coroutineScope.launch {
-        if (eventResult) {
-            val snackbarResult = snackbarHostState.showSnackbar(
-                message = appContext.getString(R.string.note_detail_text_file_was_saved),
-                actionLabel = appContext.getString(R.string.note_detail_text_file_was_saved_cancellation),
-                withDismissAction = true,
-                duration = SnackbarDuration.Short
-            )
-            when (snackbarResult) {
-                SnackbarResult.ActionPerformed -> { action() }
-                SnackbarResult.Dismissed -> { /* do nothing */ }
-            }
-        } else {
-            snackbarHostState.showSnackbar(
-                message = appContext.getString(R.string.note_detail_text_file_was_not_saved),
-                withDismissAction = true,
-                duration = SnackbarDuration.Short
-            )
-        }
+    private fun deleteNoteFile(filePath: String?): Boolean {
+        return diaryFileManager.deleteFile(filePath = filePath)
     }
 }

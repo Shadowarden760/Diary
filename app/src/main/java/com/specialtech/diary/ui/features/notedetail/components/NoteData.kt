@@ -3,6 +3,7 @@ package com.specialtech.diary.ui.features.notedetail.components
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
@@ -21,7 +22,6 @@ import com.specialtech.diary.Note
 import com.specialtech.diary.R
 import com.specialtech.diary.ui.features.components.DiaryTextField
 
-
 @Composable
 fun NoteData(
     noteData: Note,
@@ -31,7 +31,10 @@ fun NoteData(
     val message = remember { mutableStateOf(noteData.noteMessage) }
 
     Column(
-        modifier = Modifier.padding(vertical = 16.dp, horizontal = 24.dp)
+        modifier = Modifier
+            .fillMaxSize()
+            .imePadding()
+            .padding(start = 16.dp, top = 16.dp, end = 16.dp)
     ) {
         DiaryTextField(
             value = title.value,
@@ -80,7 +83,7 @@ fun NoteData(
 
 @Preview
 @Composable
-fun NoteDataPreview() {
+private fun NoteDataPreview() {
     NoteData(
         noteData = Note(
             noteId = 0,

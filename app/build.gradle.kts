@@ -29,8 +29,8 @@ android {
         applicationId = "com.specialtech.diary"
         minSdk = 26
         targetSdk = 36
-        versionCode = 36
-        versionName = "1.2.0"
+        versionCode = 37
+        versionName = "1.3.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -126,6 +126,9 @@ dependencies {
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.client.logging)
     implementation(libs.ktor.client.android)
+
+    // GPS
+    implementation(libs.play.services.location)
 
     // ICONS
     implementation(libs.erikflowers.weather.icons)

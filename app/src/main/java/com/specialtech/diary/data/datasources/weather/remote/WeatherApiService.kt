@@ -25,12 +25,12 @@ class WeatherApiService(private val apiClient: ApiClient): WeatherDataSource {
         }.getOrDefault(IpAddressData(ip = null))
     }
 
-    override suspend fun getForecast(ipAddress: String, userLocale: String): WeatherData? {
+    override suspend fun getForecast(qParam: String, userLocale: String): WeatherData? {
         return runCatching {
             val response = apiClient.httpClient.get(FORECAST_URL) {
                 url {
                     parameters.append("key", BuildConfig.WEATHER_API_KEY)
-                    parameters.append("q", ipAddress)
+                    parameters.append("q", qParam)
                     parameters.append("days", 3.toString())
                     parameters.append("lang", userLocale)
                 }

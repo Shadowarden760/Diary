@@ -14,7 +14,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.specialtech.diary.common.navigation.NavigationBarSection
 
-
 @Composable
 fun BottomBar(navHostController: NavHostController) {
     val backStackEntry = navHostController.currentBackStackEntryAsState()

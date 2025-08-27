@@ -25,4 +25,5 @@
     <string name="note_detail_text_file_was_saved">Файл был успешно сохранен</string>
     <string name="note_detail_text_file_was_saved_cancellation">Отмена</string>
     <string name="note_detail_text_file_was_not_saved">Не удалось сохранить файл</string>
+    <string name="note_detail_text_share_with">Поделиться через</string>
 </resources>

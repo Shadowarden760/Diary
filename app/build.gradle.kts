@@ -22,15 +22,15 @@ kotlin {
 }
 
 android {
-    namespace = "com.specialtech.diary"
+    namespace = "com.homeapps.diary"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.specialtech.diary"
+        applicationId = "com.homeapps.diary"
         minSdk = 26
         targetSdk = 36
-        versionCode = 39
-        versionName = "1.3.2"
+        versionCode = 40
+        versionName = "1.4.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -93,7 +93,7 @@ android {
 sqldelight {
     databases {
         create("DiaryDB") {
-            packageName.set("com.specialtech.diary")
+            packageName.set("com.homeapps.diary")
         }
     }
 }

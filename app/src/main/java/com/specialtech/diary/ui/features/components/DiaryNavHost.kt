@@ -16,7 +16,6 @@ import com.specialtech.diary.ui.features.notedetail.NoteDetailScreen
 import com.specialtech.diary.ui.features.notelist.NoteListScreen
 import com.specialtech.diary.ui.features.weather.WeatherScreen
 
-
 @Composable
 fun DiaryNavHost(appState: DiaryAppState) {
     NavHost(
@@ -48,14 +47,16 @@ fun DiaryNavHost(appState: DiaryAppState) {
             val noteId = stackEntry.arguments?.getLong(NOTE_DETAIL_ARG_NOTE_ID)
             NoteDetailScreen(
                 noteId = noteId ?: 0L,
-                coroutineScope = appState.scope,
-                snackbarHostState = appState.snackbarHostState,
+                snackBarManager = appState.snackBarManager,
                 goToNoteList = goBack
             )
         }
 
         composable(DiaryRoute.Weather.route) {
-            WeatherScreen(goHome = goBack)
+            WeatherScreen(
+                snackBarManager = appState.snackBarManager,
+                goHome = goBack
+            )
         }
     }
 }

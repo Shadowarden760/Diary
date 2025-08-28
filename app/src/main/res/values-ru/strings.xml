@@ -9,6 +9,7 @@
     <string name="weather_text_cant_get_weather_data">Не удалось получить прогноз погоды, попробуйте позже</string>
     <string name="weather_text_unknown_error">Что-то пошло не так…</string>
     <string name="weather_text_cant_get_ip_address">Не удалось получить Ip адрес</string>
+    <string name="weather_text_cant_get_GPS">Не удается получить локацию, подождите немного</string>
     <string name="weather_button_try_again">Попробовать еще раз</string>
     <string name="weather_button_return">Вернуться</string>
     <string name="weather_text_today">Сегодня</string>
@@ -26,4 +27,5 @@
     <string name="note_detail_text_file_was_saved_cancellation">Отмена</string>
     <string name="note_detail_text_file_was_not_saved">Не удалось сохранить файл</string>
     <string name="note_detail_text_share_with">Поделиться через</string>
+    <string name="weather_text_no_available_providers">Нет доступных поставщиков локации, подождите немного</string>
 </resources>

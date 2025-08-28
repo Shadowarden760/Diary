@@ -7,6 +7,6 @@ interface WeatherDataSource {
 
     suspend fun getIpAddress(): IpAddressData
 
-    suspend fun getForecast(ipAddress: String, userLocale: String): WeatherData?
+    suspend fun getForecast(qParam: String, userLocale: String): WeatherData?
 
 }

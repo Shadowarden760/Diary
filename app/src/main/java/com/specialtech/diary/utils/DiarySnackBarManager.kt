@@ -6,11 +6,14 @@ import androidx.compose.material3.SnackbarResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-object DiarySnackBar {
+class DiarySnackBarManager(
+    private val coroutineScope: CoroutineScope,
+    private val snackbarHostState: SnackbarHostState
+) {
+
+    fun getHostState() = snackbarHostState
 
     fun showSnackBar(
-        coroutineScope: CoroutineScope,
-        snackbarHostState: SnackbarHostState,
         message: String,
         actionLabel: String?,
         action: () -> Unit,

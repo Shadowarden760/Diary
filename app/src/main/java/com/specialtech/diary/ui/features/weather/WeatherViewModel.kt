@@ -1,6 +1,5 @@
 package com.specialtech.diary.ui.features.weather
 
-import android.Manifest
 import android.content.Context
 import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.ViewModel

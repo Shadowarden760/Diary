@@ -1,13 +1,16 @@
 package com.specialtech.diary.ui.features.weather
 
 import android.content.Context
+import android.location.Location
 import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.specialtech.diary.R
 import com.specialtech.diary.data.datasources.weather.models.WeatherData
 import com.specialtech.diary.data.repositories.WeatherRepository
 import com.specialtech.diary.utils.DiaryLocationManager
+import com.specialtech.diary.utils.DiarySnackBarManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -28,7 +31,39 @@ class WeatherViewModel(
         launcher.launch(diaryLocationManager.locationPermissions)
     }
 
-    fun loadWeatherByIp(userLocale: String) = viewModelScope.launch {
+    fun loadWeatherByLocation(userLocale: String, snackBarManager: DiarySnackBarManager
+    ) = CoroutineScope(Dispatchers.IO).launch {
+        _forecast.value = ForecastResult.Loading
+        diaryLocationManager.requestSingleLocationUpdate(
+            onLocationReceived = { location ->
+                onLocationReceived(
+                    location = location,
+                    userLocale = userLocale
+                )
+            },
+            onError = { locationError ->
+                when (locationError) {
+                    DiaryLocationManager.LocationErrors.ERROR_NO_AVAILABLE_PROVIDERS -> {
+                        snackBarManager.showSnackBar(
+                            message = appContext.getString(R.string.weather_text_no_available_providers),
+                            actionLabel = null,
+                            action = {}
+                        )
+                    }
+                    DiaryLocationManager.LocationErrors.ERROR_REQUESTING_LOCATION -> {
+                        snackBarManager.showSnackBar(
+                            message = appContext.getString(R.string.weather_text_cant_get_GPS),
+                            actionLabel = null,
+                            action = {}
+                        )
+                    }
+                }
+                loadWeatherByIp(userLocale = userLocale)
+            }
+        )
+    }
+
+    fun loadWeatherByIp(userLocale: String) = CoroutineScope(Dispatchers.IO).launch {
         _forecast.value = ForecastResult.Loading
         val ipResponse = weatherRepository.getIpAddress()
         if (ipResponse.ip != null) {
@@ -51,22 +86,16 @@ class WeatherViewModel(
         }
     }
 
-    fun loadWeatherByLocation(userLocale: String) = viewModelScope.launch {
-        _forecast.value = ForecastResult.Loading
-        val location = diaryLocationManager.getLastKnownLocation()
-        if (location != null) {
-            val forecastResult = weatherRepository.getForecast(
-                qParam = "${location.latitude},${location.longitude}",
-                userLocale = userLocale
+    private fun onLocationReceived(location: Location, userLocale: String) = CoroutineScope(Dispatchers.IO).launch {
+        val forecastResult = weatherRepository.getForecast(
+            qParam = "${location.latitude},${location.longitude}",
+            userLocale = userLocale
+        )
+        when (forecastResult) {
+            is WeatherData -> _forecast.value = ForecastResult.Success(forecastResult)
+            null -> _forecast.value = ForecastResult.Failure(
+                message = appContext.getString(R.string.weather_text_cant_get_weather_data)
             )
-            when (forecastResult) {
-                is WeatherData -> _forecast.value = ForecastResult.Success(forecastResult)
-                null -> _forecast.value = ForecastResult.Failure(
-                    message = appContext.getString(R.string.weather_text_cant_get_weather_data)
-                )
-            }
-        } else {
-            loadWeatherByIp(userLocale = userLocale)
         }
     }
 

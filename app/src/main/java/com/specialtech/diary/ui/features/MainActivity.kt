@@ -31,7 +31,7 @@ class MainActivity: ComponentActivity() {
 
             DiaryTheme(darkTheme = darkTheme.value) {
                 Scaffold(
-                    snackbarHost = { SnackbarHost(hostState = appState.snackbarHostState) },
+                    snackbarHost = { SnackbarHost(hostState = appState.snackBarManager.getHostState()) },
                     bottomBar = { BottomBar(appState.navController) },
                     modifier = Modifier.fillMaxSize()
                 ) { innerPadding ->

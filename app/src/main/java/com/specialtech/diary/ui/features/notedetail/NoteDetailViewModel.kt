@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.activity.result.ActivityResultLauncher
-import androidx.compose.material3.SnackbarHostState
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import com.specialtech.diary.Note
@@ -13,8 +12,7 @@ import com.specialtech.diary.R
 import com.specialtech.diary.data.repositories.NotesRepository
 import com.specialtech.diary.utils.DiaryFileManager
 import com.specialtech.diary.utils.DiaryShareManager
-import com.specialtech.diary.utils.DiarySnackBar.showSnackBar
-import kotlinx.coroutines.CoroutineScope
+import com.specialtech.diary.utils.DiarySnackBarManager
 
 class NoteDetailViewModel(
     private val notesRepository: NotesRepository,
@@ -37,11 +35,7 @@ class NoteDetailViewModel(
         println(result)
     }
 
-    fun saveNoteToFile(
-        noteId: Long,
-        coroutineScope: CoroutineScope,
-        snackbarHostState: SnackbarHostState
-    ) {
+    fun saveNoteToFile(noteId: Long, snackBarManager: DiarySnackBarManager) {
         val note = getCurrentNote(noteId = noteId)
         val result = diaryFileManager.saveDataToFile(
             data = note,
@@ -57,9 +51,7 @@ class NoteDetailViewModel(
         } else {
             message = appContext.getString(R.string.note_detail_text_file_was_not_saved)
         }
-        showSnackBar(
-            coroutineScope = coroutineScope,
-            snackbarHostState = snackbarHostState,
+        snackBarManager.showSnackBar(
             message = message,
             actionLabel = actionLabel,
             action = action

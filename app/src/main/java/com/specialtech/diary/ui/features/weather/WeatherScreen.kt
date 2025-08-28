@@ -16,11 +16,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.specialtech.diary.ui.features.weather.components.Forecast
 import com.specialtech.diary.ui.features.weather.components.Waiting
 import com.specialtech.diary.ui.features.weather.components.WeatherError
+import com.specialtech.diary.utils.DiarySnackBarManager
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun WeatherScreen(
     viewModel: WeatherViewModel = koinViewModel(),
+    snackBarManager: DiarySnackBarManager,
     goHome: () -> Unit = {}
 ) {
     val forecast = viewModel.forecast.collectAsStateWithLifecycle()
@@ -30,7 +32,7 @@ fun WeatherScreen(
     ) { permissions ->
         hasLocationPermission.value = permissions.all { it.value }
         if (hasLocationPermission.value && viewModel.ifGpsOn()) {
-            viewModel.loadWeatherByLocation(Locale.current.language)
+            viewModel.loadWeatherByLocation(Locale.current.language, snackBarManager)
         } else {
             viewModel.loadWeatherByIp(Locale.current.language)
         }
@@ -40,7 +42,7 @@ fun WeatherScreen(
     ) { _ ->
         if (viewModel.ifGpsOn()) {
             if (viewModel.checkLocationPermissions()) {
-                viewModel.loadWeatherByLocation(Locale.current.language)
+                viewModel.loadWeatherByLocation(Locale.current.language, snackBarManager)
             } else {
                 viewModel.getLocationPermissions(locationPermissionLauncher)
             }
@@ -60,7 +62,7 @@ fun WeatherScreen(
             return@LaunchedEffect
         }
         if (viewModel.ifGpsOn() && viewModel.checkLocationPermissions()) {
-            viewModel.loadWeatherByLocation(Locale.current.language)
+            viewModel.loadWeatherByLocation(Locale.current.language, snackBarManager)
         } else {
             viewModel.loadWeatherByIp(Locale.current.language)
         }

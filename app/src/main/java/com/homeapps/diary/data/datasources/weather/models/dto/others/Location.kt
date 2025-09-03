@@ -1,4 +1,4 @@
-package com.homeapps.diary.data.datasources.weather.models.dto.entities
+package com.homeapps.diary.data.datasources.weather.models.dto.others
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

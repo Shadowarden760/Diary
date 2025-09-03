@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.homeapps.diary.data.datasources.weather.models.FutureWeatherModel
+import com.homeapps.diary.domain.models.FutureWeatherModel
 import com.homeapps.diary.utils.DateTimeUtils
 
 @Composable

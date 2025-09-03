@@ -1,10 +1,10 @@
 package com.homeapps.diary.common.di
 
-import com.homeapps.diary.data.datasources.database.DatabaseDriver
-import com.homeapps.diary.data.datasources.network.ApiClient
-import com.homeapps.diary.data.datasources.notes.local.NotesDatabaseData
-import com.homeapps.diary.data.datasources.settings.AppDataStore
-import com.homeapps.diary.data.datasources.weather.remote.WeatherApiService
+import com.homeapps.diary.data.clients.DatabaseDriver
+import com.homeapps.diary.data.clients.ApiClient
+import com.homeapps.diary.data.datasources.notes.NotesDatabaseDao
+import com.homeapps.diary.data.datasources.settings.DiaryDataStore
+import com.homeapps.diary.data.datasources.weather.remote.WeatherApi
 import com.homeapps.diary.data.repositories.NotesRepository
 import com.homeapps.diary.data.repositories.SettingsRepository
 import com.homeapps.diary.data.repositories.WeatherRepository
@@ -19,11 +19,11 @@ import org.koin.dsl.module
 val appModule = module {
     single { ApiClient() }
     single { DatabaseDriver(appContext = androidContext()) }
-    single { AppDataStore(appContext = androidContext()) }
+    single { DiaryDataStore(appContext = androidContext()) }
 
-    single { SettingsRepository(appDataStore = get()) }
-    single { WeatherRepository(weatherDataSource = WeatherApiService(apiClient = get())) }
-    single { NotesRepository(notesDataSource = NotesDatabaseData(databaseDriver = get())) }
+    single { SettingsRepository(diaryDataStore = get()) }
+    single { WeatherRepository(weatherDataSource = WeatherApi(apiClient = get())) }
+    single { NotesRepository(notesDataSource = NotesDatabaseDao(databaseDriver = get())) }
 
     viewModel { HomeViewModel(settings = get(), appContext = androidContext()) }
     viewModel { NoteListViewModel(notesRepository = get()) }

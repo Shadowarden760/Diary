@@ -44,7 +44,9 @@ class DiaryLocationManager(private val appContext: Context) {
                 }
 
                 override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) { /* do nothing */ }
+
                 override fun onProviderEnabled(provider: String) { /* do nothing */ }
+
                 override fun onProviderDisabled(provider: String) { /* do nothing */ }
             }
 

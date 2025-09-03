@@ -1,17 +1,16 @@
-package com.homeapps.diary.data.datasources.notes.local
+package com.homeapps.diary.data.datasources.notes
 
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOneOrNull
 import com.homeapps.diary.DiaryDB
 import com.homeapps.diary.Note
-import com.homeapps.diary.data.datasources.database.DatabaseDriver
-import com.homeapps.diary.data.datasources.notes.NotesDataSource
+import com.homeapps.diary.data.clients.DatabaseDriver
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 
-class NotesDatabaseData(databaseDriver: DatabaseDriver): NotesDataSource {
-    private val database = DiaryDB(databaseDriver.createDatabaseDriver())
+class NotesDatabaseDao(databaseDriver: DatabaseDriver): NotesDataSource {
+    private val database = DiaryDB.Companion(databaseDriver.createDatabaseDriver())
     private val queries = database.noteDatabaseQueries
 
     override fun createNewNote(): Long {
@@ -21,13 +20,11 @@ class NotesDatabaseData(databaseDriver: DatabaseDriver): NotesDataSource {
             noteCreatedAt = System.currentTimeMillis(),
             noteUpdatedAt = System.currentTimeMillis()
         )
-        return queries.lastInsertedId()
-            .executeAsOne()
+        return queries.lastInsertedId().executeAsOne()
     }
 
     override fun getAllNotes(): List<Note> {
-        return queries.getAllNotes()
-            .executeAsList()
+        return queries.getAllNotes().executeAsList()
     }
 
     override fun getAllNotesFlow(): Flow<List<Note>> {
@@ -36,9 +33,8 @@ class NotesDatabaseData(databaseDriver: DatabaseDriver): NotesDataSource {
             .mapToList(Dispatchers.IO)
     }
 
-    override fun getNoteById(noteId: Long): Note {
-        return queries.getNoteById(noteId)
-            .executeAsOne()
+    override fun getNoteById(noteId: Long): Note? {
+        return queries.getNoteById(noteId).executeAsOneOrNull()
     }
 
     override fun getNoteByIdFlow(noteId: Long): Flow<Note?> {

@@ -8,7 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.homeapps.diary.data.datasources.weather.models.HourlyWeatherModel
+import com.homeapps.diary.domain.models.HourlyWeatherModel
 
 @Composable
 fun ForecastToday(hourlyData: List<HourlyWeatherModel>) {

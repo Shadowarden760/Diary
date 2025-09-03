@@ -19,12 +19,12 @@ import com.homeapps.diary.R
 
 @Composable
 fun AlertDialogDiary(
-    onDismissRequest:() -> Unit,
-    onConfirm:() -> Unit,
-    onCancel:() -> Unit,
     dialogTitle: String,
     dialogText: String,
-    icon: ImageVector
+    icon: ImageVector,
+    onConfirm:() -> Unit,
+    onCancel:() -> Unit,
+    onDismissRequest:() -> Unit,
 ) {
     AlertDialog(
         icon = {

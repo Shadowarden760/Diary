@@ -11,7 +11,7 @@ interface NotesDataSource {
 
     fun getAllNotesFlow(): Flow<List<Note>>
 
-    fun getNoteById(noteId: Long): Note
+    fun getNoteById(noteId: Long): Note?
 
     fun getNoteByIdFlow(noteId: Long): Flow<Note?>
 

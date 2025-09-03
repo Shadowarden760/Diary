@@ -5,7 +5,7 @@ import android.location.Location
 import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.ViewModel
 import com.homeapps.diary.R
-import com.homeapps.diary.data.datasources.weather.models.WeatherData
+import com.homeapps.diary.domain.models.WeatherData
 import com.homeapps.diary.data.repositories.WeatherRepository
 import com.homeapps.diary.utils.DiaryLocationManager
 import com.homeapps.diary.utils.DiarySnackBarManager

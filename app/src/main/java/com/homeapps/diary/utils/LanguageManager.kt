@@ -17,24 +17,23 @@ val appLanguages = listOf(
     AppLanguage("ru", "Русский")
 )
 
-class LanguageManager {
+class LanguageManager(private val appContext: Context) {
 
-    fun changeLanguage(context: Context, language: AppLanguage) {
+    fun changeLanguage(language: AppLanguage) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            context.getSystemService(LocaleManager::class.java).applicationLocales =
+            appContext.getSystemService(LocaleManager::class.java).applicationLocales =
                 LocaleList.forLanguageTags(language.code)
         } else {
             AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(language.code))
         }
     }
 
-    fun getLanguage(context: Context): AppLanguage {
+    fun getLanguage(): AppLanguage {
         val locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            context.getSystemService(LocaleManager::class.java)?.applicationLocales?.get(0)
+            appContext.getSystemService(LocaleManager::class.java)?.applicationLocales?.get(0)
         } else {
             AppCompatDelegate.getApplicationLocales()[0]
         }
         return appLanguages.find { it.code == locale?.language } ?: appLanguages.first()
     }
-
 }

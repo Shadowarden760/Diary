@@ -22,7 +22,7 @@ class NoteDetailViewModel(
     fun saveUpdatedNote(updatedNote: Note) = notesRepository.updateNote(updatedNote)
 
     fun shareNoteText(noteId: Long, chooserTitle: String, context: Context) {
-        val note = getCurrentNote(noteId = noteId)
+        val note = getCurrentNote(noteId = noteId) ?: return
         diaryShareManager.shareTextData(
             textData = note.noteMessage,
             chooserTitle = chooserTitle,
@@ -37,7 +37,7 @@ class NoteDetailViewModel(
     }
 
     fun saveNoteToFile(noteId: Long, snackBarManager: DiarySnackBarManager) {
-        val note = getCurrentNote(noteId = noteId)
+        val note = getCurrentNote(noteId = noteId) ?: return
         val result = diaryFileManager.saveDataToFile(
             data = note,
             fileName = "${note.noteTitle.filterNot { it.isWhitespace() }}_${note.noteId}.json"

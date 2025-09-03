@@ -11,8 +11,8 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.sqldelight)
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 kotlin {
@@ -29,7 +29,7 @@ android {
         applicationId = "com.homeapps.diary"
         minSdk = 26
         targetSdk = 36
-        versionCode = 40
+        versionCode = 41
         versionName = "1.4.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -87,7 +87,6 @@ android {
     androidResources {
         generateLocaleConfig = true
     }
-
 }
 
 sqldelight {

@@ -1,4 +1,4 @@
-package com.homeapps.diary.data.datasources.database
+package com.homeapps.diary.data.clients
 
 import android.content.Context
 import app.cash.sqldelight.db.SqlDriver
@@ -9,10 +9,9 @@ class DatabaseDriver(private val appContext: Context) {
 
     fun createDatabaseDriver(): SqlDriver {
         return AndroidSqliteDriver(
-            schema = DiaryDB.Schema,
+            schema = DiaryDB.Companion.Schema,
             context = appContext,
             name = "notes.db"
         )
     }
-
 }

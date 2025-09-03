@@ -4,6 +4,6 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class IpAddressResponse(
+data class IpAddressDTO(
     @SerialName("ip") val ipAddress: String
 )

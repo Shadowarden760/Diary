@@ -12,14 +12,14 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import com.homeapps.diary.common.rememberAppState
-import com.homeapps.diary.data.datasources.settings.AppDataStore
+import com.homeapps.diary.data.datasources.settings.DiaryDataStore
 import com.homeapps.diary.ui.features.components.BottomBar
 import com.homeapps.diary.ui.features.components.DiaryNavHost
 import com.homeapps.diary.ui.theme.DiaryTheme
 import org.koin.android.ext.android.inject
 
 class MainActivity: ComponentActivity() {
-    val settings: AppDataStore by inject()
+    val settings: DiaryDataStore by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()

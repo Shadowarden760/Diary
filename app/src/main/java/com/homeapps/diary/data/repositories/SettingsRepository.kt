@@ -1,16 +1,16 @@
 package com.homeapps.diary.data.repositories
 
-import com.homeapps.diary.data.datasources.settings.AppDataStore
+import com.homeapps.diary.data.datasources.settings.DiaryDataStore
 import com.homeapps.diary.data.datasources.settings.SettingsDataSource
 import kotlinx.coroutines.flow.Flow
 
-class SettingsRepository(private val appDataStore: AppDataStore): SettingsDataSource {
+class SettingsRepository(private val diaryDataStore: DiaryDataStore): SettingsDataSource {
 
     override fun getDarkTheme(): Flow<Boolean> {
-        return appDataStore.darkTheme
+        return diaryDataStore.darkTheme
     }
 
     override suspend fun setDarkTheme(darkTheme: Boolean) {
-        appDataStore.setDarkTheme(darkTheme = darkTheme)
+        diaryDataStore.setDarkTheme(darkTheme = darkTheme)
     }
 }

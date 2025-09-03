@@ -1,12 +1,12 @@
 package com.homeapps.diary.data.datasources.weather.local
 
 import com.homeapps.diary.data.datasources.weather.WeatherDataSource
-import com.homeapps.diary.data.datasources.weather.models.FutureWeatherModel
-import com.homeapps.diary.data.datasources.weather.models.HourlyWeatherModel
-import com.homeapps.diary.data.datasources.weather.models.IpAddressData
-import com.homeapps.diary.data.datasources.weather.models.WeatherData
+import com.homeapps.diary.domain.models.FutureWeatherModel
+import com.homeapps.diary.domain.models.HourlyWeatherModel
+import com.homeapps.diary.domain.models.IpAddressData
+import com.homeapps.diary.domain.models.WeatherData
 
-class LocalWeatherData: WeatherDataSource {
+class LocalWeatherApi: WeatherDataSource {
     private val hourlyWeatherModels = listOf(
         HourlyWeatherModel(hour = "11:00", temperature = 10.0, pictureCode = null),
         HourlyWeatherModel(hour = "12:00", temperature = 12.0, pictureCode = null),
@@ -33,7 +33,7 @@ class LocalWeatherData: WeatherDataSource {
     )
 
     override suspend fun getIpAddress(): IpAddressData {
-        return IpAddressData(ip = "212.3.130.238")
+        return IpAddressData(ip = "8.8.8.8")
     }
 
     override suspend fun getForecast(qParam: String, userLocale: String): WeatherData? {

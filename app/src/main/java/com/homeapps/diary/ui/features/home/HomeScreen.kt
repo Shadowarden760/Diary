@@ -47,8 +47,8 @@ fun HomeScreen(viewModel: HomeViewModel = koinViewModel()) {
                 }
             )
             ThemeSwitcher(
-                onClick = { viewModel.setDarkTheme(darkTheme = !darkTheme.value) },
-                darkTheme = darkTheme.value
+                darkTheme = darkTheme.value,
+                onClick = { viewModel.setDarkTheme(darkTheme = !darkTheme.value) }
             )
         }
         Spacer(modifier = Modifier.weight(0.5f))

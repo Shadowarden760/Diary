@@ -28,18 +28,18 @@ fun NoteList(
 
     if (openAlertDialogNoteId.longValue > 0L) {
         AlertDialogDiary(
-            onDismissRequest = { openAlertDialogNoteId.longValue = 0L },
-            onConfirm = {
-                deleteNote(openAlertDialogNoteId.longValue)
-                openAlertDialogNoteId.longValue = 0L
-            },
-            onCancel = { openAlertDialogNoteId.longValue = 0L },
             dialogTitle = stringResource(R.string.note_list_text_delete_note_title),
             dialogText = stringResource(
                 R.string.note_list_text_delete_note_content,
                 noteList.find { it.noteId == openAlertDialogNoteId.longValue }?.noteTitle.toString()
             ),
-            icon = Icons.Filled.Info
+            icon = Icons.Filled.Info,
+            onConfirm = {
+                deleteNote(openAlertDialogNoteId.longValue)
+                openAlertDialogNoteId.longValue = 0L
+            },
+            onCancel = { openAlertDialogNoteId.longValue = 0L },
+            onDismissRequest = { openAlertDialogNoteId.longValue = 0L },
         )
     }
     LazyVerticalStaggeredGrid(

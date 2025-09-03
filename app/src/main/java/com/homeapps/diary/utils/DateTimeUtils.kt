@@ -13,20 +13,16 @@ object DateTimeUtils {
     ): String {
         val formatter = SimpleDateFormat(dateFormat, Locale.getDefault())
         val returnFormatter = SimpleDateFormat(returnFormat, Locale.getDefault())
-        return try {
+        return runCatching {
             val date = formatter.parse(dateString)
             if (date != null) returnFormatter.format(date) else ""
-        } catch (_: Exception) {
-            ""
-        }
+        }.getOrDefault("")
     }
 
     fun timeMillisToDate(timeMillis: Long, format: String = "dd-MM-yyyy HH:mm"): String {
         val formatter = SimpleDateFormat(format, Locale.getDefault())
-        return try {
+        return runCatching {
             formatter.format(Date(timeMillis))
-        } catch (_: Exception) {
-            ""
-        }
+        }.getOrDefault("")
     }
 }

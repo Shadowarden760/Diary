@@ -1,6 +1,7 @@
-package com.homeapps.diary.data.datasources.network
+package com.homeapps.diary.data.clients
 
 import android.util.Log
+import com.homeapps.diary.BuildConfig
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.HttpTimeout
@@ -27,13 +28,15 @@ class ApiClient {
             connectTimeoutMillis = NETWORK_TIME_OUT
             socketTimeoutMillis = NETWORK_TIME_OUT
         }
-        install(Logging) {
-            logger = object : Logger {
-                override fun log(message: String) {
-                    Log.d("Logger Ktor:", message)
+        if (BuildConfig.DEBUG) {
+            install(Logging) {
+                logger = object : Logger {
+                    override fun log(message: String) {
+                        Log.d("Logger Ktor:", message)
+                    }
                 }
+                level = LogLevel.ALL
             }
-            level = LogLevel.ALL
         }
     }
 

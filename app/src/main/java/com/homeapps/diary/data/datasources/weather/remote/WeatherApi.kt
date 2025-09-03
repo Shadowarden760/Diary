@@ -1,23 +1,24 @@
 package com.homeapps.diary.data.datasources.weather.remote
 
 import com.homeapps.diary.BuildConfig
-import com.homeapps.diary.data.datasources.network.ApiClient
+import com.homeapps.diary.data.clients.ApiClient
 import com.homeapps.diary.data.datasources.weather.WeatherDataSource
-import com.homeapps.diary.data.datasources.weather.models.IpAddressData
-import com.homeapps.diary.data.datasources.weather.models.WeatherData
-import com.homeapps.diary.data.datasources.weather.models.dto.ForecastResponse
-import com.homeapps.diary.data.datasources.weather.models.dto.IpAddressResponse
+import com.homeapps.diary.domain.models.IpAddressData
+import com.homeapps.diary.domain.models.WeatherData
+import com.homeapps.diary.data.datasources.weather.models.dto.ForecastDTO
+import com.homeapps.diary.data.datasources.weather.models.dto.IpAddressDTO
+import com.homeapps.diary.data.mappers.toWeatherData
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsText
 
-class WeatherApiService(private val apiClient: ApiClient): WeatherDataSource {
+class WeatherApi(private val apiClient: ApiClient): WeatherDataSource {
 
     override suspend fun getIpAddress(): IpAddressData {
         return runCatching {
             val response = apiClient.httpClient.get(IP_URL)
             if (response.status.value == 200) {
-                val ip = response.body<IpAddressResponse>().ipAddress
+                val ip = response.body<IpAddressDTO>().ipAddress
                 IpAddressData(ip = ip)
             } else {
                 IpAddressData(ip = null, errorMessage = response.bodyAsText())
@@ -36,7 +37,7 @@ class WeatherApiService(private val apiClient: ApiClient): WeatherDataSource {
                 }
             }
             if (response.status.value == 200) {
-                val data = response.body<ForecastResponse>()
+                val data = response.body<ForecastDTO>()
                 data.toWeatherData()
             } else {
                 null

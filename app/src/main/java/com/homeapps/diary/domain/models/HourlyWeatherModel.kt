@@ -1,4 +1,4 @@
-package com.homeapps.diary.data.datasources.weather.models
+package com.homeapps.diary.domain.models
 
 data class HourlyWeatherModel(
     val hour: String,

@@ -1,7 +1,7 @@
 package com.homeapps.diary.data.datasources.weather
 
-import com.homeapps.diary.data.datasources.weather.models.IpAddressData
-import com.homeapps.diary.data.datasources.weather.models.WeatherData
+import com.homeapps.diary.domain.models.IpAddressData
+import com.homeapps.diary.domain.models.WeatherData
 
 interface WeatherDataSource {
 

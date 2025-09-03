@@ -32,33 +32,37 @@ fun NoteDetailScreen(
         }
     }
 
-    NoteData(
-        noteData = currentNote,
-        updateNote = { newTitle: String, newMessage: String ->
-            val updatedNote = Note(
-                noteId = currentNote.noteId,
-                noteTitle = newTitle,
-                noteMessage = newMessage,
-                noteUpdatedAt = currentNote.noteUpdatedAt,
-                noteCreatedAt = currentNote.noteCreatedAt
-            )
-            viewModel.saveUpdatedNote(updatedNote)
-        }
-    )
-    NoteButtons(
-        shareNote = {
-            viewModel.shareNoteText(
-                noteId = noteId,
-                chooserTitle = currentContext.getString(R.string.note_detail_text_share_with),
-                context = currentContext
-            )
-        },
-        saveNote = {
-            if (viewModel.hasStoragePermissions()) {
-                viewModel.saveNoteToFile(noteId = noteId, snackBarManager = snackBarManager)
-            } else {
-                viewModel.requestStoragePermissions(storagePermissionLauncher)
+    if (currentNote != null) {
+        NoteData(
+            noteData = currentNote,
+            updateNote = { newTitle: String, newMessage: String ->
+                val updatedNote = Note(
+                    noteId = currentNote.noteId,
+                    noteTitle = newTitle,
+                    noteMessage = newMessage,
+                    noteUpdatedAt = currentNote.noteUpdatedAt,
+                    noteCreatedAt = currentNote.noteCreatedAt
+                )
+                viewModel.saveUpdatedNote(updatedNote)
             }
-        }
-    )
+        )
+        NoteButtons(
+            shareNote = {
+                viewModel.shareNoteText(
+                    noteId = noteId,
+                    chooserTitle = currentContext.getString(R.string.note_detail_text_share_with),
+                    context = currentContext
+                )
+            },
+            saveNote = {
+                if (viewModel.hasStoragePermissions()) {
+                    viewModel.saveNoteToFile(noteId = noteId, snackBarManager = snackBarManager)
+                } else {
+                    viewModel.requestStoragePermissions(storagePermissionLauncher)
+                }
+            }
+        )
+    } else {
+        goToNoteList()
+    }
 }

@@ -15,7 +15,10 @@ import androidx.compose.ui.unit.dp
 import com.homeapps.diary.R
 
 @Composable
-fun ThemeSwitcher(onClick: () -> Unit, darkTheme: Boolean) {
+fun ThemeSwitcher(
+    darkTheme: Boolean,
+    onClick: () -> Unit,
+) {
     val themeIconId = if (darkTheme) R.drawable.ic_moon else R.drawable.ic_sun
     val rotationAngle = animateFloatAsState(targetValue = if (darkTheme) 0f else 180f)
 
@@ -39,5 +42,5 @@ fun ThemeSwitcher(onClick: () -> Unit, darkTheme: Boolean) {
 @Preview
 @Composable
 private fun ThemeSwitcherPreview() {
-    ThemeSwitcher({}, true)
+    ThemeSwitcher(true, {})
 }

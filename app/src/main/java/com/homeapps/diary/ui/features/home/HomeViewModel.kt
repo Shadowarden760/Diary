@@ -12,11 +12,11 @@ class HomeViewModel(
     private val settings: SettingsRepository,
     private val appContext: Context
 ): ViewModel() {
-    private val languageManager = LanguageManager()
+    private val languageManager = LanguageManager(appContext = appContext)
     val darkTheme = settings.getDarkTheme()
 
     fun changeLanguage(newLanguage: AppLanguage) {
-        languageManager.changeLanguage(context = appContext, language = newLanguage)
+        languageManager.changeLanguage(language = newLanguage)
     }
 
     fun setDarkTheme(darkTheme: Boolean) = viewModelScope.launch {

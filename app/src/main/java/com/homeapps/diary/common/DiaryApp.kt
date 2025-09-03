@@ -16,5 +16,4 @@ class DiaryApp: Application() {
             modules(appModule)
         }
     }
-
 }

@@ -11,8 +11,8 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.sqldelight)
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 kotlin {
@@ -22,15 +22,15 @@ kotlin {
 }
 
 android {
-    namespace = "com.specialtech.diary"
+    namespace = "com.homeapps.diary"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.specialtech.diary"
+        applicationId = "com.homeapps.diary"
         minSdk = 26
         targetSdk = 36
-        versionCode = 39
-        versionName = "1.3.2"
+        versionCode = 41
+        versionName = "1.4.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -87,13 +87,12 @@ android {
     androidResources {
         generateLocaleConfig = true
     }
-
 }
 
 sqldelight {
     databases {
         create("DiaryDB") {
-            packageName.set("com.specialtech.diary")
+            packageName.set("com.homeapps.diary")
         }
     }
 }

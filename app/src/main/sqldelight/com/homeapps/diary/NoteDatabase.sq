@@ -1,4 +1,4 @@
-CREATE TABLE Note (
+CREATE TABLE NoteDBO (
     noteId INTEGER PRIMARY KEY AUTOINCREMENT,
     noteTitle TEXT NOT NULL,
     noteMessage TEXT NOT NULL,
@@ -7,25 +7,25 @@ CREATE TABLE Note (
 );
 
 getAllNotes:
-SELECT Note.*
-FROM Note;
+SELECT NoteDBO.*
+FROM NoteDBO;
 
 getNoteById:
-SELECT Note.*
-FROM Note
-WHERE Note.noteId = ?;
+SELECT NoteDBO.*
+FROM NoteDBO
+WHERE NoteDBO.noteId = ?;
 
 insertNewNote:
-INSERT INTO Note(noteTitle, noteMessage, noteCreatedAt, noteUpdatedAt)
+INSERT INTO NoteDBO(noteTitle, noteMessage, noteCreatedAt, noteUpdatedAt)
 VALUES (?, ?, ?, ?);
 
 updateNote:
-REPLACE INTO Note(noteId, noteTitle, noteMessage, noteCreatedAt, noteUpdatedAt)
+REPLACE INTO NoteDBO(noteId, noteTitle, noteMessage, noteCreatedAt, noteUpdatedAt)
 VALUES (?, ?, ?, ?, ?);
 
 deleteNoteById:
-DELETE FROM Note
-WHERE Note.noteId = ?;
+DELETE FROM NoteDBO
+WHERE NoteDBO.noteId = ?;
 
 lastInsertedId:
 SELECT last_insert_rowid();

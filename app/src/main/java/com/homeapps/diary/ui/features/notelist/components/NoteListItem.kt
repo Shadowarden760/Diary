@@ -12,12 +12,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.homeapps.diary.Note
+import com.homeapps.diary.domain.models.notes.NoteData
 import com.homeapps.diary.utils.DateTimeUtils
 
 @Composable
 fun NoteListItem(
-    note: Note,
+    note: NoteData,
     onItemClick:() -> Unit = {},
     onLongItemClick:() -> Unit = {}
 ) {
@@ -56,5 +56,5 @@ fun NoteListItem(
 @Preview
 @Composable
 private fun NoteListItemPreview() {
-    NoteListItem(Note(0, "Title", "Very loooooooooooooooooooooooooooooooooooooooong text", 0, 1287371236786))
+    NoteListItem(NoteData(0, "Title", "Very loooooooooooooooooooooooooooooooooooooooong text", 0, 1287371236786))
 }

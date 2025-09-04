@@ -29,8 +29,8 @@ android {
         applicationId = "com.homeapps.diary"
         minSdk = 26
         targetSdk = 36
-        versionCode = 41
-        versionName = "1.4.0"
+        versionCode = 42
+        versionName = "1.5.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -93,6 +93,9 @@ sqldelight {
     databases {
         create("DiaryDB") {
             packageName.set("com.homeapps.diary")
+            schemaOutputDirectory = file("src/main/sqldelight/com/homeapps/diary/schemas")
+            migrationOutputDirectory = file("src/main/sqldelight/com/homeapps/diary/migrations")
+            verifyMigrations = true
         }
     }
 }

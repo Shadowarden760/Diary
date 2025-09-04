@@ -18,13 +18,13 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.homeapps.diary.Note
 import com.homeapps.diary.R
+import com.homeapps.diary.domain.models.notes.NoteData
 import com.homeapps.diary.ui.features.components.DiaryTextField
 
 @Composable
-fun NoteData(
-    noteData: Note,
+fun NoteDataScreen(
+    noteData: NoteData,
     updateNote: (newTitle: String, newMessage: String) -> Unit
 ) {
     val title = remember { mutableStateOf(noteData.noteTitle) }
@@ -83,9 +83,9 @@ fun NoteData(
 
 @Preview
 @Composable
-private fun NoteDataPreview() {
-    NoteData(
-        noteData = Note(
+private fun NoteDataScreenPreview() {
+    NoteDataScreen(
+        noteData = NoteData(
             noteId = 0,
             noteTitle = "Title",
             noteMessage = "Veeeeeeeeeeeeery loooooooooooong meeeeeeeeeeeeeeessage",

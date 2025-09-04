@@ -1,10 +1,15 @@
 package com.homeapps.diary.data.repositories
 
-import com.homeapps.diary.data.datasources.weather.WeatherDataSource
+import com.homeapps.diary.data.datasources.weather.remote.WeatherApi
+import com.homeapps.diary.domain.api.WeatherDataApi
+import com.homeapps.diary.domain.models.weather.IpAddressData
+import com.homeapps.diary.domain.models.weather.WeatherData
 
-class WeatherRepository(private val weatherDataSource: WeatherDataSource) {
+class WeatherRepository(private val weatherApi: WeatherApi): WeatherDataApi {
 
-    suspend fun getIpAddress() = weatherDataSource.getIpAddress()
+    override suspend fun getIpAddress(): IpAddressData = weatherApi.getIpAddress()
 
-    suspend fun getForecast(qParam: String, userLocale: String) = weatherDataSource.getForecast(qParam, userLocale)
+    override suspend fun getForecast(qParam: String, locale: String): WeatherData? {
+        return weatherApi.getForecast(qParam, locale)
+    }
 }

@@ -1,4 +1,4 @@
-package com.homeapps.diary.domain.models
+package com.homeapps.diary.domain.models.weather
 
 data class WeatherData(
     val weatherStatus: String = "",
@@ -9,6 +9,6 @@ data class WeatherData(
     val rainPct: Int = 0,
     val windSpeed: Double = 0.0,
     val humidityPct: Int = 0,
-    val hourlyWeatherModel: List<HourlyWeatherModel> = emptyList(),
-    val futureWeatherModel: List<FutureWeatherModel> = emptyList()
+    val hourlyWeatherData: List<HourlyWeatherData> = emptyList(),
+    val futureWeatherData: List<FutureWeatherData> = emptyList()
 )

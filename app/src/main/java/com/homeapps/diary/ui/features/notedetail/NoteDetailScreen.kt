@@ -6,10 +6,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
-import com.homeapps.diary.Note
 import com.homeapps.diary.R
+import com.homeapps.diary.domain.models.notes.NoteData
 import com.homeapps.diary.ui.features.notedetail.components.NoteButtons
-import com.homeapps.diary.ui.features.notedetail.components.NoteData
+import com.homeapps.diary.ui.features.notedetail.components.NoteDataScreen
 import com.homeapps.diary.utils.DiarySnackBarManager
 import org.koin.androidx.compose.koinViewModel
 
@@ -33,10 +33,10 @@ fun NoteDetailScreen(
     }
 
     if (currentNote != null) {
-        NoteData(
+        NoteDataScreen(
             noteData = currentNote,
             updateNote = { newTitle: String, newMessage: String ->
-                val updatedNote = Note(
+                val updatedNote = NoteData(
                     noteId = currentNote.noteId,
                     noteTitle = newTitle,
                     noteMessage = newMessage,

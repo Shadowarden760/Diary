@@ -2,19 +2,18 @@ package com.homeapps.diary.data.datasources.weather.remote
 
 import com.homeapps.diary.BuildConfig
 import com.homeapps.diary.data.clients.ApiClient
-import com.homeapps.diary.data.datasources.weather.WeatherDataSource
-import com.homeapps.diary.domain.models.IpAddressData
-import com.homeapps.diary.domain.models.WeatherData
 import com.homeapps.diary.data.datasources.weather.models.dto.ForecastDTO
 import com.homeapps.diary.data.datasources.weather.models.dto.IpAddressDTO
 import com.homeapps.diary.data.mappers.toWeatherData
+import com.homeapps.diary.domain.models.weather.IpAddressData
+import com.homeapps.diary.domain.models.weather.WeatherData
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsText
 
-class WeatherApi(private val apiClient: ApiClient): WeatherDataSource {
+class WeatherApi(private val apiClient: ApiClient) {
 
-    override suspend fun getIpAddress(): IpAddressData {
+    suspend fun getIpAddress(): IpAddressData {
         return runCatching {
             val response = apiClient.httpClient.get(IP_URL)
             if (response.status.value == 200) {
@@ -26,14 +25,14 @@ class WeatherApi(private val apiClient: ApiClient): WeatherDataSource {
         }.getOrDefault(IpAddressData(ip = null))
     }
 
-    override suspend fun getForecast(qParam: String, userLocale: String): WeatherData? {
+    suspend fun getForecast(qParam: String, locale: String): WeatherData? {
         return runCatching {
             val response = apiClient.httpClient.get(FORECAST_URL) {
                 url {
                     parameters.append("key", BuildConfig.WEATHER_API_KEY)
                     parameters.append("q", qParam)
                     parameters.append("days", 3.toString())
-                    parameters.append("lang", userLocale)
+                    parameters.append("lang", locale)
                 }
             }
             if (response.status.value == 200) {

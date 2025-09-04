@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.homeapps.diary.R
-import com.homeapps.diary.domain.models.WeatherData
+import com.homeapps.diary.domain.models.weather.WeatherData
 import com.homeapps.diary.ui.features.weather.WeatherViewModel
 
 @Composable
@@ -46,7 +46,7 @@ fun Forecast(isVisible: Boolean, forecastResult: WeatherViewModel.ForecastResult
                 )
             }
 
-            item { ForecastToday(hourlyData = weatherData.hourlyWeatherModel) }
+            item { ForecastToday(hourlyData = weatherData.hourlyWeatherData) }
 
             item {
                 Text(
@@ -58,7 +58,7 @@ fun Forecast(isVisible: Boolean, forecastResult: WeatherViewModel.ForecastResult
                 )
             }
 
-            items(weatherData.futureWeatherModel) { item ->
+            items(weatherData.futureWeatherData) { item ->
                 FutureWeatherItem(item)
             }
         }

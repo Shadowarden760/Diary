@@ -1,16 +1,18 @@
 package com.homeapps.diary.data.mappers
 
+import com.homeapps.diary.NoteDBO
 import com.homeapps.diary.data.datasources.weather.models.dto.ForecastDTO
-import com.homeapps.diary.domain.models.FutureWeatherModel
-import com.homeapps.diary.domain.models.HourlyWeatherModel
-import com.homeapps.diary.domain.models.WeatherData
+import com.homeapps.diary.domain.models.notes.NoteData
+import com.homeapps.diary.domain.models.weather.FutureWeatherData
+import com.homeapps.diary.domain.models.weather.HourlyWeatherData
+import com.homeapps.diary.domain.models.weather.WeatherData
 
 fun ForecastDTO.toWeatherData(): WeatherData {
-    val hourlyData: MutableList<HourlyWeatherModel> = mutableListOf()
-    val futureData: MutableList<FutureWeatherModel> = mutableListOf()
+    val hourlyData: MutableList<HourlyWeatherData> = mutableListOf()
+    val futureData: MutableList<FutureWeatherData> = mutableListOf()
     fullForecast.forecastDay.firstOrNull()?.let {
         it.hour.forEach { hourData ->
-            val data = HourlyWeatherModel(
+            val data = HourlyWeatherData(
                 hour = hourData.time,
                 temperature = hourData.tempC,
                 pictureCode = hourData.condition.code
@@ -19,7 +21,7 @@ fun ForecastDTO.toWeatherData(): WeatherData {
         }
     }
     fullForecast.forecastDay.forEach { future ->
-        val data = FutureWeatherModel(
+        val data = FutureWeatherData(
             date = future.date,
             pictureCode = future.day.condition.code,
             status = future.day.condition.text,
@@ -31,13 +33,23 @@ fun ForecastDTO.toWeatherData(): WeatherData {
     return WeatherData(
         weatherStatus = currentForecast.condition.text,
         weatherStatusCode = currentForecast.condition.code,
-        dateAndTime = location.localtime,
+        dateAndTime = locationDTO.localtime,
         currentTemperature = currentForecast.tempC,
-        region = "${location.name}/${location.country}",
+        region = "${locationDTO.name}/${locationDTO.country}",
         rainPct = fullForecast.forecastDay.firstOrNull()?.day?.dailyChanceOfRain ?: 0,
         windSpeed = currentForecast.windKph,
         humidityPct = currentForecast.humidity,
-        hourlyWeatherModel = hourlyData,
-        futureWeatherModel = futureData
+        hourlyWeatherData = hourlyData,
+        futureWeatherData = futureData
+    )
+}
+
+fun NoteDBO.toNoteData(): NoteData {
+    return NoteData(
+        noteId = this.noteId,
+        noteTitle = this.noteTitle,
+        noteMessage = this.noteMessage,
+        noteCreatedAt = this.noteCreatedAt,
+        noteUpdatedAt = this.noteUpdatedAt,
     )
 }

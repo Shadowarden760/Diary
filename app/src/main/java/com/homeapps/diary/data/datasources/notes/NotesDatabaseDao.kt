@@ -4,16 +4,18 @@ import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOneOrNull
 import com.homeapps.diary.DiaryDB
-import com.homeapps.diary.Note
 import com.homeapps.diary.data.clients.DatabaseDriver
+import com.homeapps.diary.data.mappers.toNoteData
+import com.homeapps.diary.domain.models.notes.NoteData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
-class NotesDatabaseDao(databaseDriver: DatabaseDriver): NotesDataSource {
+class NotesDatabaseDao(databaseDriver: DatabaseDriver) {
     private val database = DiaryDB.Companion(databaseDriver.createDatabaseDriver())
     private val queries = database.noteDatabaseQueries
 
-    override fun createNewNote(): Long {
+    fun createNewNote(): Long {
         queries.insertNewNote(
             noteTitle = "",
             noteMessage = "",
@@ -23,28 +25,34 @@ class NotesDatabaseDao(databaseDriver: DatabaseDriver): NotesDataSource {
         return queries.lastInsertedId().executeAsOne()
     }
 
-    override fun getAllNotes(): List<Note> {
-        return queries.getAllNotes().executeAsList()
+    fun getAllNotes(): List<NoteData> {
+        return queries.getAllNotes().executeAsList().map { it.toNoteData() }
     }
 
-    override fun getAllNotesFlow(): Flow<List<Note>> {
+    fun getAllNotesFlow(): Flow<List<NoteData>> {
         return queries.getAllNotes()
             .asFlow()
             .mapToList(Dispatchers.IO)
+            .map { noteDBOS ->
+                val noteData = mutableListOf<NoteData>()
+                noteDBOS.forEach { noteData.add(it.toNoteData()) }
+                noteData
+            }
     }
 
-    override fun getNoteById(noteId: Long): Note? {
-        return queries.getNoteById(noteId).executeAsOneOrNull()
+    fun getNoteById(noteId: Long): NoteData? {
+        return queries.getNoteById(noteId).executeAsOneOrNull()?.toNoteData()
     }
 
-    override fun getNoteByIdFlow(noteId: Long): Flow<Note?> {
+    fun getNoteByIdFlow(noteId: Long): Flow<NoteData?> {
         return queries.getNoteById(noteId)
             .asFlow()
             .mapToOneOrNull(Dispatchers.IO)
+            .map { noteDBO -> noteDBO?.toNoteData() }
     }
 
 
-    override fun updateNote(note: Note): Long {
+    fun updateNote(note: NoteData): Long {
         queries.updateNote(
             noteId = note.noteId,
             noteTitle = note.noteTitle,
@@ -55,7 +63,7 @@ class NotesDatabaseDao(databaseDriver: DatabaseDriver): NotesDataSource {
         return note.noteId
     }
 
-    override fun deleteNoteById(noteId: Long) {
+    fun deleteNoteById(noteId: Long) {
         queries.deleteNoteById(noteId)
     }
 }

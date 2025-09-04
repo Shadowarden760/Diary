@@ -8,10 +8,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.homeapps.diary.domain.models.HourlyWeatherModel
+import com.homeapps.diary.domain.models.weather.HourlyWeatherData
 
 @Composable
-fun ForecastToday(hourlyData: List<HourlyWeatherModel>) {
+fun ForecastToday(hourlyData: List<HourlyWeatherData>) {
     LazyRow(
         contentPadding = PaddingValues(horizontal = 20.dp),
         horizontalArrangement = Arrangement.spacedBy(4.dp),

@@ -8,10 +8,16 @@ import com.homeapps.diary.DiaryDB
 class DatabaseDriver(private val appContext: Context) {
 
     fun createDatabaseDriver(): SqlDriver {
-        return AndroidSqliteDriver(
-            schema = DiaryDB.Companion.Schema,
+        val driver = AndroidSqliteDriver(
+            schema = DiaryDB.Schema,
             context = appContext,
             name = "notes.db"
         )
+        DiaryDB.Schema.migrate(
+            driver = driver,
+            oldVersion = 0,
+            newVersion = DiaryDB.Schema.version
+        )
+        return driver
     }
 }

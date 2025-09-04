@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Location(
+data class LocationDTO(
     @SerialName("country") val country: String,
     @SerialName("lat") val latitude: Double,
     @SerialName("lon") val longitude: Double,

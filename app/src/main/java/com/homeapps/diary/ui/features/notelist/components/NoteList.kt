@@ -14,13 +14,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.homeapps.diary.Note
 import com.homeapps.diary.R
+import com.homeapps.diary.domain.models.notes.NoteData
 import com.homeapps.diary.ui.features.components.AlertDialogDiary
 
 @Composable
 fun NoteList(
-    noteList: List<Note>,
+    noteList: List<NoteData>,
     goToNoteDetail:(noteId: Long) -> Unit,
     deleteNote:(noteId: Long) -> Unit
 ) {
@@ -66,9 +66,9 @@ fun NoteList(
 @Composable
 private fun NoteListPreview() {
     NoteList(listOf(
-        Note(1, "category", "title1",0,  1287371236786),
-        Note(2, "category", "title2", 0,1287371236786),
-        Note(3, "category", "title3", 0, 1287371236786),
-        Note(4, "category", "title4", 0, 1287371236786)
+        NoteData(1, "category", "title1",0,  1287371236786),
+        NoteData(2, "category", "title2", 0,1287371236786),
+        NoteData(3, "category", "title3", 0, 1287371236786),
+        NoteData(4, "category", "title4", 0, 1287371236786)
     ), {}, {})
 }

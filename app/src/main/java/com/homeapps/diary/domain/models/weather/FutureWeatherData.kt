@@ -1,6 +1,6 @@
-package com.homeapps.diary.domain.models
+package com.homeapps.diary.domain.models.weather
 
-data class FutureWeatherModel(
+data class FutureWeatherData(
     val date: String,
     val pictureCode: Int?,
     val status: String,

@@ -20,11 +20,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.homeapps.diary.domain.models.HourlyWeatherModel
+import com.homeapps.diary.domain.models.weather.HourlyWeatherData
 import com.homeapps.diary.utils.DateTimeUtils
 
 @Composable
-fun HourlyWeatherItem(hourlyWeather: HourlyWeatherModel) {
+fun HourlyWeatherItem(hourlyWeather: HourlyWeatherData) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier

@@ -25,7 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.homeapps.diary.R
-import com.homeapps.diary.domain.models.WeatherData
+import com.homeapps.diary.domain.models.weather.WeatherData
 import com.homeapps.diary.utils.DateTimeUtils
 import compose.icons.WeatherIcons
 import compose.icons.weathericons.Humidity

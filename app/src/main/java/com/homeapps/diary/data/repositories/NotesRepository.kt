@@ -1,21 +1,23 @@
 package com.homeapps.diary.data.repositories
 
-import com.homeapps.diary.Note
-import com.homeapps.diary.data.datasources.notes.NotesDataSource
+import com.homeapps.diary.data.datasources.notes.NotesDatabaseDao
+import com.homeapps.diary.domain.api.NotesDataApi
+import com.homeapps.diary.domain.models.notes.NoteData
+import kotlinx.coroutines.flow.Flow
 
-class NotesRepository(private val notesDataSource: NotesDataSource) {
+class NotesRepository(private val dao: NotesDatabaseDao): NotesDataApi {
 
-    fun createNewNote() = notesDataSource.createNewNote()
+    override fun createNewNote(): Long = dao.createNewNote()
 
-    fun getUserNotes() = notesDataSource.getAllNotes()
+    override fun getAllNotes(): List<NoteData> = dao.getAllNotes()
 
-    fun getUserNotesFlow() = notesDataSource.getAllNotesFlow()
+    override fun getAllNotesFlow(): Flow<List<NoteData>> = dao.getAllNotesFlow()
 
-    fun getUserNoteById(noteId: Long) = notesDataSource.getNoteById(noteId)
+    override fun getNoteById(noteId: Long): NoteData? = dao.getNoteById(noteId)
 
-    fun getUserNoteByIdFlow(noteId: Long) = notesDataSource.getNoteByIdFlow(noteId)
+    override fun getNoteByIdFlow(noteId: Long): Flow<NoteData?> = dao.getNoteByIdFlow(noteId)
 
-    fun updateNote(note: Note) = notesDataSource.updateNote(note)
+    override fun updateNote(note: NoteData): Long = dao.updateNote(note)
 
-    fun deleteNote(noteId: Long) = notesDataSource.deleteNoteById(noteId)
+    override fun deleteNoteById(noteId: Long): Unit = dao.deleteNoteById(noteId)
 }

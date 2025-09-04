@@ -3,23 +3,25 @@ package com.homeapps.diary.ui.features.notedetail
 import android.content.Context
 import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.ViewModel
-import com.homeapps.diary.Note
 import com.homeapps.diary.R
-import com.homeapps.diary.data.repositories.NotesRepository
+import com.homeapps.diary.domain.models.notes.NoteData
+import com.homeapps.diary.domain.usecases.notes.GetNoteByIdUseCase
+import com.homeapps.diary.domain.usecases.notes.UpdateNoteUseCase
 import com.homeapps.diary.utils.DiaryFileManager
 import com.homeapps.diary.utils.DiaryShareManager
 import com.homeapps.diary.utils.DiarySnackBarManager
 
 class NoteDetailViewModel(
-    private val notesRepository: NotesRepository,
     private val appContext: Context,
+    private val getNoteByIdUseCase: GetNoteByIdUseCase,
+    private val updateNoteUseCase: UpdateNoteUseCase,
 ): ViewModel() {
     private val diaryFileManager = DiaryFileManager(appContext)
     private val diaryShareManager = DiaryShareManager()
 
-    fun getCurrentNote(noteId: Long) = notesRepository.getUserNoteById(noteId = noteId)
+    fun getCurrentNote(noteId: Long): NoteData? = getNoteByIdUseCase(noteId = noteId)
 
-    fun saveUpdatedNote(updatedNote: Note) = notesRepository.updateNote(updatedNote)
+    fun saveUpdatedNote(updatedNote: NoteData): Long = updateNoteUseCase(updatedNote)
 
     fun shareNoteText(noteId: Long, chooserTitle: String, context: Context) {
         val note = getCurrentNote(noteId = noteId) ?: return

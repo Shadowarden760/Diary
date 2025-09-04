@@ -5,8 +5,9 @@ import android.location.Location
 import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.ViewModel
 import com.homeapps.diary.R
-import com.homeapps.diary.domain.models.WeatherData
-import com.homeapps.diary.data.repositories.WeatherRepository
+import com.homeapps.diary.domain.models.weather.WeatherData
+import com.homeapps.diary.domain.usecases.weather.GetForecastUseCase
+import com.homeapps.diary.domain.usecases.weather.GetIpAddressUseCase
 import com.homeapps.diary.utils.DiaryLocationManager
 import com.homeapps.diary.utils.DiarySnackBarManager
 import kotlinx.coroutines.CoroutineScope
@@ -16,8 +17,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class WeatherViewModel(
-    private val weatherRepository: WeatherRepository,
-    private val appContext: Context
+    private val appContext: Context,
+    private val getIpAddressUseCase: GetIpAddressUseCase,
+    private val getForecastUseCase: GetForecastUseCase,
 ): ViewModel() {
     private val diaryLocationManager = DiaryLocationManager(appContext)
     private val _forecast: MutableStateFlow<ForecastResult> = MutableStateFlow(ForecastResult.Loading)
@@ -65,12 +67,9 @@ class WeatherViewModel(
 
     fun loadWeatherByIp(userLocale: String) = CoroutineScope(Dispatchers.IO).launch {
         _forecast.value = ForecastResult.Loading
-        val ipResponse = weatherRepository.getIpAddress()
+        val ipResponse = getIpAddressUseCase()
         if (ipResponse.ip != null) {
-            val forecastResult = weatherRepository.getForecast(
-                qParam = ipResponse.ip,
-                userLocale = userLocale
-            )
+            val forecastResult = getForecastUseCase(qParams = ipResponse.ip, locale = userLocale)
             when (forecastResult) {
                 is WeatherData -> _forecast.value = ForecastResult.Success(forecastResult)
                 null -> _forecast.value = ForecastResult.Failure(
@@ -87,9 +86,9 @@ class WeatherViewModel(
     }
 
     private fun onLocationReceived(location: Location, userLocale: String) = CoroutineScope(Dispatchers.IO).launch {
-        val forecastResult = weatherRepository.getForecast(
-            qParam = "${location.latitude},${location.longitude}",
-            userLocale = userLocale
+        val forecastResult = getForecastUseCase(
+            qParams = "${location.latitude},${location.longitude}",
+            locale = userLocale
         )
         when (forecastResult) {
             is WeatherData -> _forecast.value = ForecastResult.Success(forecastResult)

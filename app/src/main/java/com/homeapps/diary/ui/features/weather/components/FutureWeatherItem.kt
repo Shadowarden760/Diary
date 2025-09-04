@@ -16,11 +16,11 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.homeapps.diary.domain.models.FutureWeatherModel
+import com.homeapps.diary.domain.models.weather.FutureWeatherData
 import com.homeapps.diary.utils.DateTimeUtils
 
 @Composable
-fun FutureWeatherItem(futureWeather: FutureWeatherModel) {
+fun FutureWeatherItem(futureWeather: FutureWeatherData) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier

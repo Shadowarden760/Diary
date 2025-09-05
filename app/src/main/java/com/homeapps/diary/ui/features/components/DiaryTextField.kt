@@ -37,7 +37,7 @@ fun DiaryTextField(
             focusedIndicatorColor = Color.Transparent,
             selectionColors = TextSelectionColors(
                 handleColor = MaterialTheme.colorScheme.primary,
-                backgroundColor = Color.Transparent
+                backgroundColor = MaterialTheme.colorScheme.onPrimaryContainer
             ),
             cursorColor = MaterialTheme.colorScheme.primary
         ),

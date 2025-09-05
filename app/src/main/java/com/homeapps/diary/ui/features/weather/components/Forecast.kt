@@ -1,8 +1,5 @@
 package com.homeapps.diary.ui.features.weather.components
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -17,50 +14,35 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.homeapps.diary.R
 import com.homeapps.diary.domain.models.weather.WeatherData
-import com.homeapps.diary.ui.features.weather.WeatherViewModel
 
 @Composable
-fun Forecast(isVisible: Boolean, forecastResult: WeatherViewModel.ForecastResult) {
-    val weatherData = when(forecastResult) {
-        is WeatherViewModel.ForecastResult.Success -> { forecastResult.data }
-        else -> { WeatherData() }
-    }
-    AnimatedVisibility(
-        visible = isVisible,
-        enter = fadeIn(),
-        exit = fadeOut()
+fun Forecast(weatherData: WeatherData) {
+    LazyColumn(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxSize()
     ) {
-        LazyColumn(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxSize()
-        ) {
-            item { ForecastCurrent(weatherData = weatherData) }
-
-            item {
-                Text(
-                    text = stringResource(R.string.weather_text_today),
-                    style = MaterialTheme.typography.headlineMedium,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 24.dp, top = 16.dp, end = 24.dp, bottom = 8.dp)
-                )
-            }
-
-            item { ForecastToday(hourlyData = weatherData.hourlyWeatherData) }
-
-            item {
-                Text(
-                    text = stringResource(R.string.weather_text_future),
-                    style = MaterialTheme.typography.headlineMedium,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 24.dp, top = 16.dp, end = 24.dp, bottom = 8.dp)
-                )
-            }
-
-            items(weatherData.futureWeatherData) { item ->
-                FutureWeatherItem(item)
-            }
+        item { ForecastCurrent(weatherData = weatherData) }
+        item {
+            Text(
+                text = stringResource(R.string.weather_text_today),
+                style = MaterialTheme.typography.headlineMedium,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 24.dp, top = 16.dp, end = 24.dp, bottom = 8.dp)
+            )
+        }
+        item { ForecastToday(hourlyData = weatherData.hourlyWeatherData) }
+        item {
+            Text(
+                text = stringResource(R.string.weather_text_future),
+                style = MaterialTheme.typography.headlineMedium,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 24.dp, top = 16.dp, end = 24.dp, bottom = 8.dp)
+            )
+        }
+        items(weatherData.futureWeatherData) { item ->
+            FutureWeatherItem(item)
         }
     }
 }

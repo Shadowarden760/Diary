@@ -7,7 +7,6 @@
     <string name="section_weather">Погода</string>
     <string name="weather_text_wait_until_we_get_data">Подождите пока мы получаем данные о погоде</string>
     <string name="weather_text_cant_get_weather_data">Не удалось получить прогноз погоды, попробуйте позже</string>
-    <string name="weather_text_unknown_error">Что-то пошло не так…</string>
     <string name="weather_text_cant_get_ip_address">Не удалось получить Ip адрес</string>
     <string name="weather_text_cant_get_GPS">Не удается получить локацию, подождите немного</string>
     <string name="weather_button_try_again">Попробовать еще раз</string>

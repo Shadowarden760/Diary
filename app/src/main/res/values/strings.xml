@@ -37,5 +37,8 @@
     <string name="note_detail_text_file_was_saved_cancellation">Cancel</string>
     <string name="note_detail_text_file_was_not_saved">Failed to save file</string>
     <string name="note_detail_text_share_with">Share with</string>
+    
+    <string name="notification_text_title_reminder">Reminder</string>
+    <string name="notification_text_content_reminder">Don\'t remember to check your notes and weather forecast.</string>
 
 </resources>

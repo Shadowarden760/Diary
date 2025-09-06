@@ -12,7 +12,7 @@ import android.os.Looper
 import androidx.core.content.ContextCompat
 
 class DiaryLocationManager(private val appContext: Context) {
-    private var locationManager: LocationManager? = null
+    private var locationManager: LocationManager = appContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
     private var locationListener: LocationListener? = null
     private var locationHandler: Handler? = null
     val locationPermissions = arrayOf(
@@ -24,7 +24,6 @@ class DiaryLocationManager(private val appContext: Context) {
     }
 
     fun ifGpsOn(): Boolean {
-        val locationManager = appContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
     }
 
@@ -36,10 +35,7 @@ class DiaryLocationManager(private val appContext: Context) {
         onLocationReceived: (Location) -> Unit,
         onError: (LocationErrors) -> Unit
     ) {
-        locationManager = appContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        val provider = locationManager?.let {
-            getAvailableLocationProvider(it)
-        }
+        val provider = getAvailableLocationProvider()
         if (provider == null) {
             onError(LocationErrors.ERROR_NO_AVAILABLE_PROVIDERS)
         } else {
@@ -63,7 +59,7 @@ class DiaryLocationManager(private val appContext: Context) {
                     onError(LocationErrors.ERROR_LOCATION_TIMEOUT)
                 }, LOCATION_TIMEOUT)
 
-                locationManager?.requestLocationUpdates(
+                locationManager.requestLocationUpdates(
                     provider,
                     MIN_REQUEST_TIME_MS,
                     MIN_DISTANCE_UPDATE_M,
@@ -81,15 +77,13 @@ class DiaryLocationManager(private val appContext: Context) {
     }
 
     private fun cleanUp() {
-        runCatching {
-            locationManager?.removeUpdates(locationListener!!)
-        }
+        locationListener?.let { locationManager.removeUpdates(it) }
         locationHandler?.removeCallbacksAndMessages(null)
         locationListener = null
         locationHandler = null
     }
 
-    private fun getAvailableLocationProvider(locationManager: LocationManager): String? {
+    private fun getAvailableLocationProvider(): String? {
         locationProviders.forEach { provider ->
             if (locationManager.isProviderEnabled(provider)) {
                 return provider

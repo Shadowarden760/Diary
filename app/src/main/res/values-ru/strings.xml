@@ -28,4 +28,6 @@
     <string name="note_detail_text_file_was_not_saved">Не удалось сохранить файл</string>
     <string name="note_detail_text_share_with">Поделиться через</string>
     <string name="weather_text_no_available_providers">Нет доступных поставщиков локации, подождите немного</string>
+    <string name="notification_text_title_reminder">Напоминание</string>
+    <string name="notification_text_content_reminder">Не забудьте проверить свои заметки и прогноз погоды.</string>
 </resources>

@@ -1,5 +1,7 @@
 package com.homeapps.diary.ui.features.home
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,7 +14,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -29,6 +34,19 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun HomeScreen(viewModel: HomeViewModel = koinViewModel()) {
     val darkTheme = viewModel.darkTheme.collectAsState(initial = false)
+    val hasNotificationPermission = remember { mutableStateOf(viewModel.hasNotificationPermission()) }
+    val notificationsPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { permission ->
+        hasNotificationPermission.value = permission
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.setAlarmScheduler()
+        if (!hasNotificationPermission.value) {
+            viewModel.requestNotificationPermission(notificationsPermissionLauncher)
+        }
+    }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,

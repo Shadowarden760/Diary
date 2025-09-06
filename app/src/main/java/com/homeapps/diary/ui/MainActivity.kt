@@ -1,4 +1,4 @@
-package com.homeapps.diary.ui.features
+package com.homeapps.diary.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -32,9 +32,9 @@ class MainActivity: ComponentActivity() {
                 Scaffold(
                     snackbarHost = { SnackbarHost(hostState = appState.snackBarManager.getHostState()) },
                     bottomBar = { BottomBar(appState.navController) },
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.Companion.fillMaxSize()
                 ) { innerPadding ->
-                    Box(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
+                    Box(modifier = Modifier.Companion.fillMaxSize().padding(innerPadding)) {
                         DiaryNavHost(appState)
                     }
                 }

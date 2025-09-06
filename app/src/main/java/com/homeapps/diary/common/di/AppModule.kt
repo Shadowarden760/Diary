@@ -8,9 +8,12 @@ import com.homeapps.diary.data.datasources.weather.remote.WeatherApi
 import com.homeapps.diary.data.repositories.NotesRepository
 import com.homeapps.diary.data.repositories.SettingsRepository
 import com.homeapps.diary.data.repositories.WeatherRepository
+import com.homeapps.diary.data.jobs.DiaryAlarmScheduler
 import com.homeapps.diary.domain.api.NotesDataApi
 import com.homeapps.diary.domain.api.SettingsDataApi
 import com.homeapps.diary.domain.api.WeatherDataApi
+import com.homeapps.diary.domain.usecases.alarm.CancelAlarmUseCase
+import com.homeapps.diary.domain.usecases.alarm.SetAlarmUseCase
 import com.homeapps.diary.domain.usecases.settings.GetDarkThemeUseCase
 import com.homeapps.diary.domain.usecases.settings.SetDarkThemeUseCase
 import com.homeapps.diary.domain.usecases.notes.CreateNewNoteUseCase
@@ -32,6 +35,7 @@ val appModule = module {
     single { ApiClient() }
     single { DatabaseDriver(appContext = androidContext()) }
     single { DiaryDataStore(appContext = androidContext()) }
+    single { DiaryAlarmScheduler(appContext = androidContext()) }
 
     single<SettingsDataApi> { SettingsRepository(diaryDataStore = get()) }
     single<WeatherDataApi> { WeatherRepository(weatherApi = WeatherApi(apiClient = get())) }
@@ -43,6 +47,8 @@ val appModule = module {
         HomeViewModel(
             appContext = androidContext(),
             getDarkThemeUseCase = get(),
+            setAlarmUseCase = SetAlarmUseCase(alarmScheduler = get()),
+            cancelAlarmUseCase = CancelAlarmUseCase(alarmScheduler = get()),
             setDarkThemeUseCase = SetDarkThemeUseCase(settingsDataApi = get())
         )
     }

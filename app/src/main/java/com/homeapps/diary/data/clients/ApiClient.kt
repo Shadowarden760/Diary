@@ -32,7 +32,7 @@ class ApiClient {
             socketTimeoutMillis = NETWORK_TIME_OUT
         }
         install(HttpCache) {
-            publicStorage(FileStorage(File("ktor_cache_public")))
+            privateStorage(FileStorage(File("ktor_cache")))
         }
         if (BuildConfig.DEBUG) {
             install(Logging) {

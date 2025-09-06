@@ -13,15 +13,15 @@ class DatabaseDriver(private val appContext: Context) {
             context = appContext,
             name = "notes.db"
         )
+        makeMigrations(driver = driver)
+        return driver
+    }
+
+    private fun makeMigrations(driver: AndroidSqliteDriver) {
         runCatching {
-            DiaryDB.Schema.migrate(
-                driver = driver,
-                oldVersion = 0,
-                newVersion = DiaryDB.Schema.version
-            )
+            DiaryDB.Schema.migrate(driver = driver, oldVersion = 0, newVersion = DiaryDB.Schema.version)
         }.getOrElse { exception ->
             print(exception.stackTrace)
         }
-        return driver
     }
 }

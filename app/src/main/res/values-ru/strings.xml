@@ -9,6 +9,7 @@
     <string name="weather_text_cant_get_weather_data">Не удалось получить прогноз погоды, попробуйте позже</string>
     <string name="weather_text_cant_get_ip_address">Не удалось получить Ip адрес</string>
     <string name="weather_text_cant_get_GPS">Не удается получить локацию, подождите немного</string>
+    <string name="weather_text_GPS_timeout">Вышло время получения координат, ожидайте</string>
     <string name="weather_button_try_again">Попробовать еще раз</string>
     <string name="weather_button_return">Вернуться</string>
     <string name="weather_text_today">Сегодня</string>

@@ -42,7 +42,7 @@ fun WeatherScreen(
         contract = ActivityResultContracts.StartActivityForResult()
     ) { _ ->
         if (viewModel.ifGpsOn()) {
-            if (viewModel.checkLocationPermissions()) {
+            if (viewModel.hasLocationPermissions()) {
                 viewModel.loadWeatherByLocation(Locale.current.language, snackBarManager)
             } else {
                 viewModel.getLocationPermissions(locationPermissionLauncher)
@@ -58,11 +58,11 @@ fun WeatherScreen(
             settingsLauncher.launch(intent)
             return@LaunchedEffect
         }
-        if (!viewModel.checkLocationPermissions()) {
+        if (!viewModel.hasLocationPermissions()) {
             viewModel.getLocationPermissions(locationPermissionLauncher)
             return@LaunchedEffect
         }
-        if (viewModel.ifGpsOn() && viewModel.checkLocationPermissions()) {
+        if (viewModel.ifGpsOn() && viewModel.hasLocationPermissions()) {
             viewModel.loadWeatherByLocation(Locale.current.language, snackBarManager)
         } else {
             viewModel.loadWeatherByIp(Locale.current.language)

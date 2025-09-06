@@ -27,7 +27,7 @@ class WeatherViewModel(
 
     fun ifGpsOn() = diaryLocationManager.ifGpsOn()
 
-    fun checkLocationPermissions() = diaryLocationManager.hasLocationPermissions()
+    fun hasLocationPermissions() = diaryLocationManager.hasLocationPermissions()
 
     fun getLocationPermissions(launcher: ActivityResultLauncher<Array<String>>) {
         launcher.launch(diaryLocationManager.locationPermissions)
@@ -55,6 +55,13 @@ class WeatherViewModel(
                     DiaryLocationManager.LocationErrors.ERROR_REQUESTING_LOCATION -> {
                         snackBarManager.showSnackBar(
                             message = appContext.getString(R.string.weather_text_cant_get_GPS),
+                            actionLabel = null,
+                            action = {}
+                        )
+                    }
+                    DiaryLocationManager.LocationErrors.ERROR_LOCATION_TIMEOUT -> {
+                        snackBarManager.showSnackBar(
+                            message = appContext.getString(R.string.weather_text_GPS_timeout),
                             actionLabel = null,
                             action = {}
                         )

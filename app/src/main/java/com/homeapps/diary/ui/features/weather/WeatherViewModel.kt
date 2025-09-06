@@ -22,12 +22,12 @@ class WeatherViewModel(
     private val getForecastUseCase: GetForecastUseCase,
 ): ViewModel() {
     private val diaryLocationManager = DiaryLocationManager(appContext)
-    private val _forecast: MutableStateFlow<ForecastResult> = MutableStateFlow(ForecastResult.Loading)
-    val forecast: StateFlow<ForecastResult> = _forecast
+    private val _forecastState: MutableStateFlow<ForecastResult> = MutableStateFlow(ForecastResult.Loading)
+    val forecastState: StateFlow<ForecastResult> = _forecastState
 
     fun ifGpsOn() = diaryLocationManager.ifGpsOn()
 
-    fun checkLocationPermissions() = diaryLocationManager.hasLocationPermissions()
+    fun hasLocationPermissions() = diaryLocationManager.hasLocationPermissions()
 
     fun getLocationPermissions(launcher: ActivityResultLauncher<Array<String>>) {
         launcher.launch(diaryLocationManager.locationPermissions)
@@ -35,7 +35,7 @@ class WeatherViewModel(
 
     fun loadWeatherByLocation(userLocale: String, snackBarManager: DiarySnackBarManager
     ) = CoroutineScope(Dispatchers.IO).launch {
-        _forecast.value = ForecastResult.Loading
+        _forecastState.value = ForecastResult.Loading
         diaryLocationManager.requestSingleLocationUpdate(
             onLocationReceived = { location ->
                 onLocationReceived(
@@ -59,40 +59,49 @@ class WeatherViewModel(
                             action = {}
                         )
                     }
+                    DiaryLocationManager.LocationErrors.ERROR_LOCATION_TIMEOUT -> {
+                        snackBarManager.showSnackBar(
+                            message = appContext.getString(R.string.weather_text_GPS_timeout),
+                            actionLabel = null,
+                            action = {}
+                        )
+                    }
                 }
                 loadWeatherByIp(userLocale = userLocale)
             }
         )
     }
 
-    fun loadWeatherByIp(userLocale: String) = CoroutineScope(Dispatchers.IO).launch {
-        _forecast.value = ForecastResult.Loading
+    fun loadWeatherByIp(userLocale: String
+    ) = CoroutineScope(Dispatchers.IO).launch {
+        _forecastState.value = ForecastResult.Loading
         val ipResponse = getIpAddressUseCase()
         if (ipResponse.ip != null) {
             val forecastResult = getForecastUseCase(qParams = ipResponse.ip, locale = userLocale)
             when (forecastResult) {
-                is WeatherData -> _forecast.value = ForecastResult.Success(forecastResult)
-                null -> _forecast.value = ForecastResult.Failure(
+                is WeatherData -> _forecastState.value = ForecastResult.Success(forecastResult)
+                null -> _forecastState.value = ForecastResult.Failure(
                     message = appContext.getString(R.string.weather_text_cant_get_weather_data)
                 )
             }
         } else {
             if (ipResponse.errorMessage.isNotEmpty()) {
-                _forecast.value = ForecastResult.Failure(message = ipResponse.errorMessage)
+                _forecastState.value = ForecastResult.Failure(message = ipResponse.errorMessage)
             } else {
-                _forecast.value = ForecastResult.Failure(message = appContext.getString(R.string.weather_text_cant_get_ip_address))
+                _forecastState.value = ForecastResult.Failure(message = appContext.getString(R.string.weather_text_cant_get_ip_address))
             }
         }
     }
 
-    private fun onLocationReceived(location: Location, userLocale: String) = CoroutineScope(Dispatchers.IO).launch {
+    private fun onLocationReceived(location: Location, userLocale: String
+    ) = CoroutineScope(Dispatchers.IO).launch {
         val forecastResult = getForecastUseCase(
             qParams = "${location.latitude},${location.longitude}",
             locale = userLocale
         )
         when (forecastResult) {
-            is WeatherData -> _forecast.value = ForecastResult.Success(forecastResult)
-            null -> _forecast.value = ForecastResult.Failure(
+            is WeatherData -> _forecastState.value = ForecastResult.Success(forecastResult)
+            null -> _forecastState.value = ForecastResult.Failure(
                 message = appContext.getString(R.string.weather_text_cant_get_weather_data)
             )
         }

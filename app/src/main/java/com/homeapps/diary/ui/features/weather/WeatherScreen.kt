@@ -4,13 +4,14 @@ import android.content.Intent
 import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.intl.Locale
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.homeapps.diary.ui.features.weather.components.Forecast
@@ -25,7 +26,7 @@ fun WeatherScreen(
     snackBarManager: DiarySnackBarManager,
     goHome: () -> Unit = {}
 ) {
-    val forecast = viewModel.forecast.collectAsStateWithLifecycle()
+    val forecastState = viewModel.forecastState.collectAsStateWithLifecycle()
     val hasLocationPermission = remember { mutableStateOf(false) }
     val locationPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
@@ -41,7 +42,7 @@ fun WeatherScreen(
         contract = ActivityResultContracts.StartActivityForResult()
     ) { _ ->
         if (viewModel.ifGpsOn()) {
-            if (viewModel.checkLocationPermissions()) {
+            if (viewModel.hasLocationPermissions()) {
                 viewModel.loadWeatherByLocation(Locale.current.language, snackBarManager)
             } else {
                 viewModel.getLocationPermissions(locationPermissionLauncher)
@@ -51,38 +52,39 @@ fun WeatherScreen(
         viewModel.loadWeatherByIp(Locale.current.language)
     }
 
-    LaunchedEffect(key1 = Unit) {
+    LaunchedEffect(Unit) {
         if (!viewModel.ifGpsOn()) {
             val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
             settingsLauncher.launch(intent)
             return@LaunchedEffect
         }
-        if (!viewModel.checkLocationPermissions()) {
+        if (!viewModel.hasLocationPermissions()) {
             viewModel.getLocationPermissions(locationPermissionLauncher)
             return@LaunchedEffect
         }
-        if (viewModel.ifGpsOn() && viewModel.checkLocationPermissions()) {
+        if (viewModel.ifGpsOn() && viewModel.hasLocationPermissions()) {
             viewModel.loadWeatherByLocation(Locale.current.language, snackBarManager)
         } else {
             viewModel.loadWeatherByIp(Locale.current.language)
         }
     }
 
-    Column(
-        modifier = Modifier.fillMaxSize()
+    AnimatedContent(
+        targetState = forecastState.value,
+        transitionSpec = { fadeIn().togetherWith(fadeOut()) },
     ) {
-        Waiting(
-            isVisible = forecast.value is WeatherViewModel.ForecastResult.Loading
-        )
-        WeatherError(
-            isVisible = forecast.value is WeatherViewModel.ForecastResult.Failure,
-            errorMessage = if (forecast.value is WeatherViewModel.ForecastResult.Failure) (forecast.value as WeatherViewModel.ForecastResult.Failure).message else "",
-            tryAgain = { viewModel.loadWeatherByIp(Locale.current.language) },
-            goHome = goHome
-        )
-        Forecast(
-            isVisible = forecast.value is WeatherViewModel.ForecastResult.Success,
-            forecastResult = forecast.value
-        )
+        when (it) {
+            is WeatherViewModel.ForecastResult.Loading -> Waiting()
+
+            is WeatherViewModel.ForecastResult.Success -> Forecast(weatherData = it.data)
+
+            is WeatherViewModel.ForecastResult.Failure -> {
+                WeatherError(
+                    errorMessage = it.message,
+                    tryAgain = { viewModel.loadWeatherByIp(Locale.current.language) },
+                    goHome = goHome
+                )
+            }
+        }
     }
 }

@@ -14,10 +14,10 @@
 
     <string name="weather_text_wait_until_we_get_data">Wait until we get weather data</string>
     <string name="weather_text_cant_get_weather_data">Cannot get forecast data, try later</string>
-    <string name="weather_text_unknown_error">Something went wrong…</string>
     <string name="weather_text_cant_get_ip_address">Can\'t get Ip address</string>
     <string name="weather_text_no_available_providers">No available GPS providers, wait a little</string>
     <string name="weather_text_cant_get_GPS">Cannot get your location, wait a little</string>
+    <string name="weather_text_GPS_timeout">Location request timeout, wait a little</string>
     <string name="weather_button_try_again">Try Again</string>
     <string name="weather_button_return">Return</string>
     <string name="weather_text_today">Today</string>

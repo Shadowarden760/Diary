@@ -1,8 +1,5 @@
 package com.homeapps.diary.ui.features.weather.components
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,37 +19,31 @@ import androidx.compose.ui.unit.dp
 import com.homeapps.diary.R
 
 @Composable
-fun Waiting(isVisible: Boolean) {
-    AnimatedVisibility(
-        visible = isVisible,
-        enter = fadeIn(),
-        exit = fadeOut()
+fun Waiting() {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier.fillMaxSize()
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxSize()
-        ) {
-            CircularProgressIndicator(
-                strokeWidth = 5.dp,
-                modifier = Modifier
-                    .size(50.dp)
-                    .align(Alignment.CenterHorizontally)
-            )
-            Text(
-                text = stringResource(R.string.weather_text_wait_until_we_get_data),
-                style = MaterialTheme.typography.titleLarge,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 24.dp)
-            )
-        }
+        CircularProgressIndicator(
+            strokeWidth = 5.dp,
+            modifier = Modifier
+                .size(50.dp)
+                .align(Alignment.CenterHorizontally)
+        )
+        Text(
+            text = stringResource(R.string.weather_text_wait_until_we_get_data),
+            style = MaterialTheme.typography.titleLarge,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 24.dp)
+        )
     }
 }
 
 @Preview
 @Composable
 private fun WaitingPreview() {
-    Waiting(true)
+    Waiting()
 }

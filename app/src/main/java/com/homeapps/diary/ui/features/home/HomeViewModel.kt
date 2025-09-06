@@ -41,9 +41,13 @@ class HomeViewModel(
         launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
     }
 
-    fun setAlarmScheduler() {
+    fun cancelAlarmScheduler(): Boolean {
         val intent = Intent(appContext, DiaryAlarmReceiver::class.java)
-        //cancelAlarmUseCase(intent)
-        setAlarmUseCase(intent = intent, System.currentTimeMillis())
+        return cancelAlarmUseCase(intent = intent)
+    }
+
+    fun setAlarmScheduler(timeMillis: Long): Boolean {
+        val intent = Intent(appContext, DiaryAlarmReceiver::class.java)
+        return setAlarmUseCase(intent = intent, timeMillis = timeMillis)
     }
 }

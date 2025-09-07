@@ -3,7 +3,7 @@ package com.homeapps.diary.domain.api
 import com.homeapps.diary.domain.models.weather.IpAddressData
 import com.homeapps.diary.domain.models.weather.WeatherData
 
-interface WeatherDataApi {
+interface WeatherRepository {
 
     suspend fun getIpAddress(): IpAddressData
 

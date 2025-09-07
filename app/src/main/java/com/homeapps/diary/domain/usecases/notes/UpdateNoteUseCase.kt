@@ -1,12 +1,12 @@
 package com.homeapps.diary.domain.usecases.notes
 
-import com.homeapps.diary.domain.api.NotesDataApi
+import com.homeapps.diary.domain.api.NotesRepository
 import com.homeapps.diary.domain.models.notes.NoteData
 
 
-class UpdateNoteUseCase(private val notesDataApi: NotesDataApi) {
+class UpdateNoteUseCase(private val notesRepository: NotesRepository) {
 
     operator fun invoke(note: NoteData): Long {
-        return notesDataApi.updateNote(note = note)
+        return notesRepository.updateNote(note = note)
     }
 }

@@ -5,13 +5,13 @@ import com.homeapps.diary.data.clients.DatabaseDriver
 import com.homeapps.diary.data.datasources.notes.NotesDatabaseDao
 import com.homeapps.diary.data.datasources.settings.DiaryDataStore
 import com.homeapps.diary.data.datasources.weather.remote.WeatherApi
-import com.homeapps.diary.data.repositories.NotesRepository
-import com.homeapps.diary.data.repositories.SettingsRepository
-import com.homeapps.diary.data.repositories.WeatherRepository
+import com.homeapps.diary.data.repositories.NotesRepositoryImpl
+import com.homeapps.diary.data.repositories.SettingsRepositoryImpl
+import com.homeapps.diary.data.repositories.WeatherRepositoryImpl
 import com.homeapps.diary.data.jobs.DiaryAlarmScheduler
-import com.homeapps.diary.domain.api.NotesDataApi
-import com.homeapps.diary.domain.api.SettingsDataApi
-import com.homeapps.diary.domain.api.WeatherDataApi
+import com.homeapps.diary.domain.api.NotesRepository
+import com.homeapps.diary.domain.api.SettingsRepository
+import com.homeapps.diary.domain.api.WeatherRepository
 import com.homeapps.diary.domain.usecases.alarm.CancelAlarmUseCase
 import com.homeapps.diary.domain.usecases.alarm.SetAlarmUseCase
 import com.homeapps.diary.domain.usecases.settings.GetDarkThemeUseCase
@@ -24,6 +24,7 @@ import com.homeapps.diary.domain.usecases.notes.UpdateNoteUseCase
 import com.homeapps.diary.domain.usecases.weather.GetForecastUseCase
 import com.homeapps.diary.domain.usecases.weather.GetIpAddressUseCase
 import com.homeapps.diary.ui.features.home.HomeViewModel
+import com.homeapps.diary.ui.features.homealarm.AlarmViewModel
 import com.homeapps.diary.ui.features.notedetail.NoteDetailViewModel
 import com.homeapps.diary.ui.features.notelist.NoteListViewModel
 import com.homeapps.diary.ui.features.weather.WeatherViewModel
@@ -37,40 +38,45 @@ val appModule = module {
     single { DiaryDataStore(appContext = androidContext()) }
     single { DiaryAlarmScheduler(appContext = androidContext()) }
 
-    single<SettingsDataApi> { SettingsRepository(diaryDataStore = get()) }
-    single<WeatherDataApi> { WeatherRepository(weatherApi = WeatherApi(apiClient = get())) }
-    single<NotesDataApi> { NotesRepository(dao = NotesDatabaseDao(databaseDriver = get())) }
+    single<SettingsRepository> { SettingsRepositoryImpl(diaryDataStore = get()) }
+    single<WeatherRepository> { WeatherRepositoryImpl(weatherApi = WeatherApi(apiClient = get())) }
+    single<NotesRepository> { NotesRepositoryImpl(dao = NotesDatabaseDao(databaseDriver = get())) }
 
-    single { GetDarkThemeUseCase(settingsDataApi = get()) }
+    single { GetDarkThemeUseCase(settingsRepository = get()) }
 
     viewModel {
         HomeViewModel(
             appContext = androidContext(),
             getDarkThemeUseCase = get(),
+            setDarkThemeUseCase = SetDarkThemeUseCase(settingsRepository = get())
+        )
+    }
+    viewModel {
+        AlarmViewModel(
+            appContext = androidContext(),
             setAlarmUseCase = SetAlarmUseCase(alarmScheduler = get()),
             cancelAlarmUseCase = CancelAlarmUseCase(alarmScheduler = get()),
-            setDarkThemeUseCase = SetDarkThemeUseCase(settingsDataApi = get())
         )
     }
     viewModel {
         NoteListViewModel(
-            createNewNoteUseCase = CreateNewNoteUseCase(notesDataApi = get()),
-            deleteNoteByIdUseCase = DeleteNoteByIdUseCase(notesDataApi = get()),
-            getNotesFlowUseCase = GetNotesFlowUseCase(notesDataApi = get())
+            createNewNoteUseCase = CreateNewNoteUseCase(notesRepository = get()),
+            deleteNoteByIdUseCase = DeleteNoteByIdUseCase(notesRepository = get()),
+            getNotesFlowUseCase = GetNotesFlowUseCase(notesRepository = get())
         )
     }
     viewModel {
         NoteDetailViewModel(
             appContext = androidContext(),
-            getNoteByIdUseCase = GetNoteByIdUseCase(notesDataApi = get()),
-            updateNoteUseCase = UpdateNoteUseCase(notesDataApi = get())
+            getNoteByIdUseCase = GetNoteByIdUseCase(notesRepository = get()),
+            updateNoteUseCase = UpdateNoteUseCase(notesRepository = get())
         )
     }
     viewModel {
         WeatherViewModel(
             appContext = androidContext(),
-            getIpAddressUseCase = GetIpAddressUseCase(weatherDataApi = get()),
-            getForecastUseCase = GetForecastUseCase(weatherDataApi = get())
+            getIpAddressUseCase = GetIpAddressUseCase(weatherRepository = get()),
+            getForecastUseCase = GetForecastUseCase(weatherRepository = get())
         )
     }
 }

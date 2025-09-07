@@ -12,6 +12,7 @@ import com.homeapps.diary.common.navigation.NavigationBarSection
 import com.homeapps.diary.common.navigation.navigate
 import com.homeapps.diary.common.navigation.popUp
 import com.homeapps.diary.ui.features.home.HomeScreen
+import com.homeapps.diary.ui.features.homealarm.AlarmScreen
 import com.homeapps.diary.ui.features.notedetail.NoteDetailScreen
 import com.homeapps.diary.ui.features.notelist.NoteListScreen
 import com.homeapps.diary.ui.features.weather.WeatherScreen
@@ -28,12 +29,20 @@ fun DiaryNavHost(appState: DiaryAppState) {
             )
         }
 
+        val goToAlarmFromHome: () -> Unit = {
+            appState.navigate(route = DiaryRoute.Alarm.route)
+        }
+
         val goBack: () -> Unit = {
             appState.popUp()
         }
 
         composable(DiaryRoute.Home.route) {
-            HomeScreen()
+            HomeScreen(goToAlarmScreen = goToAlarmFromHome)
+        }
+
+        composable(route = DiaryRoute.Alarm.route) {
+            AlarmScreen(goBack = goBack)
         }
 
         composable(DiaryRoute.NoteList.route) {

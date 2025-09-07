@@ -1,11 +1,11 @@
 package com.homeapps.diary.data.repositories
 
 import com.homeapps.diary.data.datasources.notes.NotesDatabaseDao
-import com.homeapps.diary.domain.api.NotesDataApi
+import com.homeapps.diary.domain.api.NotesRepository
 import com.homeapps.diary.domain.models.notes.NoteData
 import kotlinx.coroutines.flow.Flow
 
-class NotesRepository(private val dao: NotesDatabaseDao): NotesDataApi {
+class NotesRepositoryImpl(private val dao: NotesDatabaseDao): NotesRepository {
 
     override fun createNewNote(): Long = dao.createNewNote()
 

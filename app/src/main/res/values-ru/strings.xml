@@ -5,6 +5,7 @@
     <string name="section_home">Домой</string>
     <string name="section_notes">Заметки</string>
     <string name="section_weather">Погода</string>
+    <string name="alarm_text_alarm_wasn_t_canceled">Будильник не был отменен</string>
     <string name="weather_text_wait_until_we_get_data">Подождите пока мы получаем данные о погоде</string>
     <string name="weather_text_cant_get_weather_data">Не удалось получить прогноз погоды, попробуйте позже</string>
     <string name="weather_text_cant_get_ip_address">Не удалось получить Ip адрес</string>
@@ -30,4 +31,9 @@
     <string name="weather_text_no_available_providers">Нет доступных поставщиков локации, подождите немного</string>
     <string name="notification_text_title_reminder">Напоминание</string>
     <string name="notification_text_content_reminder">Не забудьте проверить свои заметки и прогноз погоды.</string>
+    <string name="alarm_button_reset_alarms">Сбросить будильники</string>
+    <string name="alarm_button_confirm_alarm">Подтвердить будильник</string>
+    <string name="alarm_text_alarm_was_set">Будильник был установлен</string>
+    <string name="alarm_text_alarm_wasn_t_set">Будильник не был установлен</string>
+    <string name="alarm_text_alarm_was_canceled">Будильник был отменен</string>
 </resources>

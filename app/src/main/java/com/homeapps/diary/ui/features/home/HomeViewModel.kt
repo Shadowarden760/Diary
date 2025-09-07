@@ -2,16 +2,12 @@ package com.homeapps.diary.ui.features.home
 
 import android.Manifest
 import android.content.Context
-import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.homeapps.diary.domain.usecases.alarm.CancelAlarmUseCase
-import com.homeapps.diary.domain.usecases.alarm.SetAlarmUseCase
 import com.homeapps.diary.domain.usecases.settings.GetDarkThemeUseCase
 import com.homeapps.diary.domain.usecases.settings.SetDarkThemeUseCase
 import com.homeapps.diary.utils.AppLanguage
-import com.homeapps.diary.utils.DiaryAlarmReceiver
 import com.homeapps.diary.utils.DiaryNotificationManager
 import com.homeapps.diary.utils.LanguageManager
 import kotlinx.coroutines.launch
@@ -19,8 +15,6 @@ import kotlinx.coroutines.launch
 class HomeViewModel(
     private val appContext: Context,
     private val setDarkThemeUseCase: SetDarkThemeUseCase,
-    private val setAlarmUseCase: SetAlarmUseCase,
-    private val cancelAlarmUseCase: CancelAlarmUseCase,
     getDarkThemeUseCase: GetDarkThemeUseCase,
 ): ViewModel() {
     private val languageManager = LanguageManager(appContext = appContext)
@@ -39,15 +33,5 @@ class HomeViewModel(
 
     fun requestNotificationPermission(launcher: ActivityResultLauncher<String>) {
         launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
-    }
-
-    fun cancelAlarmScheduler(): Boolean {
-        val intent = Intent(appContext, DiaryAlarmReceiver::class.java)
-        return cancelAlarmUseCase(intent = intent)
-    }
-
-    fun setAlarmScheduler(timeMillis: Long): Boolean {
-        val intent = Intent(appContext, DiaryAlarmReceiver::class.java)
-        return setAlarmUseCase(intent = intent, timeMillis = timeMillis)
     }
 }

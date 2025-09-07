@@ -3,7 +3,7 @@ package com.homeapps.diary.domain.api
 import com.homeapps.diary.domain.models.notes.NoteData
 import kotlinx.coroutines.flow.Flow
 
-interface NotesDataApi {
+interface NotesRepository {
 
     fun createNewNote(): Long
 

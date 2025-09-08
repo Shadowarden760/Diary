@@ -18,6 +18,8 @@
     <string name="alarm_text_alarm_wasn_t_set">Alarm wasn\'t set</string>
     <string name="alarm_text_alarm_was_canceled">Alarm was canceled</string>
     <string name="alarm_text_alarm_wasn_t_canceled">Alarm wasn\'t canceled</string>
+    <string name="alarm_text_alarms_were_canceled">Alarms were canceled</string>
+    <string name="alarm_text_alarms_weren_t_canceled">Alarms were not canceled</string>
 
     <string name="weather_text_wait_until_we_get_data">Wait until we get weather data</string>
     <string name="weather_text_cant_get_weather_data">Cannot get forecast data, try later</string>
@@ -47,6 +49,8 @@
     
     <string name="notification_text_title_reminder">Reminder</string>
     <string name="notification_text_content_reminder">Don\'t remember to check your notes and weather forecast.</string>
+    <string name="alarm_text_set_your_alarm">Set your alarm</string>
+    <string name="alarm_text_your_alarms">Your alarms</string>
 
 
 </resources>

@@ -12,6 +12,7 @@ import com.homeapps.diary.R
 import com.homeapps.diary.domain.models.notes.NoteData
 import com.homeapps.diary.ui.features.notedetail.components.NoteButtons
 import com.homeapps.diary.ui.features.notedetail.components.NoteDataScreen
+import com.homeapps.diary.utils.DiaryShareManager
 import com.homeapps.diary.utils.DiarySnackBarManager
 import org.koin.androidx.compose.koinViewModel
 
@@ -56,9 +57,11 @@ fun NoteDetailScreen(
             )
             NoteButtons(
                 shareNote = {
-                    viewModel.shareNoteText(
-                        noteId = noteId,
-                        chooserTitle = currentContext.getString(R.string.note_detail_text_share_with)
+                    val diaryShareManager = DiaryShareManager()
+                    diaryShareManager.shareTextData(
+                        textData = note.noteMessage,
+                        chooserTitle = currentContext.getString(R.string.note_detail_text_share_with),
+                        context = currentContext
                     )
                 },
                 saveNote = {

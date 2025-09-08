@@ -15,20 +15,9 @@ fun NoteListScreen(
     viewModel: NoteListViewModel = koinViewModel(),
     goToNoteDetail:(noteId: Long) -> Unit = {}
 ) {
-    val state = viewModel.state.collectAsStateWithLifecycle()
     val notes = viewModel.notesFlow.collectAsStateWithLifecycle(listOf())
 
-    when(state.value) {
-        is NoteListViewModel.NoteListState.NewNote -> {
-            viewModel.updateState(newState = NoteListViewModel.NoteListState.Default)
-            goToNoteDetail((state.value as NoteListViewModel.NoteListState.NewNote).noteId)
-        }
-        is NoteListViewModel.NoteListState.Default -> { /* do nothing */ }
-    }
-
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
+    Column(modifier = Modifier.fillMaxSize()) {
         NoteListHeader(noteNumber = notes.value.size)
         NoteList(
             noteList = notes.value,
@@ -37,6 +26,10 @@ fun NoteListScreen(
         )
     }
     NoteListEnd(
-        createNewNote = { viewModel.createNewNote() }
+        createNewNote = {
+            viewModel.createNewNote { newNoteId ->
+                goToNoteDetail(newNoteId)
+            }
+        }
     )
 }

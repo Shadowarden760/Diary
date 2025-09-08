@@ -9,11 +9,13 @@ class RemoveAllAlarmsUseCase(
     private val alarmScheduler: DiaryAlarmScheduler,
 ) {
 
-    suspend operator fun invoke(intent: Intent) {
+    suspend operator fun invoke(intent: Intent): Boolean {
+        val alarmCancelStatus = mutableListOf<Boolean>()
         val alarms = alarmRepository.getAllAlarms()
-        alarms.forEach {
-            alarmScheduler.alarmCancel(intent, it)
+        alarms.forEach { alarmItem ->
+            alarmCancelStatus.add(alarmScheduler.alarmCancel(intent, alarmItem))
         }
-        alarmRepository.removeAllAlarms()
+        val numberOfDeletedAlarms = alarmRepository.removeAllAlarms()
+        return alarmCancelStatus.all { it } && numberOfDeletedAlarms.toInt() == alarmCancelStatus.size
     }
 }

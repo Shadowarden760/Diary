@@ -10,8 +10,9 @@ class RemoveAlarmUseCase(
     private val alarmScheduler: DiaryAlarmScheduler,
 ) {
 
-    suspend operator fun invoke(intent: Intent, alarmItem: AlarmItem) {
-        alarmScheduler.alarmCancel(intent, alarmItem)
-        alarmRepository.removeAlarm(alarmItem.alarmId)
+    suspend operator fun invoke(intent: Intent, alarmItem: AlarmItem): Boolean {
+        val cancelStatus = alarmScheduler.alarmCancel(intent, alarmItem)
+        val removeStatus = alarmRepository.removeAlarm(alarmItem.alarmId)
+        return cancelStatus && removeStatus
     }
 }

@@ -10,6 +10,8 @@ import com.homeapps.diary.domain.usecases.alarm.AddAlarmUseCase
 import com.homeapps.diary.domain.usecases.alarm.GetAllAlarmsUseCase
 import com.homeapps.diary.domain.usecases.alarm.RemoveAlarmUseCase
 import com.homeapps.diary.utils.DiaryAlarmReceiver
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class AlarmViewModel(
@@ -19,20 +21,36 @@ class AlarmViewModel(
     private val removeAllAlarmsUseCase: RemoveAllAlarmsUseCase,
     getAllAlarmUseCase: GetAllAlarmsUseCase,
 ): ViewModel() {
+    private val _state = MutableStateFlow<AlarmScreenState>(AlarmScreenState.Default)
+    val state = _state.asStateFlow()
     val alarms = getAllAlarmUseCase()
+
+    fun resetState() {
+        _state.value = AlarmScreenState.Default
+    }
 
     fun addNewAlarm(timeMillis: Long) = viewModelScope.launch {
         val intent = Intent(appContext, DiaryAlarmReceiver::class.java)
-        addAlarmUseCase(intent = intent, timeMillis = timeMillis)
+        val result = addAlarmUseCase(intent = intent, timeMillis = timeMillis)
+        _state.value = AlarmScreenState.AddNewAlarm(result)
     }
 
     fun removeAlarm(alarmItem: AlarmItem) = viewModelScope.launch {
         val intent = Intent(appContext, DiaryAlarmReceiver::class.java)
-        removeAlarmUseCase(intent = intent, alarmItem = alarmItem)
+        val result = removeAlarmUseCase(intent = intent, alarmItem = alarmItem)
+        _state.value = AlarmScreenState.RemoveAlarm(result)
     }
 
     fun removeAllAlarms() = viewModelScope.launch {
         val intent = Intent(appContext, DiaryAlarmReceiver::class.java)
-        removeAllAlarmsUseCase(intent = intent)
+        val result = removeAllAlarmsUseCase(intent = intent)
+        _state.value = AlarmScreenState.RemoveAllAlarms(result)
+    }
+
+    sealed class AlarmScreenState {
+        object Default: AlarmScreenState()
+        data class AddNewAlarm(val status: Boolean): AlarmScreenState()
+        data class RemoveAlarm(val status: Boolean): AlarmScreenState()
+        data class RemoveAllAlarms(val status: Boolean): AlarmScreenState()
     }
 }

@@ -9,7 +9,6 @@ import com.homeapps.diary.domain.models.notes.NoteData
 import com.homeapps.diary.domain.usecases.notes.GetNoteByIdUseCase
 import com.homeapps.diary.domain.usecases.notes.UpdateNoteUseCase
 import com.homeapps.diary.utils.DiaryFileManager
-import com.homeapps.diary.utils.DiaryShareManager
 import com.homeapps.diary.utils.DiarySnackBarManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,7 +20,6 @@ class NoteDetailViewModel(
     private val updateNoteUseCase: UpdateNoteUseCase,
 ): ViewModel() {
     private val diaryFileManager = DiaryFileManager(appContext)
-    private val diaryShareManager = DiaryShareManager(appContext)
     private val _state = MutableStateFlow<NoteDetailState>(NoteDetailState.Default)
     val state = _state.asStateFlow()
 
@@ -36,16 +34,6 @@ class NoteDetailViewModel(
 
     fun saveUpdatedNote(updatedNote: NoteData) = viewModelScope.launch {
         updateNoteUseCase(updatedNote)
-    }
-
-    fun shareNoteText(noteId: Long, chooserTitle: String) = viewModelScope.launch {
-        val note = getNoteByIdUseCase(noteId = noteId)
-        note?.let {
-            diaryShareManager.shareTextData(
-                textData = it.noteMessage,
-                chooserTitle = chooserTitle
-            )
-        }
     }
 
     fun hasStoragePermissions(): Boolean = diaryFileManager.hasStoragePermissions()

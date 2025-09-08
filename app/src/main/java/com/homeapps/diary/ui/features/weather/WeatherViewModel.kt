@@ -4,14 +4,13 @@ import android.content.Context
 import android.location.Location
 import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.homeapps.diary.R
 import com.homeapps.diary.domain.models.weather.WeatherData
 import com.homeapps.diary.domain.usecases.weather.GetForecastUseCase
 import com.homeapps.diary.domain.usecases.weather.GetIpAddressUseCase
 import com.homeapps.diary.utils.DiaryLocationManager
 import com.homeapps.diary.utils.DiarySnackBarManager
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -34,7 +33,7 @@ class WeatherViewModel(
     }
 
     fun loadWeatherByLocation(userLocale: String, snackBarManager: DiarySnackBarManager
-    ) = CoroutineScope(Dispatchers.IO).launch {
+    ) = viewModelScope.launch {
         _forecastState.value = ForecastResult.Loading
         diaryLocationManager.requestSingleLocationUpdate(
             onLocationReceived = { location ->
@@ -72,8 +71,7 @@ class WeatherViewModel(
         )
     }
 
-    fun loadWeatherByIp(userLocale: String
-    ) = CoroutineScope(Dispatchers.IO).launch {
+    fun loadWeatherByIp(userLocale: String) = viewModelScope.launch {
         _forecastState.value = ForecastResult.Loading
         val ipResponse = getIpAddressUseCase()
         if (ipResponse.ip != null) {
@@ -93,8 +91,7 @@ class WeatherViewModel(
         }
     }
 
-    private fun onLocationReceived(location: Location, userLocale: String
-    ) = CoroutineScope(Dispatchers.IO).launch {
+    private fun onLocationReceived(location: Location, userLocale: String) = viewModelScope.launch {
         val forecastResult = getForecastUseCase(
             qParams = "${location.latitude},${location.longitude}",
             locale = userLocale

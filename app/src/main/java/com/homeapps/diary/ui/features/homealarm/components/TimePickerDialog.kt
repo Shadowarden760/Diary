@@ -2,7 +2,9 @@ package com.homeapps.diary.ui.features.homealarm.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -42,21 +44,27 @@ fun TimePickerDialog(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxWidth()
     ) {
-        IconButton(
-            onClick = onDismiss,
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .align(Alignment.End)
                 .padding(16.dp)
-
+                .fillMaxWidth()
         ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_cancel),
-                tint = MaterialTheme.colorScheme.primary,
-                contentDescription = null,
-                modifier = Modifier.size(35.dp)
+            Text(
+                text = stringResource(R.string.alarm_text_set_your_alarm),
+                style = MaterialTheme.typography.headlineMedium
             )
+            Spacer(Modifier.weight(1f))
+            IconButton(onClick = onDismiss) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_cancel),
+                    tint = MaterialTheme.colorScheme.primary,
+                    contentDescription = null,
+                    modifier = Modifier.size(35.dp)
+                )
+            }
         }
         TimePicker(state = timePickerState)
         Button(

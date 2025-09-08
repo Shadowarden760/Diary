@@ -6,7 +6,7 @@ import com.homeapps.diary.domain.models.notes.NoteData
 
 class UpdateNoteUseCase(private val notesRepository: NotesRepository) {
 
-    operator fun invoke(note: NoteData): Long {
+    suspend operator fun invoke(note: NoteData): Long {
         return notesRepository.updateNote(note = note)
     }
 }

@@ -3,23 +3,36 @@ package com.homeapps.diary.ui.features.homealarm
 import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.ViewModel
-import com.homeapps.diary.domain.usecases.alarm.CancelAlarmUseCase
-import com.homeapps.diary.domain.usecases.alarm.SetAlarmUseCase
+import androidx.lifecycle.viewModelScope
+import com.homeapps.diary.domain.models.alarm.AlarmItem
+import com.homeapps.diary.domain.usecases.alarm.RemoveAllAlarmsUseCase
+import com.homeapps.diary.domain.usecases.alarm.AddAlarmUseCase
+import com.homeapps.diary.domain.usecases.alarm.GetAllAlarmsUseCase
+import com.homeapps.diary.domain.usecases.alarm.RemoveAlarmUseCase
 import com.homeapps.diary.utils.DiaryAlarmReceiver
+import kotlinx.coroutines.launch
 
 class AlarmViewModel(
     private val appContext: Context,
-    private val setAlarmUseCase: SetAlarmUseCase,
-    private val cancelAlarmUseCase: CancelAlarmUseCase,
+    private val addAlarmUseCase: AddAlarmUseCase,
+    private val removeAlarmUseCase: RemoveAlarmUseCase,
+    private val removeAllAlarmsUseCase: RemoveAllAlarmsUseCase,
+    getAllAlarmUseCase: GetAllAlarmsUseCase,
 ): ViewModel() {
+    val alarms = getAllAlarmUseCase()
 
-    fun cancelAlarmScheduler(): Boolean {
+    fun addNewAlarm(timeMillis: Long) = viewModelScope.launch {
         val intent = Intent(appContext, DiaryAlarmReceiver::class.java)
-        return cancelAlarmUseCase(intent = intent)
+        addAlarmUseCase(intent = intent, timeMillis = timeMillis)
     }
 
-    fun setAlarmScheduler(timeMillis: Long): Boolean {
+    fun removeAlarm(alarmItem: AlarmItem) = viewModelScope.launch {
         val intent = Intent(appContext, DiaryAlarmReceiver::class.java)
-        return setAlarmUseCase(intent = intent, timeMillis = timeMillis)
+        removeAlarmUseCase(intent = intent, alarmItem = alarmItem)
+    }
+
+    fun removeAllAlarms() = viewModelScope.launch {
+        val intent = Intent(appContext, DiaryAlarmReceiver::class.java)
+        removeAllAlarmsUseCase(intent = intent)
     }
 }

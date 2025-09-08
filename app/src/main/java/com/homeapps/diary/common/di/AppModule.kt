@@ -2,6 +2,7 @@ package com.homeapps.diary.common.di
 
 import com.homeapps.diary.data.clients.ApiClient
 import com.homeapps.diary.data.clients.DatabaseDriver
+import com.homeapps.diary.data.datasources.alarms.AlarmsDatabaseDao
 import com.homeapps.diary.data.datasources.notes.NotesDatabaseDao
 import com.homeapps.diary.data.datasources.settings.DiaryDataStore
 import com.homeapps.diary.data.datasources.weather.remote.WeatherApi
@@ -9,11 +10,15 @@ import com.homeapps.diary.data.repositories.NotesRepositoryImpl
 import com.homeapps.diary.data.repositories.SettingsRepositoryImpl
 import com.homeapps.diary.data.repositories.WeatherRepositoryImpl
 import com.homeapps.diary.data.jobs.DiaryAlarmScheduler
+import com.homeapps.diary.data.repositories.AlarmRepositoryImpl
+import com.homeapps.diary.domain.api.AlarmRepository
 import com.homeapps.diary.domain.api.NotesRepository
 import com.homeapps.diary.domain.api.SettingsRepository
 import com.homeapps.diary.domain.api.WeatherRepository
-import com.homeapps.diary.domain.usecases.alarm.CancelAlarmUseCase
-import com.homeapps.diary.domain.usecases.alarm.SetAlarmUseCase
+import com.homeapps.diary.domain.usecases.alarm.RemoveAllAlarmsUseCase
+import com.homeapps.diary.domain.usecases.alarm.AddAlarmUseCase
+import com.homeapps.diary.domain.usecases.alarm.GetAllAlarmsUseCase
+import com.homeapps.diary.domain.usecases.alarm.RemoveAlarmUseCase
 import com.homeapps.diary.domain.usecases.settings.GetDarkThemeUseCase
 import com.homeapps.diary.domain.usecases.settings.SetDarkThemeUseCase
 import com.homeapps.diary.domain.usecases.notes.CreateNewNoteUseCase
@@ -41,6 +46,7 @@ val appModule = module {
     single<SettingsRepository> { SettingsRepositoryImpl(diaryDataStore = get()) }
     single<WeatherRepository> { WeatherRepositoryImpl(weatherApi = WeatherApi(apiClient = get())) }
     single<NotesRepository> { NotesRepositoryImpl(dao = NotesDatabaseDao(databaseDriver = get())) }
+    single<AlarmRepository> { AlarmRepositoryImpl(dao = AlarmsDatabaseDao(databaseDriver = get())) }
 
     single { GetDarkThemeUseCase(settingsRepository = get()) }
 
@@ -54,8 +60,10 @@ val appModule = module {
     viewModel {
         AlarmViewModel(
             appContext = androidContext(),
-            setAlarmUseCase = SetAlarmUseCase(alarmScheduler = get()),
-            cancelAlarmUseCase = CancelAlarmUseCase(alarmScheduler = get()),
+            getAllAlarmUseCase = GetAllAlarmsUseCase(alarmRepository = get()),
+            addAlarmUseCase = AddAlarmUseCase(alarmRepository = get(), alarmScheduler = get()),
+            removeAlarmUseCase = RemoveAlarmUseCase(alarmRepository = get(), alarmScheduler = get()),
+            removeAllAlarmsUseCase = RemoveAllAlarmsUseCase(alarmRepository = get(), alarmScheduler = get()),
         )
     }
     viewModel {

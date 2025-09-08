@@ -16,18 +16,14 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun NoteListEnd(
-    goToNoteDetail:(noteId: Long) -> Unit = {},
-    createNewNote:() -> Long,
+    createNewNote:() -> Unit
 ) {
     Box(
         contentAlignment = Alignment.BottomEnd,
         modifier = Modifier.fillMaxSize()
     ) {
         FloatingActionButton(
-            onClick = {
-                val newId = createNewNote()
-                goToNoteDetail(newId)
-            },
+            onClick = createNewNote,
             shape = MaterialTheme.shapes.medium,
             modifier = Modifier.padding(vertical = 16.dp, horizontal = 24.dp)
         ) {
@@ -42,5 +38,5 @@ fun NoteListEnd(
 @Preview
 @Composable
 private fun NoteListEndPreview() {
-    NoteListEnd({}, { 1L })
+    NoteListEnd({})
 }

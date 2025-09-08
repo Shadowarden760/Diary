@@ -1,23 +1,23 @@
 package com.homeapps.diary.data.repositories
 
 import com.homeapps.diary.data.datasources.notes.NotesDatabaseDao
+import com.homeapps.diary.data.mappers.toNoteData
 import com.homeapps.diary.domain.api.NotesRepository
 import com.homeapps.diary.domain.models.notes.NoteData
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class NotesRepositoryImpl(private val dao: NotesDatabaseDao): NotesRepository {
 
-    override fun createNewNote(): Long = dao.createNewNote()
+    override suspend fun createNewNote(): Long = dao.createNewNote()
 
-    override fun getAllNotes(): List<NoteData> = dao.getAllNotes()
+    override suspend fun getAllNotes(): List<NoteData> = dao.getAllNotes().map { it.toNoteData() }
 
-    override fun getAllNotesFlow(): Flow<List<NoteData>> = dao.getAllNotesFlow()
+    override fun getAllNotesFlow(): Flow<List<NoteData>> = dao.getAllNotesFlow().map { it.map { dbo -> dbo.toNoteData() } }
 
-    override fun getNoteById(noteId: Long): NoteData? = dao.getNoteById(noteId)
+    override suspend fun getNoteById(noteId: Long): NoteData? = dao.getNoteById(noteId)?.toNoteData()
 
-    override fun getNoteByIdFlow(noteId: Long): Flow<NoteData?> = dao.getNoteByIdFlow(noteId)
+    override suspend fun updateNote(note: NoteData): Long = dao.updateNote(note)
 
-    override fun updateNote(note: NoteData): Long = dao.updateNote(note)
-
-    override fun deleteNoteById(noteId: Long): Unit = dao.deleteNoteById(noteId)
+    override suspend fun deleteNoteById(noteId: Long): Unit = dao.deleteNoteById(noteId)
 }

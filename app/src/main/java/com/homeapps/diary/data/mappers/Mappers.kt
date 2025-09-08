@@ -1,7 +1,9 @@
 package com.homeapps.diary.data.mappers
 
+import com.homeapps.diary.AlarmDBO
 import com.homeapps.diary.NoteDBO
 import com.homeapps.diary.data.datasources.weather.models.dto.ForecastDTO
+import com.homeapps.diary.domain.models.alarm.AlarmItem
 import com.homeapps.diary.domain.models.notes.NoteData
 import com.homeapps.diary.domain.models.weather.FutureWeatherData
 import com.homeapps.diary.domain.models.weather.HourlyWeatherData
@@ -51,5 +53,12 @@ fun NoteDBO.toNoteData(): NoteData {
         noteMessage = this.noteMessage,
         noteCreatedAt = this.noteCreatedAt,
         noteUpdatedAt = this.noteUpdatedAt,
+    )
+}
+
+fun AlarmDBO.toAlarmItem(): AlarmItem {
+    return AlarmItem(
+        alarmId = this.alarmId,
+        alarmTimeMillis = this.alarmTimeMillis
     )
 }

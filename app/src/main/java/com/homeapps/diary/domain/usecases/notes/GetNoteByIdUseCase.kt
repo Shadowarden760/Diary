@@ -5,7 +5,7 @@ import com.homeapps.diary.domain.models.notes.NoteData
 
 class GetNoteByIdUseCase(private val notesRepository: NotesRepository) {
 
-    operator fun invoke(noteId: Long): NoteData? {
+    suspend operator fun invoke(noteId: Long): NoteData? {
         return notesRepository.getNoteById(noteId = noteId)
     }
 }

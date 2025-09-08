@@ -17,6 +17,10 @@ insertAlarm:
 INSERT INTO AlarmDBO(alarmTimeMillis, alarnCreatedAt)
 VALUES (?, ?);
 
+updateAlarm:
+REPLACE INTO AlarmDBO(alarmId, alarmTimeMillis, alarnCreatedAt)
+VALUES (?, ?, ?);
+
 deleteAlarmById:
 DELETE FROM AlarmDBO
 WHERE AlarmDBO.alarmId = ?;

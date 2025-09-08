@@ -42,7 +42,7 @@ fun AlarmListItem(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(horizontal = 16.dp)
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_timer),
@@ -56,6 +56,11 @@ fun AlarmListItem(
                 style = MaterialTheme.typography.titleLarge
             )
         }
+        Text(
+            text = "${calendar[Calendar.YEAR]}.${calendar[Calendar.MONTH] + 1}.${calendar[Calendar.DAY_OF_MONTH]}",
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.padding(16.dp)
+        )
     }
 }
 

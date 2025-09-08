@@ -10,21 +10,28 @@ import com.homeapps.diary.domain.usecases.notes.GetNoteByIdUseCase
 import com.homeapps.diary.domain.usecases.notes.UpdateNoteUseCase
 import com.homeapps.diary.utils.DiaryFileManager
 import com.homeapps.diary.utils.DiarySnackBarManager
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class NoteDetailViewModel(
     private val appContext: Context,
     private val getNoteByIdUseCase: GetNoteByIdUseCase,
     private val updateNoteUseCase: UpdateNoteUseCase,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ): ViewModel() {
     private val diaryFileManager = DiaryFileManager(appContext)
     private val _state = MutableStateFlow<NoteDetailState>(NoteDetailState.Default)
     val state = _state.asStateFlow()
 
     fun getCurrentNote(noteId: Long) = viewModelScope.launch {
-        val note = getNoteByIdUseCase(noteId = noteId)
+        val note = withContext(dispatcher) {
+            getNoteByIdUseCase(noteId = noteId)
+        }
         if (note == null) {
             _state.value = NoteDetailState.Error
         } else {
@@ -32,18 +39,20 @@ class NoteDetailViewModel(
         }
     }
 
-    fun saveUpdatedNote(updatedNote: NoteData) = viewModelScope.launch {
+    fun saveUpdatedNote(updatedNote: NoteData) = CoroutineScope(dispatcher).launch {
         updateNoteUseCase(updatedNote)
     }
 
-    fun hasStoragePermissions(): Boolean = diaryFileManager.hasStoragePermissions()
+    fun hasStoragePermissions()= diaryFileManager.hasStoragePermissions()
 
     fun requestStoragePermissions(launcher: ActivityResultLauncher<Array<String>>) {
         launcher.launch(diaryFileManager.storagePermissions)
     }
 
     fun saveNoteToFile(noteId: Long, snackBarManager: DiarySnackBarManager) = viewModelScope.launch {
-        val note = getNoteByIdUseCase(noteId = noteId)
+        val note = withContext(dispatcher) {
+            getNoteByIdUseCase(noteId = noteId)
+        }
         note?.let {
             val result = diaryFileManager.saveDataToFile(
                 data = note,

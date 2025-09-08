@@ -14,10 +14,10 @@ class DiaryAlarmScheduler(private val appContext: Context): AlarmScheduler {
 
     override fun alarmSchedule(intent: Intent, alarmItem: AlarmItem): Boolean {
         return try {
-            alarmManager.setRepeating(
+            intent.putExtra("ALARM_ID", alarmItem.alarmId)
+            alarmManager.setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,
                 alarmItem.alarmTimeMillis,
-                AlarmManager.INTERVAL_DAY,
                 PendingIntent.getBroadcast(
                     appContext,
                     alarmItem.alarmId.toInt(),
@@ -27,15 +27,16 @@ class DiaryAlarmScheduler(private val appContext: Context): AlarmScheduler {
             )
             isAlarmSet(alarmItem)
         } catch (ex: SecurityException) {
-            Log.e(ex.message, "Alarm Id = ${alarmItem.alarmId}")
+            Log.e(DiaryAlarmScheduler::class.java.name, "${ex.message}")
             false
         } catch (ex: Exception) {
-            Log.e(ex.message, "Alarm Id = ${alarmItem.alarmId}")
+            Log.e(DiaryAlarmScheduler::class.java.name, "${ex.message}")
             false
         }
     }
 
     override fun alarmCancel(intent: Intent, alarmItem: AlarmItem): Boolean {
+        intent.putExtra("ALARM_ID", alarmItem.alarmId)
         val pendingIntent = PendingIntent.getBroadcast(
             appContext,
             alarmItem.alarmId.toInt(),

@@ -11,6 +11,10 @@ interface AlarmRepository {
 
     fun getAllAlarmsFlow(): Flow<List<AlarmItem>>
 
+    suspend fun getAlarmById(alarmId: Long): AlarmItem?
+
+    suspend fun updateAlarm(alarmId: Long, newTime: Long): AlarmItem?
+
     suspend fun removeAlarm(alarmId: Long): Boolean
 
     suspend fun removeAllAlarms(): Long

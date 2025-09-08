@@ -29,8 +29,8 @@ android {
         applicationId = "com.homeapps.diary"
         minSdk = 26
         targetSdk = 36
-        versionCode = 44
-        versionName = "1.5.2"
+        versionCode = 48
+        versionName = "1.5.6"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -96,6 +96,7 @@ sqldelight {
             schemaOutputDirectory = file("src/main/sqldelight/com/homeapps/diary/schemas")
             migrationOutputDirectory = file("src/main/sqldelight/com/homeapps/diary/migrations")
             verifyMigrations = true
+            generateAsync = true
         }
     }
 }

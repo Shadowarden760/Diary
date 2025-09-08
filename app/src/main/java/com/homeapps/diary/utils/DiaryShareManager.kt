@@ -3,7 +3,7 @@ package com.homeapps.diary.utils
 import android.content.Context
 import android.content.Intent
 
-class DiaryShareManager {
+class DiaryShareManager() {
 
     fun shareTextData(textData: String, chooserTitle: String, context: Context): Boolean {
         return runCatching {

@@ -1,5 +1,7 @@
 package com.homeapps.diary.ui.features.home
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,16 +11,23 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.homeapps.diary.BuildConfig
 import com.homeapps.diary.R
 import com.homeapps.diary.ui.features.home.components.DropDownLanguageMenu
@@ -26,9 +35,25 @@ import com.homeapps.diary.ui.features.home.components.ThemeSwitcher
 import com.homeapps.diary.ui.features.home.components.featherIcon
 import org.koin.androidx.compose.koinViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = koinViewModel()) {
-    val darkTheme = viewModel.darkTheme.collectAsState(initial = false)
+fun HomeScreen(
+    viewModel: HomeViewModel = koinViewModel(),
+    goToAlarmScreen: () -> Unit,
+) {
+    val darkTheme = viewModel.darkTheme.collectAsStateWithLifecycle(initialValue = false)
+    val hasNotificationPermission = remember { mutableStateOf(viewModel.hasNotificationPermission()) }
+    val notificationsPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { permission ->
+        hasNotificationPermission.value = permission
+    }
+
+    LaunchedEffect(Unit) {
+        if (!hasNotificationPermission.value) {
+            viewModel.requestNotificationPermission(notificationsPermissionLauncher)
+        }
+    }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -41,6 +66,17 @@ fun HomeScreen(viewModel: HomeViewModel = koinViewModel()) {
                 .fillMaxWidth()
                 .padding(top = 16.dp, end = 24.dp)
         ) {
+            IconButton(
+                onClick = goToAlarmScreen,
+                modifier = Modifier.padding(start = 8.dp)
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_timer),
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(35.dp)
+                )
+            }
             DropDownLanguageMenu(
                 onItemClick = { selectedLanguage ->
                     viewModel.changeLanguage(newLanguage = selectedLanguage)

@@ -1,58 +1,47 @@
 package com.homeapps.diary.data.datasources.notes
 
+import app.cash.sqldelight.async.coroutines.awaitAsList
+import app.cash.sqldelight.async.coroutines.awaitAsOne
+import app.cash.sqldelight.async.coroutines.awaitAsOneOrNull
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
-import app.cash.sqldelight.coroutines.mapToOneOrNull
 import com.homeapps.diary.DiaryDB
+import com.homeapps.diary.NoteDBO
 import com.homeapps.diary.data.clients.DatabaseDriver
-import com.homeapps.diary.data.mappers.toNoteData
 import com.homeapps.diary.domain.models.notes.NoteData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 
 class NotesDatabaseDao(databaseDriver: DatabaseDriver) {
     private val database = DiaryDB.Companion(databaseDriver.createDatabaseDriver())
-    private val queries = database.noteDatabaseQueries
+    private val queries = database.noteDBOQueries
 
-    fun createNewNote(): Long {
+    suspend fun createNewNote(): Long {
         queries.insertNewNote(
             noteTitle = "",
             noteMessage = "",
             noteCreatedAt = System.currentTimeMillis(),
             noteUpdatedAt = System.currentTimeMillis()
         )
-        return queries.lastInsertedId().executeAsOne()
+        return queries.lastInsertedNoteId().awaitAsOne()
     }
 
-    fun getAllNotes(): List<NoteData> {
-        return queries.getAllNotes().executeAsList().map { it.toNoteData() }
+    suspend fun getAllNotes(): List<NoteDBO> {
+        return queries.getAllNotes().awaitAsList()
     }
 
-    fun getAllNotesFlow(): Flow<List<NoteData>> {
+    fun getAllNotesFlow(): Flow<List<NoteDBO>> {
         return queries.getAllNotes()
             .asFlow()
             .mapToList(Dispatchers.IO)
-            .map { noteDBOS ->
-                val noteData = mutableListOf<NoteData>()
-                noteDBOS.forEach { noteData.add(it.toNoteData()) }
-                noteData
-            }
     }
 
-    fun getNoteById(noteId: Long): NoteData? {
-        return queries.getNoteById(noteId).executeAsOneOrNull()?.toNoteData()
-    }
-
-    fun getNoteByIdFlow(noteId: Long): Flow<NoteData?> {
-        return queries.getNoteById(noteId)
-            .asFlow()
-            .mapToOneOrNull(Dispatchers.IO)
-            .map { noteDBO -> noteDBO?.toNoteData() }
+    suspend fun getNoteById(noteId: Long): NoteDBO? {
+        return queries.getNoteById(noteId).awaitAsOneOrNull()
     }
 
 
-    fun updateNote(note: NoteData): Long {
+    suspend fun updateNote(note: NoteData): Long {
         queries.updateNote(
             noteId = note.noteId,
             noteTitle = note.noteTitle,
@@ -63,7 +52,7 @@ class NotesDatabaseDao(databaseDriver: DatabaseDriver) {
         return note.noteId
     }
 
-    fun deleteNoteById(noteId: Long) {
+    suspend fun deleteNoteById(noteId: Long) {
         queries.deleteNoteById(noteId)
     }
 }

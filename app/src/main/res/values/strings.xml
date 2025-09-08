@@ -12,6 +12,15 @@
     <string name="home_text_version" translatable="false">Version:</string>
     <string name="home_text_creator" translatable="false">Created by Shadowarden760</string>
 
+    <string name="alarm_button_reset_alarms">Reset alarms</string>
+    <string name="alarm_button_confirm_alarm">Confirm alarm</string>
+    <string name="alarm_text_alarm_was_set">Alarm was set</string>
+    <string name="alarm_text_alarm_wasn_t_set">Alarm wasn\'t set</string>
+    <string name="alarm_text_alarm_was_canceled">Alarm was canceled</string>
+    <string name="alarm_text_alarm_wasn_t_canceled">Alarm wasn\'t canceled</string>
+    <string name="alarm_text_alarms_were_canceled">Alarms were canceled</string>
+    <string name="alarm_text_alarms_weren_t_canceled">Alarms were not canceled</string>
+
     <string name="weather_text_wait_until_we_get_data">Wait until we get weather data</string>
     <string name="weather_text_cant_get_weather_data">Cannot get forecast data, try later</string>
     <string name="weather_text_cant_get_ip_address">Can\'t get Ip address</string>
@@ -37,5 +46,11 @@
     <string name="note_detail_text_file_was_saved_cancellation">Cancel</string>
     <string name="note_detail_text_file_was_not_saved">Failed to save file</string>
     <string name="note_detail_text_share_with">Share with</string>
+    
+    <string name="notification_text_title_reminder">Reminder</string>
+    <string name="notification_text_content_reminder">Don\'t remember to check your notes and weather forecast.</string>
+    <string name="alarm_text_set_your_alarm">Set your alarm</string>
+    <string name="alarm_text_your_alarms">Your alarms</string>
+
 
 </resources>

@@ -27,5 +27,5 @@ deleteNoteById:
 DELETE FROM NoteDBO
 WHERE NoteDBO.noteId = ?;
 
-lastInsertedId:
+lastInsertedNoteId:
 SELECT last_insert_rowid();

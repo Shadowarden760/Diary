@@ -1,0 +1,28 @@
+CREATE TABLE AlarmDBO (
+    alarmId INTEGER PRIMARY KEY AUTOINCREMENT,
+    alarmTimeMillis INTEGER NOT NULL,
+    alarnCreatedAt INTEGER NOT NULL
+);
+
+getAllAlarms:
+SELECT AlarmDBO.*
+FROM AlarmDBO;
+
+getAlarmById:
+SELECT AlarmDBO.*
+FROM AlarmDBO
+WHERE AlarmDBO.alarmId = ?;
+
+insertAlarm:
+INSERT INTO AlarmDBO(alarmTimeMillis, alarnCreatedAt)
+VALUES (?, ?);
+
+deleteAlarmById:
+DELETE FROM AlarmDBO
+WHERE AlarmDBO.alarmId = ?;
+
+deleteAllAlarms:
+DELETE FROM AlarmDBO;
+
+lastInsertedAlarmId:
+SELECT last_insert_rowid();

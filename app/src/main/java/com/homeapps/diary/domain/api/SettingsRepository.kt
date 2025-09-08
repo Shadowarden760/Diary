@@ -2,7 +2,7 @@ package com.homeapps.diary.domain.api
 
 import kotlinx.coroutines.flow.Flow
 
-interface SettingsDataApi {
+interface SettingsRepository {
 
     fun getDarkTheme(): Flow<Boolean>
 

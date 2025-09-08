@@ -28,7 +28,8 @@ fun DropDownLanguageMenu(onItemClick: (language: AppLanguage) -> Unit) {
 
     Box {
         IconButton(
-            onClick = { expanded.value = true }
+            onClick = { expanded.value = true },
+            modifier = Modifier.padding(start = 8.dp)
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_language),

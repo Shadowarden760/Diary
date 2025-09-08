@@ -1,10 +1,10 @@
 package com.homeapps.diary.domain.usecases.settings
 
-import com.homeapps.diary.domain.api.SettingsDataApi
+import com.homeapps.diary.domain.api.SettingsRepository
 
-class SetDarkThemeUseCase(private val settingsDataApi: SettingsDataApi) {
+class SetDarkThemeUseCase(private val settingsRepository: SettingsRepository) {
 
     suspend operator fun invoke(darkTheme: Boolean) {
-        settingsDataApi.setDarkTheme(darkTheme)
+        settingsRepository.setDarkTheme(darkTheme)
     }
 }

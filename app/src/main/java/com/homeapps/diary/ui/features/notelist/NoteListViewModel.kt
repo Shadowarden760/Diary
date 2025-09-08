@@ -1,9 +1,11 @@
 package com.homeapps.diary.ui.features.notelist
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.homeapps.diary.domain.usecases.notes.CreateNewNoteUseCase
 import com.homeapps.diary.domain.usecases.notes.DeleteNoteByIdUseCase
 import com.homeapps.diary.domain.usecases.notes.GetNotesFlowUseCase
+import kotlinx.coroutines.launch
 
 class NoteListViewModel(
     private val createNewNoteUseCase: CreateNewNoteUseCase,
@@ -12,7 +14,12 @@ class NoteListViewModel(
 ): ViewModel() {
     val notesFlow = getNotesFlowUseCase()
 
-    fun createNewNote(): Long = createNewNoteUseCase()
+    fun createNewNote(goToNote: (Long) -> Unit) = viewModelScope.launch {
+        val newNoteId = createNewNoteUseCase()
+        goToNote(newNoteId)
+    }
 
-    fun deleteNote(noteId: Long) = deleteNoteByIdUseCase(noteId = noteId)
+    fun deleteNote(noteId: Long) = viewModelScope.launch {
+        deleteNoteByIdUseCase(noteId = noteId)
+    }
 }

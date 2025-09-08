@@ -17,9 +17,7 @@ fun NoteListScreen(
 ) {
     val notes = viewModel.notesFlow.collectAsStateWithLifecycle(listOf())
 
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
+    Column(modifier = Modifier.fillMaxSize()) {
         NoteListHeader(noteNumber = notes.value.size)
         NoteList(
             noteList = notes.value,
@@ -28,7 +26,10 @@ fun NoteListScreen(
         )
     }
     NoteListEnd(
-        goToNoteDetail = goToNoteDetail,
-        createNewNote = { viewModel.createNewNote() }
+        createNewNote = {
+            viewModel.createNewNote { newNoteId ->
+                goToNoteDetail(newNoteId)
+            }
+        }
     )
 }

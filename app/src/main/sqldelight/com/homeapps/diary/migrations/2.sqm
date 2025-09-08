@@ -1,0 +1,5 @@
+CREATE TABLE AlarmDBO (
+    alarmId INTEGER PRIMARY KEY AUTOINCREMENT,
+    alarmTimeMillis INTEGER NOT NULL,
+    alarnCreatedAt INTEGER NOT NULL
+);

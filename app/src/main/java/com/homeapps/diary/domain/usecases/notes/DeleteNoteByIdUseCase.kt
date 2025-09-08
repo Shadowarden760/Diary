@@ -1,10 +1,10 @@
 package com.homeapps.diary.domain.usecases.notes
 
-import com.homeapps.diary.domain.api.NotesDataApi
+import com.homeapps.diary.domain.api.NotesRepository
 
-class DeleteNoteByIdUseCase(private val notesDataApi: NotesDataApi) {
+class DeleteNoteByIdUseCase(private val notesRepository: NotesRepository) {
 
-    operator fun invoke(noteId: Long) {
-        notesDataApi.deleteNoteById(noteId = noteId)
+    suspend operator fun invoke(noteId: Long) {
+        notesRepository.deleteNoteById(noteId = noteId)
     }
 }

@@ -11,14 +11,18 @@ import com.homeapps.diary.domain.usecases.weather.GetForecastUseCase
 import com.homeapps.diary.domain.usecases.weather.GetIpAddressUseCase
 import com.homeapps.diary.utils.DiaryLocationManager
 import com.homeapps.diary.utils.DiarySnackBarManager
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class WeatherViewModel(
     private val appContext: Context,
     private val getIpAddressUseCase: GetIpAddressUseCase,
     private val getForecastUseCase: GetForecastUseCase,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ): ViewModel() {
     private val diaryLocationManager = DiaryLocationManager(appContext)
     private val _forecastState: MutableStateFlow<ForecastResult> = MutableStateFlow(ForecastResult.Loading)
@@ -32,7 +36,9 @@ class WeatherViewModel(
         launcher.launch(diaryLocationManager.locationPermissions)
     }
 
-    fun loadWeatherByLocation(userLocale: String, snackBarManager: DiarySnackBarManager
+    fun loadWeatherByLocation(
+        userLocale: String,
+        snackBarManager: DiarySnackBarManager
     ) = viewModelScope.launch {
         _forecastState.value = ForecastResult.Loading
         diaryLocationManager.requestSingleLocationUpdate(
@@ -73,9 +79,13 @@ class WeatherViewModel(
 
     fun loadWeatherByIp(userLocale: String) = viewModelScope.launch {
         _forecastState.value = ForecastResult.Loading
-        val ipResponse = getIpAddressUseCase()
+        val ipResponse = withContext(dispatcher) {
+            getIpAddressUseCase()
+        }
         if (ipResponse.ip != null) {
-            val forecastResult = getForecastUseCase(qParams = ipResponse.ip, locale = userLocale)
+            val forecastResult = withContext(dispatcher) {
+                getForecastUseCase(qParams = ipResponse.ip, locale = userLocale)
+            }
             when (forecastResult) {
                 is WeatherData -> _forecastState.value = ForecastResult.Success(forecastResult)
                 null -> _forecastState.value = ForecastResult.Failure(
@@ -92,10 +102,12 @@ class WeatherViewModel(
     }
 
     private fun onLocationReceived(location: Location, userLocale: String) = viewModelScope.launch {
-        val forecastResult = getForecastUseCase(
-            qParams = "${location.latitude},${location.longitude}",
-            locale = userLocale
-        )
+        val forecastResult = withContext(dispatcher) {
+            getForecastUseCase(
+                qParams = "${location.latitude},${location.longitude}",
+                locale = userLocale
+            )
+        }
         when (forecastResult) {
             is WeatherData -> _forecastState.value = ForecastResult.Success(forecastResult)
             null -> _forecastState.value = ForecastResult.Failure(

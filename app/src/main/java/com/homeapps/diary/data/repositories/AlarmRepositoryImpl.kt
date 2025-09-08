@@ -21,6 +21,14 @@ class AlarmRepositoryImpl(private val dao: AlarmsDatabaseDao): AlarmRepository {
         return dao.getAllAlarmsFlow().map { it.map { alarmDBO -> alarmDBO.toAlarmItem() } }
     }
 
+    override suspend fun getAlarmById(alarmId: Long): AlarmItem? {
+        return dao.getAlarmById(alarmId = alarmId)?.toAlarmItem()
+    }
+
+    override suspend fun updateAlarm(alarmId: Long, newTime: Long): AlarmItem? {
+        return dao.updateAlarmById(alarmId = alarmId, newTime = newTime)?.toAlarmItem()
+    }
+
     override suspend fun removeAlarm(alarmId: Long): Boolean {
         return dao.deleteAlarmById(alarmId = alarmId) > 0
     }

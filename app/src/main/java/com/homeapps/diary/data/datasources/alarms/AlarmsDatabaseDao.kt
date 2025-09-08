@@ -34,6 +34,21 @@ class AlarmsDatabaseDao(databaseDriver: DatabaseDriver) {
             .mapToList(Dispatchers.IO)
     }
 
+    suspend fun getAlarmById(alarmId: Long): AlarmDBO? {
+        return queries.getAlarmById(alarmId = alarmId).awaitAsOneOrNull()
+    }
+
+    suspend fun updateAlarmById(alarmId: Long, newTime: Long): AlarmDBO? {
+        return queries.getAlarmById(alarmId).awaitAsOneOrNull()?.let {
+            queries.updateAlarm(
+                alarmId = it.alarmId,
+                alarmTimeMillis = newTime,
+                alarnCreatedAt = it.alarnCreatedAt
+            )
+            queries.getAlarmById(alarmId).executeAsOneOrNull()
+        }
+    }
+
     suspend fun deleteAlarmById(alarmId: Long): Long {
         return queries.deleteAlarmById(alarmId = alarmId)
     }

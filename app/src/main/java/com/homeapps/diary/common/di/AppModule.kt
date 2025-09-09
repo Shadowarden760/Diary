@@ -6,12 +6,13 @@ import com.homeapps.diary.data.datasources.alarms.AlarmsDatabaseDao
 import com.homeapps.diary.data.datasources.notes.NotesDatabaseDao
 import com.homeapps.diary.data.datasources.settings.DiaryDataStore
 import com.homeapps.diary.data.datasources.weather.remote.WeatherApi
-import com.homeapps.diary.data.jobs.DiaryAlarmScheduler
+import com.homeapps.diary.data.jobs.AlarmSchedulerImpl
 import com.homeapps.diary.data.repositories.AlarmRepositoryImpl
 import com.homeapps.diary.data.repositories.NotesRepositoryImpl
 import com.homeapps.diary.data.repositories.SettingsRepositoryImpl
 import com.homeapps.diary.data.repositories.WeatherRepositoryImpl
 import com.homeapps.diary.domain.api.AlarmRepository
+import com.homeapps.diary.domain.api.AlarmScheduler
 import com.homeapps.diary.domain.api.NotesRepository
 import com.homeapps.diary.domain.api.SettingsRepository
 import com.homeapps.diary.domain.api.WeatherRepository
@@ -41,12 +42,12 @@ val appModule = module {
     single { ApiClient() }
     single { DatabaseDriver(appContext = androidContext()) }
     single { DiaryDataStore(appContext = androidContext()) }
-    single { DiaryAlarmScheduler(appContext = androidContext()) }
 
     single<SettingsRepository> { SettingsRepositoryImpl(diaryDataStore = get()) }
     single<WeatherRepository> { WeatherRepositoryImpl(weatherApi = WeatherApi(apiClient = get())) }
     single<NotesRepository> { NotesRepositoryImpl(dao = NotesDatabaseDao(databaseDriver = get())) }
     single<AlarmRepository> { AlarmRepositoryImpl(dao = AlarmsDatabaseDao(databaseDriver = get())) }
+    single<AlarmScheduler> { AlarmSchedulerImpl(appContext = androidContext()) }
 
     single { GetDarkThemeUseCase(settingsRepository = get()) }
 

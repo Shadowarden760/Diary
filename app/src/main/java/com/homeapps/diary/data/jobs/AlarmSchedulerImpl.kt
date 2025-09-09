@@ -9,7 +9,7 @@ import com.homeapps.diary.domain.api.AlarmScheduler
 import com.homeapps.diary.domain.models.alarm.AlarmItem
 import com.homeapps.diary.utils.DiaryAlarmReceiver
 
-class DiaryAlarmScheduler(private val appContext: Context): AlarmScheduler {
+class AlarmSchedulerImpl(private val appContext: Context): AlarmScheduler {
     private val alarmManager = appContext.getSystemService(AlarmManager::class.java)
 
     override fun alarmSchedule(intent: Intent, alarmItem: AlarmItem): Boolean {
@@ -27,10 +27,10 @@ class DiaryAlarmScheduler(private val appContext: Context): AlarmScheduler {
             )
             isAlarmSet(alarmItem)
         } catch (ex: SecurityException) {
-            Log.e(DiaryAlarmScheduler::class.java.name, "${ex.message}")
+            Log.e(AlarmSchedulerImpl::class.java.name, "${ex.message}")
             false
         } catch (ex: Exception) {
-            Log.e(DiaryAlarmScheduler::class.java.name, "${ex.message}")
+            Log.e(AlarmSchedulerImpl::class.java.name, "${ex.message}")
             false
         }
     }

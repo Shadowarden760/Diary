@@ -29,8 +29,8 @@ android {
         applicationId = "com.homeapps.diary"
         minSdk = 26
         targetSdk = 36
-        versionCode = 49
-        versionName = "1.5.7"
+        versionCode = 50
+        versionName = "1.6.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 

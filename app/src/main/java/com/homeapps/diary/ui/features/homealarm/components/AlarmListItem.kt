@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.homeapps.diary.R
 import com.homeapps.diary.domain.models.alarm.AlarmItem
+import com.homeapps.diary.utils.Utils
 
 @Composable
 fun AlarmListItem(
@@ -52,12 +53,15 @@ fun AlarmListItem(
 
             )
             Text(
-                text = "${calendar[Calendar.HOUR_OF_DAY]}:${calendar[Calendar.MINUTE]}",
+                text = "${Utils.formatNumberToString(calendar[Calendar.HOUR_OF_DAY])}:" +
+                        Utils.formatNumberToString(calendar[Calendar.MINUTE]),
                 style = MaterialTheme.typography.titleLarge
             )
         }
         Text(
-            text = "${calendar[Calendar.YEAR]}.${calendar[Calendar.MONTH] + 1}.${calendar[Calendar.DAY_OF_MONTH]}",
+            text = "${calendar[Calendar.YEAR]}." +
+                    "${Utils.formatNumberToString(calendar[Calendar.MONTH] + 1)}." +
+                    Utils.formatNumberToString(calendar[Calendar.DAY_OF_MONTH]),
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.padding(16.dp)
         )

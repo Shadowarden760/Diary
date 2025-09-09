@@ -5,7 +5,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.homeapps.diary.data.jobs.DiaryAlarmScheduler
+import com.homeapps.diary.domain.api.AlarmScheduler
 import com.homeapps.diary.domain.api.AlarmRepository
 import com.homeapps.diary.domain.models.alarm.AlarmItem
 import kotlinx.coroutines.CoroutineScope
@@ -18,7 +18,7 @@ import kotlin.math.max
 
 class DiaryAlarmReceiver: BroadcastReceiver(), KoinComponent {
     private val alarmRepository: AlarmRepository by inject()
-    private val alarmScheduler: DiaryAlarmScheduler by inject()
+    private val alarmScheduler: AlarmScheduler by inject()
 
     override fun onReceive(context: Context, intent: Intent) {
         Log.d(DiaryAlarmReceiver::class.java.name, intent.action ?: "")

@@ -29,8 +29,8 @@ android {
         applicationId = "com.homeapps.diary"
         minSdk = 26
         targetSdk = 36
-        versionCode = 50
-        versionName = "1.6.0"
+        versionCode = 51
+        versionName = "1.6.1"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -135,6 +135,9 @@ dependencies {
 
     // SERIALIZATION/DESERIALIZATION
     implementation(libs.gson)
+
+    // MAPLIBRE
+    implementation(libs.maplibre.compose)
 
     // LEAK CANARY
     debugImplementation(libs.leakcanary.android)

@@ -87,7 +87,7 @@ class WeatherViewModel(
                 getForecastUseCase(qParams = ipResponse.ip, locale = userLocale)
             }
             when (forecastResult) {
-                is WeatherData -> _forecastState.value = ForecastResult.Success(forecastResult)
+                is WeatherData -> _forecastState.value = ForecastResult.Success(data = forecastResult)
                 null -> _forecastState.value = ForecastResult.Failure(
                     message = appContext.getString(R.string.weather_text_cant_get_weather_data)
                 )
@@ -109,7 +109,12 @@ class WeatherViewModel(
             )
         }
         when (forecastResult) {
-            is WeatherData -> _forecastState.value = ForecastResult.Success(forecastResult)
+            is WeatherData -> {
+                _forecastState.value = ForecastResult.Success(
+                    data = forecastResult,
+                    userLocation = location
+                )
+            }
             null -> _forecastState.value = ForecastResult.Failure(
                 message = appContext.getString(R.string.weather_text_cant_get_weather_data)
             )
@@ -118,7 +123,7 @@ class WeatherViewModel(
 
     sealed class ForecastResult {
         data object Loading: ForecastResult()
-        data class Success(val data: WeatherData): ForecastResult()
+        data class Success(val data: WeatherData, val userLocation: Location? = null): ForecastResult()
         data class Failure(val message: String): ForecastResult()
     }
 }

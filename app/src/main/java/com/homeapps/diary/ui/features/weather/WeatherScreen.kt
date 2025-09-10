@@ -76,7 +76,10 @@ fun WeatherScreen(
         when (it) {
             is WeatherViewModel.ForecastResult.Loading -> Waiting()
 
-            is WeatherViewModel.ForecastResult.Success -> Forecast(weatherData = it.data)
+            is WeatherViewModel.ForecastResult.Success -> {
+                Forecast(weatherData = it.data, userLocation = it.userLocation)
+            }
+
 
             is WeatherViewModel.ForecastResult.Failure -> {
                 WeatherError(

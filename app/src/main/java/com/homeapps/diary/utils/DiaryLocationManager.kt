@@ -39,17 +39,11 @@ class DiaryLocationManager(private val appContext: Context) {
         if (provider == null) {
             onError(LocationErrors.ERROR_NO_AVAILABLE_PROVIDERS)
         } else {
-            locationListener = object : LocationListener {
+            locationListener = object: LocationListener {
                 override fun onLocationChanged(location: Location) {
                     cleanUp()
                     onLocationReceived(location)
                 }
-
-                override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) { /* do nothing */ }
-
-                override fun onProviderEnabled(provider: String) { /* do nothing */ }
-
-                override fun onProviderDisabled(provider: String) { /* do nothing */ }
             }
 
             try {

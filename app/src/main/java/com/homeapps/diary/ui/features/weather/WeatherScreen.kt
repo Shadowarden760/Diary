@@ -80,7 +80,6 @@ fun WeatherScreen(
                 Forecast(weatherData = it.data, userLocation = it.userLocation)
             }
 
-
             is WeatherViewModel.ForecastResult.Failure -> {
                 WeatherError(
                     errorMessage = it.message,

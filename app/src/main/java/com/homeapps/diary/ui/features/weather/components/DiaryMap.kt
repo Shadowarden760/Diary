@@ -24,7 +24,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.homeapps.diary.BuildConfig
@@ -34,7 +33,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.maplibre.compose.camera.CameraPosition
-import org.maplibre.compose.camera.rememberCameraState
+import org.maplibre.compose.camera.CameraState
 import org.maplibre.compose.map.MapOptions
 import org.maplibre.compose.map.MaplibreMap
 import org.maplibre.compose.map.OrnamentOptions
@@ -42,7 +41,6 @@ import org.maplibre.compose.material3.CompassButton
 import org.maplibre.compose.material3.PointerPinButton
 import org.maplibre.compose.material3.ScaleBar
 import org.maplibre.compose.style.BaseStyle
-import org.maplibre.compose.style.rememberStyleState
 import kotlin.time.Duration.Companion.milliseconds
 
 fun Modifier.onPointerInteractionStartEnd(
@@ -60,16 +58,19 @@ fun Modifier.onPointerInteractionStartEnd(
 }
 
 @Composable
-fun DiaryMap(userPosition: Position, onMapTouch: (Boolean) -> Unit) {
-    val cameraState = rememberCameraState(
-        firstPosition = CameraPosition(target = userPosition, zoom = 12.0)
-    )
-    val styleState = rememberStyleState()
-    val dpTarget = remember(userPosition, cameraState.position) {
-        cameraState.projection?.screenLocationFromPosition(userPosition)
-    }
-    val target = dpTarget?.let {
-        with(LocalDensity.current) { Offset(dpTarget.x.toPx(), dpTarget.y.toPx()) }
+fun DiaryMap(
+    userPosition: Position,
+    cameraState: CameraState,
+    onMapTouch: (Boolean) -> Unit
+) {
+    val density = LocalDensity.current
+    val target = remember(cameraState.position) {
+        val position = cameraState.projection?.screenLocationFromPosition(userPosition)
+        if (position != null) {
+            with(density) { Offset(position.x.toPx(), position.y.toPx()) }
+        } else {
+            null
+        }
     }
 
     Card(
@@ -84,7 +85,6 @@ fun DiaryMap(userPosition: Position, onMapTouch: (Boolean) -> Unit) {
                 baseStyle = BaseStyle.Uri(
                     uri = "${BuildConfig.MAP_API_URL}/maps/streets-v2/style.json?key=${BuildConfig.MAPTILER_API_KEY}"
                 ),
-                styleState = styleState,
                 options = MapOptions(ornamentOptions = OrnamentOptions.OnlyLogo),
                 cameraState = cameraState,
                 modifier = Modifier
@@ -94,20 +94,27 @@ fun DiaryMap(userPosition: Position, onMapTouch: (Boolean) -> Unit) {
                         onPointerEnd = { onMapTouch(false) }
                     )
             )
-            Box(modifier = Modifier.fillMaxSize().padding(8.dp)) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(8.dp)
+            ) {
                 ScaleBar(
                     metersPerDp = cameraState.metersPerDpAtTarget,
                     color = Color.Black,
                     modifier = Modifier.align(Alignment.TopStart)
                 )
-                CompassButton(cameraState, modifier = Modifier.align(Alignment.TopEnd))
+                CompassButton(
+                    cameraState = cameraState,
+                    modifier = Modifier.align(Alignment.TopEnd)
+                )
                 PointerPinButton(
                     cameraState = cameraState,
                     targetPosition = userPosition,
                     onClick = {
                         CoroutineScope(Dispatchers.Main).launch {
                             cameraState.animateTo(
-                                finalPosition = CameraPosition(target = userPosition, zoom = 12.0),
+                                finalPosition = CameraPosition(target = userPosition, zoom = cameraState.position.zoom),
                                 duration = 500.milliseconds
                             )
                         }
@@ -131,11 +138,7 @@ fun DiaryMap(userPosition: Position, onMapTouch: (Boolean) -> Unit) {
                     modifier = Modifier
                         .padding(start = 8.dp)
                         .absoluteOffset{
-                            if (target != null) {
-                                IntOffset(target.x.toInt(), target.y.toInt())
-                            } else {
-                                IntOffset(0, 0)
-                            }
+                            target?.let{ IntOffset(x = it.x.toInt(), y = it.y.toInt()) } ?: IntOffset( x = 0, y = 0)
                         }
                 ) {
                     Icon(
@@ -145,14 +148,7 @@ fun DiaryMap(userPosition: Position, onMapTouch: (Boolean) -> Unit) {
                         modifier = Modifier.size(20.dp)
                     )
                 }
-
             }
         }
     }
-}
-
-@Preview
-@Composable
-private fun DiaryMapPreview() {
-    DiaryMap(userPosition = Position(0.0, 0.0)) { }
 }

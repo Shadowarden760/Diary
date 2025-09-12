@@ -74,13 +74,13 @@ fun WeatherScreen(
         transitionSpec = { fadeIn().togetherWith(fadeOut()) },
     ) {
         when (it) {
-            is WeatherViewModel.ForecastResult.Loading -> Waiting()
+            is WeatherViewModel.ForecastState.Loading -> Waiting()
 
-            is WeatherViewModel.ForecastResult.Success -> {
+            is WeatherViewModel.ForecastState.Success -> {
                 Forecast(weatherData = it.data, userLocation = it.userLocation)
             }
 
-            is WeatherViewModel.ForecastResult.Failure -> {
+            is WeatherViewModel.ForecastState.Failure -> {
                 WeatherError(
                     errorMessage = it.message,
                     tryAgain = { viewModel.loadWeatherByIp(Locale.current.language) },

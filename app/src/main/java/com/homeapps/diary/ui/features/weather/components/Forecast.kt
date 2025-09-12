@@ -18,9 +18,12 @@ import androidx.compose.ui.unit.dp
 import com.homeapps.diary.R
 import com.homeapps.diary.domain.models.weather.WeatherData
 import io.github.dellisd.spatialk.geojson.Position
+import org.maplibre.compose.camera.CameraPosition
+import org.maplibre.compose.camera.rememberCameraState
 
 @Composable
 fun Forecast(weatherData: WeatherData, userLocation: Location?) {
+    val cameraState = rememberCameraState()
     val isMapMoving = remember { mutableStateOf(false) }
 
     LazyColumn(
@@ -56,9 +59,11 @@ fun Forecast(weatherData: WeatherData, userLocation: Location?) {
                 longitude = userLocation.longitude,
                 latitude = userLocation.latitude
             )
+            cameraState.position = CameraPosition(target = userPosition, zoom = 12.0)
             item {
                 DiaryMap(
                     userPosition = userPosition,
+                    cameraState = cameraState,
                     onMapTouch = { moving -> isMapMoving.value = moving}
                 )
             }

@@ -14,6 +14,8 @@
 
     <string name="alarm_button_reset_alarms">Reset alarms</string>
     <string name="alarm_button_confirm_alarm">Confirm alarm</string>
+    <string name="alarm_text_set_your_alarm">Set your alarm</string>
+    <string name="alarm_text_your_alarms">Your alarms</string>
     <string name="alarm_text_alarm_was_set">Alarm was set</string>
     <string name="alarm_text_alarm_wasn_t_set">Alarm wasn\'t set</string>
     <string name="alarm_text_alarm_was_canceled">Alarm was canceled</string>
@@ -48,9 +50,7 @@
     <string name="note_detail_text_share_with">Share with</string>
     
     <string name="notification_text_title_reminder">Reminder</string>
-    <string name="notification_text_content_reminder">Don\'t remember to check your notes and weather forecast.</string>
-    <string name="alarm_text_set_your_alarm">Set your alarm</string>
-    <string name="alarm_text_your_alarms">Your alarms</string>
+    <string name="notification_text_content_reminder">Don\'t forget to check your notes and weather forecast.</string>
 
 
 </resources>

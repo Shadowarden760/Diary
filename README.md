@@ -50,8 +50,8 @@ A minimalist Android app for **note-taking** and **weather tracking** in your re
 - **Database**: [SQLDelight](https://cashapp.github.io/sqldelight/) (Local note storage)  
 - **DI**: [Koin](https://insert-koin.io/) (Dependency injection)  
 - **Async**: [Coroutines/Flow](https://kotlinlang.org/docs/coroutines-overview.html)  
-- **Maps**: [MapLibre GL Native](https://maplibre.org/) (For displaying interactive maps)
-- **Alarm Manager**: For scheduling reliable daily reminders.
+- **Maps**: [MapLibre](https://maplibre.org/) (For displaying interactive maps)
+- **Alarm Manager**: For scheduling reliable daily reminders
 
 ---
 

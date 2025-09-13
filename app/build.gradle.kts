@@ -29,8 +29,8 @@ android {
         applicationId = "com.homeapps.diary"
         minSdk = 26
         targetSdk = 36
-        versionCode = 50
-        versionName = "1.6.0"
+        versionCode = 54
+        versionName = "1.7.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -57,7 +57,11 @@ android {
             applicationIdSuffix = ".release"
             versionNameSuffix = "-release"
             signingConfig = signingConfigs.getByName("release")
+            buildConfigField(type = "String", name = "WEATHER_API_URL", value = localProperties.getProperty("WEATHER_API_URL"))
             buildConfigField(type = "String", name = "WEATHER_API_KEY", value = localProperties.getProperty("WEATHER_API_KEY"))
+            buildConfigField(type = "String", name = "IP_API_URL", value = localProperties.getProperty("IP_API_URL"))
+            buildConfigField(type = "String", name = "MAP_API_URL", value = localProperties.getProperty("MAP_API_URL"))
+            buildConfigField(type = "String", name = "MAPTILER_API_KEY", value = localProperties.getProperty("MAPTILER_API_KEY"))
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -70,7 +74,11 @@ android {
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
             signingConfig = signingConfigs.getByName("debug")
+            buildConfigField(type = "String", name = "WEATHER_API_URL", value = localProperties.getProperty("WEATHER_API_URL"))
             buildConfigField(type = "String", name = "WEATHER_API_KEY", value = localProperties.getProperty("WEATHER_API_KEY"))
+            buildConfigField(type = "String", name = "IP_API_URL", value = localProperties.getProperty("IP_API_URL"))
+            buildConfigField(type = "String", name = "MAP_API_URL", value = localProperties.getProperty("MAP_API_URL"))
+            buildConfigField(type = "String", name = "MAPTILER_API_KEY", value = localProperties.getProperty("MAPTILER_API_KEY"))
         }
     }
 
@@ -135,6 +143,10 @@ dependencies {
 
     // SERIALIZATION/DESERIALIZATION
     implementation(libs.gson)
+
+    // MAPLIBRE
+    implementation(libs.maplibre.compose)
+    implementation(libs.maplibre.compose.material3)
 
     // LEAK CANARY
     debugImplementation(libs.leakcanary.android)

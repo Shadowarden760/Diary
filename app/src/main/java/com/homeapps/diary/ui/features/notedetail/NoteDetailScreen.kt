@@ -42,6 +42,7 @@ fun NoteDetailScreen(
     when(state.value) {
         is NoteDetailViewModel.NoteDetailState.CurrentNote -> {
             val note = (state.value as NoteDetailViewModel.NoteDetailState.CurrentNote).note
+            var noteTextToShare = note.noteMessage
             NoteDataScreen(
                 noteData = note,
                 updateNote = { newTitle: String, newMessage: String ->
@@ -52,6 +53,7 @@ fun NoteDetailScreen(
                         noteUpdatedAt = note.noteUpdatedAt,
                         noteCreatedAt = note.noteCreatedAt
                     )
+                    noteTextToShare = newMessage
                     viewModel.saveUpdatedNote(updatedNote)
                 }
             )
@@ -59,7 +61,7 @@ fun NoteDetailScreen(
                 shareNote = {
                     val diaryShareManager = DiaryShareManager()
                     diaryShareManager.shareTextData(
-                        textData = note.noteMessage,
+                        textData = noteTextToShare,
                         chooserTitle = currentContext.getString(R.string.note_detail_text_share_with),
                         context = currentContext
                     )

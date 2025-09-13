@@ -25,8 +25,8 @@ class WeatherViewModel(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ): ViewModel() {
     private val diaryLocationManager = DiaryLocationManager(appContext)
-    private val _forecastState: MutableStateFlow<ForecastResult> = MutableStateFlow(ForecastResult.Loading)
-    val forecastState: StateFlow<ForecastResult> = _forecastState
+    private val _forecastState: MutableStateFlow<ForecastState> = MutableStateFlow(ForecastState.Loading)
+    val forecastState: StateFlow<ForecastState> = _forecastState
 
     fun ifGpsOn() = diaryLocationManager.ifGpsOn()
 
@@ -40,7 +40,7 @@ class WeatherViewModel(
         userLocale: String,
         snackBarManager: DiarySnackBarManager
     ) = viewModelScope.launch {
-        _forecastState.value = ForecastResult.Loading
+        _forecastState.value = ForecastState.Loading
         diaryLocationManager.requestSingleLocationUpdate(
             onLocationReceived = { location ->
                 onLocationReceived(
@@ -78,7 +78,7 @@ class WeatherViewModel(
     }
 
     fun loadWeatherByIp(userLocale: String) = viewModelScope.launch {
-        _forecastState.value = ForecastResult.Loading
+        _forecastState.value = ForecastState.Loading
         val ipResponse = withContext(dispatcher) {
             getIpAddressUseCase()
         }
@@ -87,16 +87,16 @@ class WeatherViewModel(
                 getForecastUseCase(qParams = ipResponse.ip, locale = userLocale)
             }
             when (forecastResult) {
-                is WeatherData -> _forecastState.value = ForecastResult.Success(forecastResult)
-                null -> _forecastState.value = ForecastResult.Failure(
+                is WeatherData -> _forecastState.value = ForecastState.Success(data = forecastResult)
+                null -> _forecastState.value = ForecastState.Failure(
                     message = appContext.getString(R.string.weather_text_cant_get_weather_data)
                 )
             }
         } else {
             if (ipResponse.errorMessage.isNotEmpty()) {
-                _forecastState.value = ForecastResult.Failure(message = ipResponse.errorMessage)
+                _forecastState.value = ForecastState.Failure(message = ipResponse.errorMessage)
             } else {
-                _forecastState.value = ForecastResult.Failure(message = appContext.getString(R.string.weather_text_cant_get_ip_address))
+                _forecastState.value = ForecastState.Failure(message = appContext.getString(R.string.weather_text_cant_get_ip_address))
             }
         }
     }
@@ -109,16 +109,21 @@ class WeatherViewModel(
             )
         }
         when (forecastResult) {
-            is WeatherData -> _forecastState.value = ForecastResult.Success(forecastResult)
-            null -> _forecastState.value = ForecastResult.Failure(
+            is WeatherData -> {
+                _forecastState.value = ForecastState.Success(
+                    data = forecastResult,
+                    userLocation = location
+                )
+            }
+            null -> _forecastState.value = ForecastState.Failure(
                 message = appContext.getString(R.string.weather_text_cant_get_weather_data)
             )
         }
     }
 
-    sealed class ForecastResult {
-        data object Loading: ForecastResult()
-        data class Success(val data: WeatherData): ForecastResult()
-        data class Failure(val message: String): ForecastResult()
+    sealed class ForecastState {
+        data object Loading: ForecastState()
+        data class Success(val data: WeatherData, val userLocation: Location? = null): ForecastState()
+        data class Failure(val message: String): ForecastState()
     }
 }

@@ -11,14 +11,35 @@ A minimalist Android app for **note-taking** and **weather tracking** in your re
 ✅ **Notes Management**  
 - Create, edit, and organize text-based notes.  
 - Fast search and intuitive UI.  
+- Share notes via other apps (messengers, email, etc.).
+- Export & Backup all your notes to a single JSON file.
 
 🌤️ **Weather Integration**  
 - Real-time weather forecasts for your location.  
 - Minimalist weather cards with essential details.  
+- Smart Location Detection: uses precise GPS or network/IP as a fallback.
+- Interactive Map view of your current location when GPS is available.
+
+🔔 **Daily Reminders**
+- Set multiple customizable daily reminders.
+- Get notified to check your diary and the weather, helping you build a consistent habit.
 
 🎨 **Customization**  
 - Dark/Light theme support.  
 - Multi-language localization (English, Russian).  
+
+---
+
+## 📸 Screenshots
+
+|                      Dark Theme                      |                       Light Theme                        |
+|:----------------------------------------------------:|:--------------------------------------------------------:|
+|                    *Main Screen*                     |                 *Alarm Settings Screen*                  |
+|    <img src="assets/main_dark.png" width="100%">     | <img src="assets/alarm_settings_light.png" width="100%"> |
+|               *Screen with Note List*                |                      *Weather View*                      |
+|  <img src="assets/note_list_dark.png" width="100%">  |  <img src="assets/weather_top_light.png" width="100%">   |
+|              *Screen with Note Detail*               |                 *Weather View with Map*                  |
+| <img src="assets/note_detail_dark.png" width="100%"> | <img src="assets/weather_bottom_light.png" width="100%"> |
 
 ---
 
@@ -29,6 +50,8 @@ A minimalist Android app for **note-taking** and **weather tracking** in your re
 - **Database**: [SQLDelight](https://cashapp.github.io/sqldelight/) (Local note storage)  
 - **DI**: [Koin](https://insert-koin.io/) (Dependency injection)  
 - **Async**: [Coroutines/Flow](https://kotlinlang.org/docs/coroutines-overview.html)  
+- **Maps**: [MapLibre](https://maplibre.org/) (For displaying interactive maps)
+- **Alarm Manager**: For scheduling reliable daily reminders
 
 ---
 

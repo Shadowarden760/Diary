@@ -45,8 +45,8 @@ class WeatherApi(private val apiClient: ApiClient) {
     }
 
     companion object {
-        private const val BASE_URL = "https://api.weatherapi.com"
-        var IP_URL = "https://api.ipify.org?format=json"
+        private const val BASE_URL = BuildConfig.WEATHER_API_URL
+        private const val IP_URL = "${BuildConfig.IP_API_URL}?format=json"
         var FORECAST_URL = "$BASE_URL/v1/forecast.json"
     }
 }

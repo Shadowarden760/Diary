@@ -2,8 +2,8 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.konan.properties.Properties
 import java.io.FileInputStream
 
-val localProperties = Properties()
-localProperties.load(FileInputStream(rootProject.file("local.properties")))
+val appProperties = Properties()
+appProperties.load(FileInputStream(rootProject.file("app/app.properties")))
 
 plugins {
     alias(libs.plugins.android.application)
@@ -29,23 +29,23 @@ android {
         applicationId = "com.homeapps.diary"
         minSdk = 26
         targetSdk = 36
-        versionCode = 54
-        versionName = "1.7.0"
+        versionCode = 55
+        versionName = "1.7.1"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     signingConfigs {
         getByName("debug") {
-            storeFile = file(localProperties.getProperty("DEBUG_STORE_FILE"))
-            storePassword = localProperties.getProperty("DEBUG_STORE_PASSWORD")
-            keyAlias = localProperties.getProperty("DEBUG_KEY_ALIAS")
-            keyPassword = localProperties.getProperty("DEBUG_KEY_PASSWORD")
+            storeFile = file(appProperties.getProperty("DEBUG_STORE_FILE"))
+            storePassword = appProperties.getProperty("DEBUG_STORE_PASSWORD")
+            keyAlias = appProperties.getProperty("DEBUG_KEY_ALIAS")
+            keyPassword = appProperties.getProperty("DEBUG_KEY_PASSWORD")
         }
         create("release") {
-            storeFile = file(localProperties.getProperty("RELEASE_STORE_FILE"))
-            storePassword = localProperties.getProperty("RELEASE_STORE_PASSWORD")
-            keyAlias = localProperties.getProperty("RELEASE_KEY_ALIAS")
-            keyPassword = localProperties.getProperty("RELEASE_KEY_PASSWORD")
+            storeFile = file(appProperties.getProperty("RELEASE_STORE_FILE"))
+            storePassword = appProperties.getProperty("RELEASE_STORE_PASSWORD")
+            keyAlias = appProperties.getProperty("RELEASE_KEY_ALIAS")
+            keyPassword = appProperties.getProperty("RELEASE_KEY_PASSWORD")
         }
     }
 
@@ -57,11 +57,11 @@ android {
             applicationIdSuffix = ".release"
             versionNameSuffix = "-release"
             signingConfig = signingConfigs.getByName("release")
-            buildConfigField(type = "String", name = "WEATHER_API_URL", value = localProperties.getProperty("WEATHER_API_URL"))
-            buildConfigField(type = "String", name = "WEATHER_API_KEY", value = localProperties.getProperty("WEATHER_API_KEY"))
-            buildConfigField(type = "String", name = "IP_API_URL", value = localProperties.getProperty("IP_API_URL"))
-            buildConfigField(type = "String", name = "MAP_API_URL", value = localProperties.getProperty("MAP_API_URL"))
-            buildConfigField(type = "String", name = "MAPTILER_API_KEY", value = localProperties.getProperty("MAPTILER_API_KEY"))
+            buildConfigField(type = "String", name = "WEATHER_API_URL", value = appProperties.getProperty("WEATHER_API_URL"))
+            buildConfigField(type = "String", name = "WEATHER_API_KEY", value = appProperties.getProperty("WEATHER_API_KEY"))
+            buildConfigField(type = "String", name = "IP_API_URL", value = appProperties.getProperty("IP_API_URL"))
+            buildConfigField(type = "String", name = "MAP_API_URL", value = appProperties.getProperty("MAP_API_URL"))
+            buildConfigField(type = "String", name = "MAPTILER_API_KEY", value = appProperties.getProperty("MAPTILER_API_KEY"))
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -74,11 +74,11 @@ android {
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
             signingConfig = signingConfigs.getByName("debug")
-            buildConfigField(type = "String", name = "WEATHER_API_URL", value = localProperties.getProperty("WEATHER_API_URL"))
-            buildConfigField(type = "String", name = "WEATHER_API_KEY", value = localProperties.getProperty("WEATHER_API_KEY"))
-            buildConfigField(type = "String", name = "IP_API_URL", value = localProperties.getProperty("IP_API_URL"))
-            buildConfigField(type = "String", name = "MAP_API_URL", value = localProperties.getProperty("MAP_API_URL"))
-            buildConfigField(type = "String", name = "MAPTILER_API_KEY", value = localProperties.getProperty("MAPTILER_API_KEY"))
+            buildConfigField(type = "String", name = "WEATHER_API_URL", value = appProperties.getProperty("WEATHER_API_URL"))
+            buildConfigField(type = "String", name = "WEATHER_API_KEY", value = appProperties.getProperty("WEATHER_API_KEY"))
+            buildConfigField(type = "String", name = "IP_API_URL", value = appProperties.getProperty("IP_API_URL"))
+            buildConfigField(type = "String", name = "MAP_API_URL", value = appProperties.getProperty("MAP_API_URL"))
+            buildConfigField(type = "String", name = "MAPTILER_API_KEY", value = appProperties.getProperty("MAPTILER_API_KEY"))
         }
     }
 
@@ -101,7 +101,7 @@ android {
             isEnable = true
             reset()
             include("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
-            isUniversalApk = false
+            isUniversalApk = true
         }
     }
 }

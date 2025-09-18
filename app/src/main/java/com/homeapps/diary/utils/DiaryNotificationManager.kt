@@ -42,7 +42,7 @@ class DiaryNotificationManager(private val appContext: Context) {
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
             val notification = NotificationCompat.Builder(appContext, CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setSmallIcon(R.drawable.ic_diary_logo)
                 .setContentTitle(appContext.getString(R.string.notification_text_title_reminder))
                 .setContentText(appContext.getString(R.string.notification_text_content_reminder))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)

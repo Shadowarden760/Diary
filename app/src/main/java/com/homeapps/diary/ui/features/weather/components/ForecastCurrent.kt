@@ -38,9 +38,7 @@ fun ForecastCurrent(weatherData: WeatherData) {
         text = weatherData.weatherStatus,
         style = MaterialTheme.typography.displaySmall,
         textAlign = TextAlign.Center,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 24.dp)
+        modifier = Modifier.fillMaxWidth()
     )
     Image(
         imageVector = WEATHER_ICONS[weatherData.weatherStatusCode] ?: Icons.Default.Warning,
@@ -49,13 +47,15 @@ fun ForecastCurrent(weatherData: WeatherData) {
         colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
         modifier = Modifier
             .size(150.dp)
-            .padding(8.dp)
+            .padding(top = 8.dp)
     )
     Text(
         text = DateTimeUtils.formatDate(dateString = weatherData.dateAndTime),
         style = MaterialTheme.typography.headlineMedium,
         textAlign = TextAlign.Center,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp)
     )
     Text(
         text = "${weatherData.currentTemperature}°",

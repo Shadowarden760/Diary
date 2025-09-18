@@ -29,7 +29,9 @@ fun Forecast(weatherData: WeatherData, userLocation: Location?) {
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
         userScrollEnabled = !isMapMoving.value,
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(vertical = 16.dp)
     ) {
         item { ForecastCurrent(weatherData = weatherData) }
         item {
@@ -38,7 +40,7 @@ fun Forecast(weatherData: WeatherData, userLocation: Location?) {
                 style = MaterialTheme.typography.headlineMedium,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 24.dp, top = 16.dp, end = 24.dp, bottom = 8.dp)
+                    .padding(horizontal = 24.dp, vertical = 16.dp)
             )
         }
         item { ForecastToday(hourlyData = weatherData.hourlyWeatherData) }
@@ -48,7 +50,7 @@ fun Forecast(weatherData: WeatherData, userLocation: Location?) {
                 style = MaterialTheme.typography.headlineMedium,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 24.dp, top = 16.dp, end = 24.dp, bottom = 8.dp)
+                    .padding(horizontal = 24.dp, vertical = 16.dp)
             )
         }
         items(weatherData.futureWeatherData) { item ->

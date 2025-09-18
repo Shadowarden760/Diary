@@ -70,7 +70,7 @@ fun AlarmScreen(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 16.dp)
+            .padding(start = 24.dp, end = 24.dp, bottom = 16.dp)
     ) {
         item(span = StaggeredGridItemSpan.FullLine) {
             TimePickerDialog(

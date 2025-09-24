@@ -5,16 +5,18 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContent
+import androidx.compose.foundation.layout.safeGestures
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import com.homeapps.diary.common.rememberAppState
 import com.homeapps.diary.domain.usecases.settings.GetDarkThemeUseCase
-import com.homeapps.diary.ui.features.components.BottomBar
 import com.homeapps.diary.ui.features.components.DiaryNavHost
+import com.homeapps.diary.ui.features.components.navigationbar.BottomBar
 import com.homeapps.diary.ui.theme.DiaryTheme
 import org.koin.android.ext.android.inject
 
@@ -32,11 +34,10 @@ class MainActivity: ComponentActivity() {
                 Scaffold(
                     snackbarHost = { SnackbarHost(hostState = appState.snackBarManager.getHostState()) },
                     bottomBar = { BottomBar(appState.navController) },
+                    contentWindowInsets = WindowInsets.safeGestures,
                     modifier = Modifier.Companion.fillMaxSize()
                 ) { innerPadding ->
-                    Box(modifier = Modifier.Companion.fillMaxSize().padding(innerPadding)) {
-                        DiaryNavHost(appState)
-                    }
+                    DiaryNavHost(appState = appState, innerPaddingValues =  innerPadding)
                 }
             }
         }

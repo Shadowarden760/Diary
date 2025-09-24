@@ -45,38 +45,30 @@ fun ForecastCurrent(weatherData: WeatherData) {
         contentDescription = null,
         contentScale = ContentScale.FillBounds,
         colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
-        modifier = Modifier
-            .size(150.dp)
-            .padding(top = 8.dp)
+        modifier = Modifier.size(150.dp).padding(top = 8.dp)
     )
     Text(
         text = DateTimeUtils.formatDate(dateString = weatherData.dateAndTime),
         style = MaterialTheme.typography.headlineMedium,
         textAlign = TextAlign.Center,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 8.dp)
+        modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
     )
     Text(
         text = "${weatherData.currentTemperature}°",
         style = MaterialTheme.typography.displayLarge,
         textAlign = TextAlign.Center,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 8.dp)
+        modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
     )
     Text(
         text = weatherData.region,
         style = MaterialTheme.typography.titleLarge,
         textAlign = TextAlign.Center,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 8.dp)
+        modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
     )
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(start = 24.dp, top = 16.dp, end = 24.dp)
+            .padding(top = 16.dp)
             .background(
                 color = MaterialTheme.colorScheme.primaryContainer,
                 shape = MaterialTheme.shapes.extraLarge

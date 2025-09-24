@@ -32,14 +32,14 @@ A minimalist Android app for **note-taking** and **weather tracking** in your re
 
 ## 📸 Screenshots
 
-|                      Dark Theme                      |                       Light Theme                        |
-|:----------------------------------------------------:|:--------------------------------------------------------:|
-|                    *Main Screen*                     |                 *Alarm Settings Screen*                  |
-|    <img src="assets/main_dark.png" width="100%">     | <img src="assets/alarm_settings_light.png" width="100%"> |
-|               *Screen with Note List*                |                      *Weather View*                      |
-|  <img src="assets/note_list_dark.png" width="100%">  |  <img src="assets/weather_top_light.png" width="100%">   |
-|              *Screen with Note Detail*               |                 *Weather View with Map*                  |
-| <img src="assets/note_detail_dark.png" width="100%"> | <img src="assets/weather_bottom_light.png" width="100%"> |
+|                        Dark Theme                         |                          Light Theme                          |
+|:---------------------------------------------------------:|:-------------------------------------------------------------:|
+|                       *Main Screen*                       |                    *Alarm Settings Screen*                    |
+|    <img src="screenshots/main_dark.png" width="100%">     | <img src="screenshots/alarm_settings_light.png" width="100%"> |
+|                  *Screen with Note List*                  |                        *Weather View*                         |
+|  <img src="screenshots/note_list_dark.png" width="100%">  |  <img src="screenshots/weather_top_light.png" width="100%">   |
+|                 *Screen with Note Detail*                 |                    *Weather View with Map*                    |
+| <img src="screenshots/note_detail_dark.png" width="100%"> | <img src="screenshots/weather_bottom_light.png" width="100%"> |
 
 ---
 

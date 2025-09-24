@@ -1,6 +1,7 @@
 package com.homeapps.diary.ui.features.weather.components
 
 import android.location.Location
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -22,25 +23,26 @@ import org.maplibre.compose.camera.CameraPosition
 import org.maplibre.compose.camera.rememberCameraState
 
 @Composable
-fun Forecast(weatherData: WeatherData, userLocation: Location?) {
+fun Forecast(
+    weatherData: WeatherData,
+    userLocation: Location?,
+    innerPadding: PaddingValues,
+) {
     val cameraState = rememberCameraState()
     val isMapMoving = remember { mutableStateOf(false) }
 
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
         userScrollEnabled = !isMapMoving.value,
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(vertical = 16.dp)
+        contentPadding = innerPadding,
+        modifier = Modifier.fillMaxSize().padding(bottom = 16.dp)
     ) {
         item { ForecastCurrent(weatherData = weatherData) }
         item {
             Text(
                 text = stringResource(R.string.weather_text_today),
                 style = MaterialTheme.typography.headlineMedium,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp, vertical = 16.dp)
+                modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp)
             )
         }
         item { ForecastToday(hourlyData = weatherData.hourlyWeatherData) }
@@ -48,9 +50,7 @@ fun Forecast(weatherData: WeatherData, userLocation: Location?) {
             Text(
                 text = stringResource(R.string.weather_text_future),
                 style = MaterialTheme.typography.headlineMedium,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp, vertical = 16.dp)
+                modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp)
             )
         }
         items(weatherData.futureWeatherData) { item ->

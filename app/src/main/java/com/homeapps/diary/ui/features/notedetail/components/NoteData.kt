@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -17,7 +16,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.homeapps.diary.R
 import com.homeapps.diary.domain.models.notes.NoteData
 import com.homeapps.diary.ui.features.components.DiaryTextField
@@ -25,17 +23,12 @@ import com.homeapps.diary.ui.features.components.DiaryTextField
 @Composable
 fun NoteDataScreen(
     noteData: NoteData,
-    updateNote: (newTitle: String, newMessage: String) -> Unit
+    updateNote: (newTitle: String, newMessage: String) -> Unit,
 ) {
     val title = remember { mutableStateOf(noteData.noteTitle) }
     val message = remember { mutableStateOf(noteData.noteMessage) }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .imePadding()
-            .padding(start = 16.dp, top = 16.dp, end = 16.dp)
-    ) {
+    Column(modifier = Modifier.fillMaxSize().imePadding()) {
         DiaryTextField(
             value = title.value,
             textStyle = MaterialTheme.typography.titleLarge,

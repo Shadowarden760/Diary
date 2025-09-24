@@ -23,9 +23,7 @@ import com.homeapps.diary.utils.DateTimeUtils
 fun FutureWeatherItem(futureWeather: FutureWeatherData) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 24.dp)
+        modifier = Modifier.fillMaxWidth()
     ) {
         Text(
             text = DateTimeUtils.formatDate(
@@ -40,17 +38,13 @@ fun FutureWeatherItem(futureWeather: FutureWeatherData) {
             contentDescription = null,
             contentScale = ContentScale.FillBounds,
             colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
-            modifier = Modifier
-                .size(65.dp)
-                .padding(8.dp)
+            modifier = Modifier.size(65.dp).padding(8.dp)
         )
         Text(
             text = futureWeather.status,
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
-            modifier = Modifier
-                .weight(1f)
-                .padding(start = 16.dp)
+            modifier = Modifier.weight(1f).padding(start = 16.dp)
         )
         Text(
             text = "${futureWeather.highTemp}°/${futureWeather.lowTemp}°",

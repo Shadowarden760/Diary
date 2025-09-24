@@ -2,10 +2,14 @@ package com.homeapps.diary.ui.features.notedetail
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.homeapps.diary.R
@@ -21,7 +25,8 @@ fun NoteDetailScreen(
     viewModel: NoteDetailViewModel = koinViewModel(),
     noteId: Long,
     snackBarManager: DiarySnackBarManager,
-    goToNoteList: () -> Unit
+    goToNoteList: () -> Unit,
+    innerPadding: PaddingValues,
 ) {
     val state = viewModel.state.collectAsStateWithLifecycle()
     val currentContext = LocalContext.current
@@ -43,20 +48,22 @@ fun NoteDetailScreen(
         is NoteDetailViewModel.NoteDetailState.CurrentNote -> {
             val note = (state.value as NoteDetailViewModel.NoteDetailState.CurrentNote).note
             var noteTextToShare = note.noteMessage
-            NoteDataScreen(
-                noteData = note,
-                updateNote = { newTitle: String, newMessage: String ->
-                    val updatedNote = NoteData(
-                        noteId = note.noteId,
-                        noteTitle = newTitle,
-                        noteMessage = newMessage,
-                        noteUpdatedAt = note.noteUpdatedAt,
-                        noteCreatedAt = note.noteCreatedAt
-                    )
-                    noteTextToShare = newMessage
-                    viewModel.saveUpdatedNote(updatedNote)
-                }
-            )
+            Column(modifier = Modifier.padding(innerPadding)) {
+                NoteDataScreen(
+                    noteData = note,
+                    updateNote = { newTitle: String, newMessage: String ->
+                        val updatedNote = NoteData(
+                            noteId = note.noteId,
+                            noteTitle = newTitle,
+                            noteMessage = newMessage,
+                            noteUpdatedAt = note.noteUpdatedAt,
+                            noteCreatedAt = note.noteCreatedAt
+                        )
+                        noteTextToShare = newMessage
+                        viewModel.saveUpdatedNote(updatedNote)
+                    }
+                )
+            }
             NoteButtons(
                 shareNote = {
                     val diaryShareManager = DiaryShareManager()
@@ -72,7 +79,8 @@ fun NoteDetailScreen(
                     } else {
                         viewModel.requestStoragePermissions(storagePermissionLauncher)
                     }
-                }
+                },
+                innerPadding = innerPadding
             )
         }
         is NoteDetailViewModel.NoteDetailState.Error -> { goToNoteList() }

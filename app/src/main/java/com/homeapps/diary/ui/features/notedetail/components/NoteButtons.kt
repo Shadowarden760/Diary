@@ -3,6 +3,7 @@ package com.homeapps.diary.ui.features.notedetail.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -21,15 +22,16 @@ import com.homeapps.diary.R
 @Composable
 fun NoteButtons(
     shareNote: () -> Unit,
-    saveNote: () -> Unit
+    saveNote: () -> Unit,
+    innerPadding: PaddingValues,
 ) {
     Box(
         contentAlignment = Alignment.BottomEnd,
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize().padding(innerPadding)
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier.padding(end = 16.dp, bottom = 16.dp)
+            modifier = Modifier.padding(bottom = 16.dp)
         ) {
             FloatingActionButton(
                 onClick = shareNote,
@@ -56,5 +58,5 @@ fun NoteButtons(
 @Composable
 @Preview
 private fun NoteButtonsPreview() {
-    NoteButtons({}, {})
+    NoteButtons({}, {}, PaddingValues(16.dp))
 }

@@ -1,5 +1,6 @@
 package com.homeapps.diary.ui.features.components
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -8,7 +9,7 @@ import androidx.navigation.navArgument
 import com.homeapps.diary.common.DiaryAppState
 import com.homeapps.diary.common.navigation.DiaryRoute
 import com.homeapps.diary.common.navigation.DiaryRoute.Companion.NOTE_DETAIL_ARG_NOTE_ID
-import com.homeapps.diary.common.navigation.NavigationBarSection
+import com.homeapps.diary.ui.features.components.navigationbar.NavigationBarSection
 import com.homeapps.diary.common.navigation.navigate
 import com.homeapps.diary.common.navigation.popUp
 import com.homeapps.diary.ui.features.home.HomeScreen
@@ -18,7 +19,7 @@ import com.homeapps.diary.ui.features.notelist.NoteListScreen
 import com.homeapps.diary.ui.features.weather.WeatherScreen
 
 @Composable
-fun DiaryNavHost(appState: DiaryAppState) {
+fun DiaryNavHost(appState: DiaryAppState, innerPaddingValues: PaddingValues) {
     NavHost(
         navController = appState.navController,
         startDestination = NavigationBarSection.Home.route
@@ -38,15 +39,24 @@ fun DiaryNavHost(appState: DiaryAppState) {
         }
 
         composable(DiaryRoute.Home.route) {
-            HomeScreen(goToAlarmScreen = goToAlarmFromHome)
+            HomeScreen(
+                goToAlarmScreen = goToAlarmFromHome,
+                innerPadding = innerPaddingValues
+            )
         }
 
         composable(route = DiaryRoute.Alarm.route) {
-            AlarmScreen(goBack = goBack)
+            AlarmScreen(
+                goBack = goBack,
+                innerPadding = innerPaddingValues
+            )
         }
 
         composable(DiaryRoute.NoteList.route) {
-            NoteListScreen(goToNoteDetail = goToNoteDetailFromNoteList)
+            NoteListScreen(
+                goToNoteDetail = goToNoteDetailFromNoteList,
+                innerPadding = innerPaddingValues
+            )
         }
 
         composable(
@@ -57,14 +67,16 @@ fun DiaryNavHost(appState: DiaryAppState) {
             NoteDetailScreen(
                 noteId = noteId ?: 0L,
                 snackBarManager = appState.snackBarManager,
-                goToNoteList = goBack
+                goToNoteList = goBack,
+                innerPadding = innerPaddingValues
             )
         }
 
         composable(DiaryRoute.Weather.route) {
             WeatherScreen(
                 snackBarManager = appState.snackBarManager,
-                goHome = goBack
+                goHome = goBack,
+                innerPadding = innerPaddingValues
             )
         }
     }

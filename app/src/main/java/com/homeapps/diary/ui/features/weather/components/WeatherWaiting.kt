@@ -2,6 +2,7 @@ package com.homeapps.diary.ui.features.weather.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -19,25 +20,23 @@ import androidx.compose.ui.unit.dp
 import com.homeapps.diary.R
 
 @Composable
-fun Waiting() {
+fun Waiting(
+    innerPadding: PaddingValues,
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize().padding(innerPadding)
     ) {
         CircularProgressIndicator(
             strokeWidth = 5.dp,
-            modifier = Modifier
-                .size(50.dp)
-                .align(Alignment.CenterHorizontally)
+            modifier = Modifier.size(50.dp).align(Alignment.CenterHorizontally)
         )
         Text(
             text = stringResource(R.string.weather_text_wait_until_we_get_data),
             style = MaterialTheme.typography.titleLarge,
             textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 24.dp)
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }
@@ -45,5 +44,5 @@ fun Waiting() {
 @Preview
 @Composable
 private fun WaitingPreview() {
-    Waiting()
+    Waiting(innerPadding = PaddingValues(16.dp))
 }

@@ -46,7 +46,7 @@ fun NoteList(
         columns = StaggeredGridCells.Fixed(2),
         verticalItemSpacing = 16.dp,
         horizontalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier.padding(start = 24.dp, top = 16.dp, end = 24.dp)
+        modifier = Modifier.padding(top = 16.dp)
     ) {
         items(noteList) { note ->
             NoteListItem(

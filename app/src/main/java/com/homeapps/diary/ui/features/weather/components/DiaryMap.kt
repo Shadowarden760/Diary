@@ -78,7 +78,7 @@ fun DiaryMap(
         modifier = Modifier
             .fillMaxWidth()
             .height(400.dp)
-            .padding(start = 24.dp, top = 16.dp, end = 24.dp)
+            .padding(top = 16.dp)
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             MaplibreMap(
@@ -94,11 +94,7 @@ fun DiaryMap(
                         onPointerEnd = { onMapTouch(false) }
                     )
             )
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(8.dp)
-            ) {
+            Box(modifier = Modifier.fillMaxSize().padding(8.dp)) {
                 ScaleBar(
                     metersPerDp = cameraState.metersPerDpAtTarget,
                     color = Color.Black,

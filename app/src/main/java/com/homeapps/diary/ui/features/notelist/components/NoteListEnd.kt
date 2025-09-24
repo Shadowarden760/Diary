@@ -1,6 +1,7 @@
 package com.homeapps.diary.ui.features.notelist.components
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -16,16 +17,17 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun NoteListEnd(
-    createNewNote:() -> Unit
+    createNewNote:() -> Unit,
+    innerPadding: PaddingValues,
 ) {
     Box(
         contentAlignment = Alignment.BottomEnd,
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize().padding(innerPadding)
     ) {
         FloatingActionButton(
             onClick = createNewNote,
             shape = MaterialTheme.shapes.medium,
-            modifier = Modifier.padding(vertical = 16.dp, horizontal = 24.dp)
+            modifier = Modifier.padding(vertical = 16.dp)
         ) {
             Icon(
                 imageVector = Icons.Default.Add,
@@ -38,5 +40,5 @@ fun NoteListEnd(
 @Preview
 @Composable
 private fun NoteListEndPreview() {
-    NoteListEnd({})
+    NoteListEnd({}, PaddingValues(16.dp))
 }

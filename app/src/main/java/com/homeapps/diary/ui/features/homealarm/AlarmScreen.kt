@@ -5,6 +5,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
@@ -31,6 +32,7 @@ import java.util.Calendar
 fun AlarmScreen(
     viewModel: AlarmViewModel = koinViewModel(),
     goBack: () -> Unit,
+    innerPadding: PaddingValues,
 ) {
     val currentContext = LocalContext.current
     val state = viewModel.state.collectAsStateWithLifecycle()
@@ -68,9 +70,8 @@ fun AlarmScreen(
         columns = StaggeredGridCells.Adaptive(150.dp),
         verticalItemSpacing = 16.dp,
         horizontalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(start = 24.dp, end = 24.dp, bottom = 16.dp)
+        contentPadding = innerPadding,
+        modifier = Modifier.fillMaxSize().padding(bottom = 16.dp)
     ) {
         item(span = StaggeredGridItemSpan.FullLine) {
             TimePickerDialog(

@@ -25,16 +25,15 @@ import com.homeapps.diary.ui.features.components.DiaryTextField
 @Composable
 fun NoteDataScreen(
     noteData: NoteData,
-    updateNote: (newTitle: String, newMessage: String) -> Unit
+    updateNote: (newTitle: String, newMessage: String) -> Unit,
 ) {
     val title = remember { mutableStateOf(noteData.noteTitle) }
     val message = remember { mutableStateOf(noteData.noteMessage) }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .imePadding()
-            .padding(start = 16.dp, top = 16.dp, end = 16.dp)
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .imePadding()
+        .padding(start = 24.dp, top = 16.dp, end = 24.dp)
     ) {
         DiaryTextField(
             value = title.value,

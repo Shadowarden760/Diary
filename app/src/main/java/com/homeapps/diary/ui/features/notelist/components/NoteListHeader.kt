@@ -18,22 +18,16 @@ import com.homeapps.diary.R
 
 @Composable
 fun NoteListHeader(noteNumber: Int) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 16.dp)
-    ) {
+    Row(modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp, horizontal = 24.dp)) {
         Text(
             text = stringResource(R.string.note_list_text_your_notes),
             style = MaterialTheme.typography.headlineSmall,
             textAlign = TextAlign.Start,
-            modifier = Modifier.padding(horizontal = 24.dp),
         )
         Spacer(modifier = Modifier.weight(1f))
         Card(
             shape = MaterialTheme.shapes.small,
             elevation = CardDefaults.cardElevation(disabledElevation = 5.dp),
-            modifier = Modifier.padding(horizontal = 24.dp)
         ) {
             Text(
                 text = noteNumber.toString(),

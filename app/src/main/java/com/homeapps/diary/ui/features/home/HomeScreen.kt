@@ -5,6 +5,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -40,6 +41,7 @@ import org.koin.androidx.compose.koinViewModel
 fun HomeScreen(
     viewModel: HomeViewModel = koinViewModel(),
     goToAlarmScreen: () -> Unit,
+    innerPadding: PaddingValues,
 ) {
     val darkTheme = viewModel.darkTheme.collectAsStateWithLifecycle(initialValue = false)
     val hasNotificationPermission = remember { mutableStateOf(viewModel.hasNotificationPermission()) }
@@ -57,14 +59,12 @@ fun HomeScreen(
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize().padding(innerPadding)
     ) {
         Row(
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp, end = 24.dp)
+            modifier = Modifier.fillMaxWidth().padding(top = 16.dp, end = 24.dp)
         ) {
             IconButton(
                 onClick = goToAlarmScreen,

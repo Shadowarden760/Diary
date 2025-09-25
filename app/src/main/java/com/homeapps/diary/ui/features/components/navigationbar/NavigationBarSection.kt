@@ -1,8 +1,9 @@
-package com.homeapps.diary.common.navigation
+package com.homeapps.diary.ui.features.components.navigationbar
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.homeapps.diary.R
+import com.homeapps.diary.common.navigation.DiaryRoute
 
 sealed class NavigationBarSection(
     @param:StringRes val title: Int,

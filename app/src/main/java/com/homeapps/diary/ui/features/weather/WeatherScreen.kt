@@ -8,6 +8,7 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -24,7 +25,8 @@ import org.koin.androidx.compose.koinViewModel
 fun WeatherScreen(
     viewModel: WeatherViewModel = koinViewModel(),
     snackBarManager: DiarySnackBarManager,
-    goHome: () -> Unit = {}
+    goHome: () -> Unit = {},
+    innerPadding: PaddingValues,
 ) {
     val forecastState = viewModel.forecastState.collectAsStateWithLifecycle()
     val hasLocationPermission = remember { mutableStateOf(false) }
@@ -62,10 +64,12 @@ fun WeatherScreen(
             viewModel.getLocationPermissions(locationPermissionLauncher)
             return@LaunchedEffect
         }
-        if (viewModel.ifGpsOn() && viewModel.hasLocationPermissions()) {
-            viewModel.loadWeatherByLocation(Locale.current.language, snackBarManager)
-        } else {
-            viewModel.loadWeatherByIp(Locale.current.language)
+        if (forecastState.value !is WeatherViewModel.ForecastState.Success) {
+            if (viewModel.ifGpsOn() && viewModel.hasLocationPermissions()) {
+                viewModel.loadWeatherByLocation(Locale.current.language, snackBarManager)
+            } else {
+                viewModel.loadWeatherByIp(Locale.current.language)
+            }
         }
     }
 
@@ -74,17 +78,24 @@ fun WeatherScreen(
         transitionSpec = { fadeIn().togetherWith(fadeOut()) },
     ) {
         when (it) {
-            is WeatherViewModel.ForecastState.Loading -> Waiting()
+            is WeatherViewModel.ForecastState.Loading -> {
+                Waiting(innerPadding = innerPadding)
+            }
 
             is WeatherViewModel.ForecastState.Success -> {
-                Forecast(weatherData = it.data, userLocation = it.userLocation)
+                Forecast(
+                    weatherData = it.data,
+                    userLocation = it.userLocation,
+                    innerPadding = innerPadding
+                )
             }
 
             is WeatherViewModel.ForecastState.Failure -> {
                 WeatherError(
                     errorMessage = it.message,
                     tryAgain = { viewModel.loadWeatherByIp(Locale.current.language) },
-                    goHome = goHome
+                    goHome = goHome,
+                    innerPadding = innerPadding
                 )
             }
         }

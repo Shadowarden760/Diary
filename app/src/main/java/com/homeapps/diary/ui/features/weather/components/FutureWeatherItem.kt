@@ -23,9 +23,7 @@ import com.homeapps.diary.utils.DateTimeUtils
 fun FutureWeatherItem(futureWeather: FutureWeatherData) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 24.dp)
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp)
     ) {
         Text(
             text = DateTimeUtils.formatDate(
@@ -33,28 +31,27 @@ fun FutureWeatherItem(futureWeather: FutureWeatherData) {
                 dateFormat = "yyyy-MM-dd",
                 returnFormat = "dd-MM-yyyy"
             ),
-            style = MaterialTheme.typography.bodyMedium
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.weight(0.2f)
         )
         Image(
             imageVector = WEATHER_ICONS[futureWeather.pictureCode] ?: Icons.Default.Warning,
             contentDescription = null,
             contentScale = ContentScale.FillBounds,
             colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
-            modifier = Modifier
-                .size(65.dp)
-                .padding(8.dp)
+            modifier = Modifier.size(65.dp).weight(0.2f, fill = false).padding(8.dp)
         )
         Text(
             text = futureWeather.status,
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
-            modifier = Modifier
-                .weight(1f)
-                .padding(start = 16.dp)
+            modifier = Modifier.weight(0.35f)
         )
         Text(
             text = "${futureWeather.highTemp}°/${futureWeather.lowTemp}°",
-            style = MaterialTheme.typography.bodyMedium
+            style = MaterialTheme.typography.bodyMedium,
+            textAlign = TextAlign.End,
+            modifier = Modifier.weight(0.25f)
         )
     }
 }

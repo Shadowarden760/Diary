@@ -4,9 +4,8 @@ import android.app.AlarmManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.util.Log
-import com.homeapps.diary.domain.api.AlarmScheduler
 import com.homeapps.diary.domain.api.AlarmRepository
+import com.homeapps.diary.domain.api.AlarmScheduler
 import com.homeapps.diary.domain.models.alarm.AlarmItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,11 +20,10 @@ class DiaryAlarmReceiver: BroadcastReceiver(), KoinComponent {
     private val alarmScheduler: AlarmScheduler by inject()
 
     override fun onReceive(context: Context, intent: Intent) {
-        Log.d(DiaryAlarmReceiver::class.java.name, intent.action ?: "")
         if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
             CoroutineScope(Dispatchers.IO).launch {
                 alarmRepository.getAllAlarms().forEach { alarmItem ->
-                    schedulerNextAlarm(context, alarmItem)
+                    schedulerNextAlarm(context = context, alarmItem = alarmItem)
                 }
             }
         } else {
@@ -36,10 +34,10 @@ class DiaryAlarmReceiver: BroadcastReceiver(), KoinComponent {
                         schedulerNextAlarm(context = context, alarmItem = it)
                     }
                 }
+                val notificationManager = DiaryNotificationManager(context)
+                notificationManager.createNotificationChannel()
+                notificationManager.showNotification()
             }
-            val notificationManager = DiaryNotificationManager(context)
-            notificationManager.createNotificationChannel()
-            notificationManager.showNotification()
         }
     }
 
@@ -48,7 +46,7 @@ class DiaryAlarmReceiver: BroadcastReceiver(), KoinComponent {
         val missedDays = max(0, System.currentTimeMillis() - alarmItem.alarmTimeMillis) / AlarmManager.INTERVAL_DAY
         val nextTriggerTime = alarmItem.alarmTimeMillis + AlarmManager.INTERVAL_DAY * (missedDays + 1)
         alarmRepository.updateAlarm(alarmId = alarmItem.alarmId, newTime = nextTriggerTime)?.let {
-            alarmScheduler.alarmSchedule(intent, it)
+            alarmScheduler.alarmSchedule(intent = intent, alarmItem = it)
         }
     }
 }

@@ -24,13 +24,17 @@ import com.homeapps.diary.domain.models.weather.HourlyWeatherData
 import com.homeapps.diary.utils.DateTimeUtils
 
 @Composable
-fun HourlyWeatherItem(hourlyWeather: HourlyWeatherData) {
+fun HourlyWeatherItem(
+    itemIndex: Int,
+    hourlyWeather: HourlyWeatherData
+) {
+    val startPadding = if (itemIndex == 0) 24.dp else 0.dp
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .width(90.dp)
+            .width(75.dp + startPadding)
             .wrapContentHeight()
-            .padding(horizontal = 4.dp)
+            .padding(start = startPadding)
             .background(
                 color = MaterialTheme.colorScheme.primaryContainer,
                 shape = MaterialTheme.shapes.large

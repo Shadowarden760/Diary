@@ -2,6 +2,7 @@ package com.homeapps.diary.ui.features.weather.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -23,20 +24,19 @@ import com.homeapps.diary.R
 fun WeatherError(
     errorMessage: String,
     tryAgain: () -> Unit,
-    goHome: () -> Unit
+    goHome: () -> Unit,
+    innerPadding: PaddingValues,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize().padding(innerPadding)
     ) {
         Text(
             text = errorMessage,
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp, vertical = 24.dp),
+            modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp),
         )
         Button(
             onClick = tryAgain,
@@ -45,9 +45,7 @@ fun WeatherError(
                 defaultElevation = 10.dp, pressedElevation = 5.dp, focusedElevation = 10.dp,
                 hoveredElevation = 10.dp, disabledElevation = 10.dp
             ),
-            modifier = Modifier
-                .width(200.dp)
-                .padding(bottom = 24.dp)
+            modifier = Modifier.width(200.dp).padding(bottom = 24.dp)
         ) {
             Text(
                 text = stringResource(R.string.weather_button_try_again),
@@ -62,8 +60,7 @@ fun WeatherError(
                 defaultElevation = 10.dp, pressedElevation = 5.dp, focusedElevation = 10.dp,
                 hoveredElevation = 10.dp, disabledElevation = 10.dp
             ),
-            modifier = Modifier
-                .width(200.dp)
+            modifier = Modifier.width(200.dp)
         ) {
             Text(
                 text = stringResource(R.string.weather_button_return),
@@ -80,6 +77,7 @@ private fun WeatherErrorPreview(){
     WeatherError(
         errorMessage = "Some error",
         tryAgain = {},
-        goHome = {}
+        goHome = {},
+        innerPadding = PaddingValues(16.dp)
     )
 }

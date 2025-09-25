@@ -1,7 +1,9 @@
 package com.homeapps.diary.ui.features.notelist
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -13,11 +15,12 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun NoteListScreen(
     viewModel: NoteListViewModel = koinViewModel(),
-    goToNoteDetail:(noteId: Long) -> Unit = {}
+    goToNoteDetail:(noteId: Long) -> Unit = {},
+    innerPadding: PaddingValues,
 ) {
     val notes = viewModel.notesFlow.collectAsStateWithLifecycle(listOf())
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
         NoteListHeader(noteNumber = notes.value.size)
         NoteList(
             noteList = notes.value,
@@ -30,6 +33,7 @@ fun NoteListScreen(
             viewModel.createNewNote { newNoteId ->
                 goToNoteDetail(newNoteId)
             }
-        }
+        },
+        innerPadding = innerPadding
     )
 }

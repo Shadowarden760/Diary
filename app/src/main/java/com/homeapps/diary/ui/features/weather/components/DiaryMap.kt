@@ -78,7 +78,7 @@ fun DiaryMap(
         modifier = Modifier
             .fillMaxWidth()
             .height(400.dp)
-            .padding(horizontal = 24.dp, vertical = 16.dp)
+            .padding(start = 24.dp, top = 16.dp, end = 24.dp)
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             MaplibreMap(
@@ -94,11 +94,7 @@ fun DiaryMap(
                         onPointerEnd = { onMapTouch(false) }
                     )
             )
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(8.dp)
-            ) {
+            Box(modifier = Modifier.fillMaxSize().padding(8.dp)) {
                 ScaleBar(
                     metersPerDp = cameraState.metersPerDpAtTarget,
                     color = Color.Black,
@@ -130,8 +126,8 @@ fun DiaryMap(
                 IconButton(
                     onClick = {},
                     colors = IconButtonColors(
-                        contentColor = MaterialTheme.colorScheme.onSurface,
-                        containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                        contentColor = MaterialTheme.colorScheme.primary,
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
                         disabledContentColor = Color.Transparent,
                         disabledContainerColor = Color.Transparent
                     ),

@@ -35,6 +35,8 @@ fun NoteListItem(
             Text(
                 text = note.noteTitle,
                 style = MaterialTheme.typography.bodyMedium,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
                 modifier = Modifier.padding(6.dp)
             )
             Text(

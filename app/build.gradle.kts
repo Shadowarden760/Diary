@@ -2,8 +2,13 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.konan.properties.Properties
 import java.io.FileInputStream
 
-val appProperties = Properties()
-appProperties.load(FileInputStream(rootProject.file("app/app.properties")))
+var appProperties = Properties()
+val appPropertiesFile = rootProject.file("app/app.properties")
+if (appPropertiesFile.exists()) {
+    appProperties.load(FileInputStream(appPropertiesFile))
+} else {
+    appProperties = System.getProperties()
+}
 
 plugins {
     alias(libs.plugins.android.application)
@@ -29,20 +34,20 @@ android {
         applicationId = "com.homeapps.diary"
         minSdk = 26
         targetSdk = 36
-        versionCode = 58
-        versionName = "1.7.4"
+        versionCode = 59
+        versionName = "1.7.5"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     signingConfigs {
         getByName("debug") {
-            storeFile = file(appProperties.getProperty("DEBUG_STORE_FILE"))
+            storeFile = appProperties.getProperty("DEBUG_STORE_FILE")?.let { file(it) }
             storePassword = appProperties.getProperty("DEBUG_STORE_PASSWORD")
             keyAlias = appProperties.getProperty("DEBUG_KEY_ALIAS")
             keyPassword = appProperties.getProperty("DEBUG_KEY_PASSWORD")
         }
         create("release") {
-            storeFile = file(appProperties.getProperty("RELEASE_STORE_FILE"))
+            storeFile = appProperties.getProperty("RELEASE_STORE_FILE")?.let { file(it) }
             storePassword = appProperties.getProperty("RELEASE_STORE_PASSWORD")
             keyAlias = appProperties.getProperty("RELEASE_KEY_ALIAS")
             keyPassword = appProperties.getProperty("RELEASE_KEY_PASSWORD")
@@ -108,8 +113,12 @@ android {
     applicationVariants.configureEach {
         this.outputs.forEach { output ->
             output as com.android.build.gradle.internal.api.BaseVariantOutputImpl
+            val regex = Regex("-[\\w]+\\.apk$")
+            val matchResult = regex.find(output.outputFileName)
             output.outputFileName = output.outputFileName.replace("app", "DiaryApp")
-
+            matchResult?.value?.let { substring ->
+                output.outputFileName = output.outputFileName.replace(substring, "-$versionName.apk")
+            }
         }
     }
 }

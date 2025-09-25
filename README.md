@@ -63,4 +63,5 @@ Grab the latest release from [Releases](https://github.com/Shadowarden760/Diary/
 ```bash
 git clone https://github.com/Shadowarden760/Diary.git
 cd Diary
-./gradlew assembleDebug
+./gradlew assembleDebug -DDEBUG_STORE_FILE="" -DDEBUG_STORE_PASSWORD="" -DDEBUG_KEY_ALIAS="" -DDEBUG_KEY_PASSWORD=""
+ -DWEATHER_API_URL="" -DIP_API_URL="" -DMAP_API_URL="" -DWEATHER_API_KEY="" -DMAPTILER_API_KEY=""

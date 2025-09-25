@@ -29,8 +29,8 @@ android {
         applicationId = "com.homeapps.diary"
         minSdk = 26
         targetSdk = 36
-        versionCode = 57
-        versionName = "1.7.3"
+        versionCode = 58
+        versionName = "1.7.4"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -102,6 +102,14 @@ android {
             reset()
             include("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
             isUniversalApk = true
+        }
+    }
+
+    applicationVariants.configureEach {
+        this.outputs.forEach { output ->
+            output as com.android.build.gradle.internal.api.BaseVariantOutputImpl
+            output.outputFileName = output.outputFileName.replace("app", "DiaryApp")
+
         }
     }
 }

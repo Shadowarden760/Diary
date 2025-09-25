@@ -39,13 +39,13 @@ fun FutureWeatherItem(futureWeather: FutureWeatherData) {
             contentDescription = null,
             contentScale = ContentScale.FillBounds,
             colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
-            modifier = Modifier.size(65.dp).weight(0.15f).padding(8.dp)
+            modifier = Modifier.size(65.dp).weight(0.2f, fill = false).padding(8.dp)
         )
         Text(
             text = futureWeather.status,
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
-            modifier = Modifier.weight(0.4f)
+            modifier = Modifier.weight(0.35f)
         )
         Text(
             text = "${futureWeather.highTemp}°/${futureWeather.lowTemp}°",

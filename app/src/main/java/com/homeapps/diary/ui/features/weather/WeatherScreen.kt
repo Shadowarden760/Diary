@@ -64,10 +64,12 @@ fun WeatherScreen(
             viewModel.getLocationPermissions(locationPermissionLauncher)
             return@LaunchedEffect
         }
-        if (viewModel.ifGpsOn() && viewModel.hasLocationPermissions()) {
-            viewModel.loadWeatherByLocation(Locale.current.language, snackBarManager)
-        } else {
-            viewModel.loadWeatherByIp(Locale.current.language)
+        if (forecastState.value !is WeatherViewModel.ForecastState.Success) {
+            if (viewModel.ifGpsOn() && viewModel.hasLocationPermissions()) {
+                viewModel.loadWeatherByLocation(Locale.current.language, snackBarManager)
+            } else {
+                viewModel.loadWeatherByIp(Locale.current.language)
+            }
         }
     }
 

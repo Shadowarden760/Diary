@@ -50,19 +50,19 @@ fun TimePickerDialog(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 16.dp)
+                .padding(vertical = 16.dp)
         ) {
             Text(
                 text = stringResource(R.string.alarm_text_set_your_alarm),
-                style = MaterialTheme.typography.headlineMedium
+                style = MaterialTheme.typography.headlineMedium,
+                modifier = Modifier.weight(0.7f)
             )
-            Spacer(Modifier.weight(1f))
             IconButton(onClick = onDismiss) {
                 Icon(
                     painter = painterResource(R.drawable.ic_cancel),
                     tint = MaterialTheme.colorScheme.primary,
                     contentDescription = null,
-                    modifier = Modifier.size(35.dp)
+                    modifier = Modifier.size(35.dp).weight(0.3f)
                 )
             }
         }

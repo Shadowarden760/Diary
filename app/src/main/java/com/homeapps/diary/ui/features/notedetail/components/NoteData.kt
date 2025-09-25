@@ -33,7 +33,7 @@ fun NoteDataScreen(
     Column(modifier = Modifier
         .fillMaxSize()
         .imePadding()
-        .padding(vertical = 16.dp, horizontal = 24.dp)
+        .padding(start = 24.dp, top = 16.dp, end = 24.dp)
     ) {
         DiaryTextField(
             value = title.value,

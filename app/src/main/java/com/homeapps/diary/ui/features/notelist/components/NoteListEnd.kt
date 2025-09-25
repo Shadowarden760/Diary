@@ -27,7 +27,7 @@ fun NoteListEnd(
         FloatingActionButton(
             onClick = createNewNote,
             shape = MaterialTheme.shapes.medium,
-            modifier = Modifier.padding(vertical = 16.dp)
+            modifier = Modifier.padding(vertical = 16.dp, horizontal = 24.dp)
         ) {
             Icon(
                 imageVector = Icons.Default.Add,

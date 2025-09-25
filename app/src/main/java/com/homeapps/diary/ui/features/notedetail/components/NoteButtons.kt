@@ -31,7 +31,7 @@ fun NoteButtons(
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier.padding(bottom = 16.dp)
+            modifier = Modifier.padding(end = 24.dp, bottom = 16.dp)
         ) {
             FloatingActionButton(
                 onClick = shareNote,

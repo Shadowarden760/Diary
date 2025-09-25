@@ -50,7 +50,7 @@ fun TimePickerDialog(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 16.dp)
+                .padding(bottom = 16.dp)
         ) {
             Text(
                 text = stringResource(R.string.alarm_text_set_your_alarm),

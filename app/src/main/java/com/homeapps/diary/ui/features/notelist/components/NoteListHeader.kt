@@ -18,7 +18,7 @@ import com.homeapps.diary.R
 
 @Composable
 fun NoteListHeader(noteNumber: Int) {
-    Row(modifier = Modifier.fillMaxWidth()) {
+    Row(modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp, horizontal = 24.dp)) {
         Text(
             text = stringResource(R.string.note_list_text_your_notes),
             style = MaterialTheme.typography.headlineSmall,

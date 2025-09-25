@@ -78,7 +78,7 @@ fun DiaryMap(
         modifier = Modifier
             .fillMaxWidth()
             .height(400.dp)
-            .padding(top = 16.dp)
+            .padding(start = 24.dp, top = 16.dp, end = 24.dp)
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             MaplibreMap(

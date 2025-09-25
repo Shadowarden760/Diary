@@ -68,7 +68,7 @@ fun ForecastCurrent(weatherData: WeatherData) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 16.dp)
+            .padding(start = 24.dp, top = 16.dp, end = 24.dp)
             .background(
                 color = MaterialTheme.colorScheme.primaryContainer,
                 shape = MaterialTheme.shapes.extraLarge

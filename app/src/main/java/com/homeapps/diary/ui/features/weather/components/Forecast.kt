@@ -42,7 +42,7 @@ fun Forecast(
             Text(
                 text = stringResource(R.string.weather_text_today),
                 style = MaterialTheme.typography.headlineMedium,
-                modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp)
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 16.dp)
             )
         }
         item { ForecastToday(hourlyData = weatherData.hourlyWeatherData) }
@@ -50,7 +50,7 @@ fun Forecast(
             Text(
                 text = stringResource(R.string.weather_text_future),
                 style = MaterialTheme.typography.headlineMedium,
-                modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp)
+                modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp, horizontal = 24.dp)
             )
         }
         items(weatherData.futureWeatherData) { item ->

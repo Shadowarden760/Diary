@@ -64,7 +64,7 @@ fun HomeScreen(
         Row(
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().padding(top = 16.dp, end = 24.dp)
         ) {
             IconButton(
                 onClick = goToAlarmScreen,

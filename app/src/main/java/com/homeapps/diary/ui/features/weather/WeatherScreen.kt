@@ -49,12 +49,15 @@ fun WeatherScreen(
             } else {
                 viewModel.getLocationPermissions(locationPermissionLauncher)
             }
-            return@rememberLauncherForActivityResult
+        } else {
+            viewModel.loadWeatherByIp(Locale.current.language)
         }
-        viewModel.loadWeatherByIp(Locale.current.language)
     }
 
     LaunchedEffect(Unit) {
+        if (forecastState.value is WeatherViewModel.ForecastState.Success) {
+            return@LaunchedEffect
+        }
         if (!viewModel.ifGpsOn()) {
             val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
             settingsLauncher.launch(intent)
@@ -64,12 +67,10 @@ fun WeatherScreen(
             viewModel.getLocationPermissions(locationPermissionLauncher)
             return@LaunchedEffect
         }
-        if (forecastState.value !is WeatherViewModel.ForecastState.Success) {
-            if (viewModel.ifGpsOn() && viewModel.hasLocationPermissions()) {
-                viewModel.loadWeatherByLocation(Locale.current.language, snackBarManager)
-            } else {
-                viewModel.loadWeatherByIp(Locale.current.language)
-            }
+        if (viewModel.ifGpsOn() && viewModel.hasLocationPermissions()) {
+            viewModel.loadWeatherByLocation(Locale.current.language, snackBarManager)
+        } else {
+            viewModel.loadWeatherByIp(Locale.current.language)
         }
     }
 
@@ -81,7 +82,6 @@ fun WeatherScreen(
             is WeatherViewModel.ForecastState.Loading -> {
                 Waiting(innerPadding = innerPadding)
             }
-
             is WeatherViewModel.ForecastState.Success -> {
                 Forecast(
                     weatherData = it.data,
@@ -89,7 +89,6 @@ fun WeatherScreen(
                     innerPadding = innerPadding
                 )
             }
-
             is WeatherViewModel.ForecastState.Failure -> {
                 WeatherError(
                     errorMessage = it.message,

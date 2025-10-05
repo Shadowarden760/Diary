@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
-import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.core.content.ContextCompat
@@ -51,7 +50,7 @@ class DiaryLocationManager(private val appContext: Context) {
                 locationHandler!!.postDelayed({
                     cleanUp()
                     onError(LocationErrors.ERROR_LOCATION_TIMEOUT)
-                }, LOCATION_TIMEOUT)
+                }, LOCATION_TIMEOUT_MILLIS)
 
                 locationManager.requestLocationUpdates(
                     provider,
@@ -94,6 +93,6 @@ class DiaryLocationManager(private val appContext: Context) {
         )
         private const val MIN_REQUEST_TIME_MS = 5_000L
         private const val MIN_DISTANCE_UPDATE_M = 50F
-        private const val LOCATION_TIMEOUT = 10_000L
+        private const val LOCATION_TIMEOUT_MILLIS = 10_000L
     }
 }

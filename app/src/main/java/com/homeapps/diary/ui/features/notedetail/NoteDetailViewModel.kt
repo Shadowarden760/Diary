@@ -28,14 +28,18 @@ class NoteDetailViewModel(
     private val _state = MutableStateFlow<NoteDetailState>(NoteDetailState.Default)
     val state = _state.asStateFlow()
 
+    fun updateState(newState: NoteDetailState) {
+        _state.value = newState
+    }
+
     fun getCurrentNote(noteId: Long) = viewModelScope.launch {
         val note = withContext(dispatcher) {
             getNoteByIdUseCase(noteId = noteId)
         }
         if (note == null) {
-            _state.value = NoteDetailState.Error
+            updateState(NoteDetailState.Error)
         } else {
-            _state.value = NoteDetailState.CurrentNote(note)
+            updateState(NoteDetailState.CurrentNote(note))
         }
     }
 

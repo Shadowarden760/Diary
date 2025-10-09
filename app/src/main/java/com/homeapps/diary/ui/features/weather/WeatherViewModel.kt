@@ -38,15 +38,12 @@ class WeatherViewModel(
 
     fun loadWeatherByLocation(
         userLocale: String,
-        snackBarManager: DiarySnackBarManager
+        snackBarManager: DiarySnackBarManager,
     ) = viewModelScope.launch {
         _forecastState.value = ForecastState.Loading
         diaryLocationManager.requestSingleLocationUpdate(
             onLocationReceived = { location ->
-                onLocationReceived(
-                    location = location,
-                    userLocale = userLocale
-                )
+                onLocationReceived(location = location, userLocale = userLocale)
             },
             onError = { locationError ->
                 when (locationError) {
@@ -115,9 +112,11 @@ class WeatherViewModel(
                     userLocation = location
                 )
             }
-            null -> _forecastState.value = ForecastState.Failure(
-                message = appContext.getString(R.string.weather_text_cant_get_weather_data)
-            )
+            null -> {
+                _forecastState.value = ForecastState.Failure(
+                    message = appContext.getString(R.string.weather_text_cant_get_weather_data)
+                )
+            }
         }
     }
 

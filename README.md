@@ -54,6 +54,10 @@ A minimalist Android app for **note-taking** and **weather tracking** in your re
 - **Alarm Manager**: For scheduling reliable daily reminders
 
 ---
+## 🎨 UI design
+The weather screen user interface was taken from the YouTube channel [UiLover](https://www.youtube.com/@UiLover).
+
+---
 
 ## ⬇️ Installation  
 ### Option 1: Download APK  

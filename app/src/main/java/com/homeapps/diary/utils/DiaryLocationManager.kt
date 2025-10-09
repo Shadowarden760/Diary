@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
-import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.core.content.ContextCompat
@@ -28,7 +27,9 @@ class DiaryLocationManager(private val appContext: Context) {
     }
 
     fun hasLocationPermissions(): Boolean {
-        return locationPermissions.all { ContextCompat.checkSelfPermission(appContext, it) == PackageManager.PERMISSION_GRANTED }
+        return locationPermissions.all {
+            ContextCompat.checkSelfPermission(appContext, it) == PackageManager.PERMISSION_GRANTED
+        }
     }
 
     fun requestSingleLocationUpdate(
@@ -36,22 +37,19 @@ class DiaryLocationManager(private val appContext: Context) {
         onError: (LocationErrors) -> Unit
     ) {
         val provider = getAvailableLocationProvider()
-        if (provider == null) {
-            onError(LocationErrors.ERROR_NO_AVAILABLE_PROVIDERS)
-        } else {
+        if (provider != null) {
             locationListener = object: LocationListener {
                 override fun onLocationChanged(location: Location) {
                     cleanUp()
                     onLocationReceived(location)
                 }
             }
-
             try {
                 locationHandler = Handler(Looper.getMainLooper())
                 locationHandler!!.postDelayed({
                     cleanUp()
                     onError(LocationErrors.ERROR_LOCATION_TIMEOUT)
-                }, LOCATION_TIMEOUT)
+                }, LOCATION_TIMEOUT_MILLIS)
 
                 locationManager.requestLocationUpdates(
                     provider,
@@ -67,6 +65,8 @@ class DiaryLocationManager(private val appContext: Context) {
                 cleanUp()
                 onError(LocationErrors.ERROR_REQUESTING_LOCATION)
             }
+        } else {
+            onError(LocationErrors.ERROR_NO_AVAILABLE_PROVIDERS)
         }
     }
 
@@ -86,14 +86,14 @@ class DiaryLocationManager(private val appContext: Context) {
         return null
     }
 
-    companion object {
+    private companion object {
         private val locationProviders = listOf(
-            LocationManager.GPS_PROVIDER,
             LocationManager.NETWORK_PROVIDER,
+            LocationManager.GPS_PROVIDER,
             LocationManager.PASSIVE_PROVIDER
         )
-        private const val MIN_REQUEST_TIME_MS = 5_000L
-        private const val MIN_DISTANCE_UPDATE_M = 50F
-        private const val LOCATION_TIMEOUT = 10_000L
+        private const val MIN_REQUEST_TIME_MS = 1_000L
+        private const val MIN_DISTANCE_UPDATE_M = 10F
+        private const val LOCATION_TIMEOUT_MILLIS = 15_000L
     }
 }

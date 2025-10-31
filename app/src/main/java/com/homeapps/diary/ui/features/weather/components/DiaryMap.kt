@@ -87,6 +87,7 @@ fun DiaryMap(
                 ),
                 options = MapOptions(ornamentOptions = OrnamentOptions.OnlyLogo),
                 cameraState = cameraState,
+                zoomRange = cameraState.position.zoom.toFloat() ..  cameraState.position.zoom.toFloat(),
                 modifier = Modifier
                     .fillMaxSize()
                     .onPointerInteractionStartEnd(

@@ -34,8 +34,8 @@ android {
         applicationId = "com.homeapps.diary"
         minSdk = 26
         targetSdk = 36
-        versionCode = 63
-        versionName = "1.8.3"
+        versionCode = 64
+        versionName = "1.8.4"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -178,7 +178,7 @@ dependencies {
     // LEAK CANARY
     debugImplementation(libs.leakcanary.android)
 
-    //FIREBASE ANALYTICS, CRASHLYTICS
+    // FIREBASE ANALYTICS, CRASHLYTICS
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics.ndk)
     implementation(libs.firebase.analytics)

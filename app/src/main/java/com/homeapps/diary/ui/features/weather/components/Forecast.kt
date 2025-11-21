@@ -18,9 +18,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.homeapps.diary.R
 import com.homeapps.diary.domain.models.weather.WeatherData
-import io.github.dellisd.spatialk.geojson.Position
 import org.maplibre.compose.camera.CameraPosition
 import org.maplibre.compose.camera.rememberCameraState
+import org.maplibre.spatialk.geojson.Position
 
 @Composable
 fun Forecast(
@@ -57,16 +57,16 @@ fun Forecast(
             FutureWeatherItem(item)
         }
         if (userLocation != null) {
-            val userPosition = Position(
-                longitude = userLocation.longitude,
-                latitude = userLocation.latitude
-            )
-            cameraState.position = CameraPosition(target = userPosition, zoom = 12.0)
             item {
+                val userPosition = Position(
+                    longitude = userLocation.longitude,
+                    latitude = userLocation.latitude
+                )
+                cameraState.position = CameraPosition(target = userPosition, zoom = 11.0)
                 DiaryMap(
                     userPosition = userPosition,
                     cameraState = cameraState,
-                    onMapTouch = { moving -> isMapMoving.value = moving}
+                    onMapTouch = { moving -> isMapMoving.value = moving }
                 )
             }
         }

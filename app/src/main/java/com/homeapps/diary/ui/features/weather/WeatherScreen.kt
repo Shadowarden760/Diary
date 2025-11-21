@@ -86,7 +86,7 @@ fun WeatherScreen(
                 Forecast(
                     weatherData = it.data,
                     userLocation = it.userLocation,
-                    innerPadding = innerPadding
+                    innerPadding = innerPadding,
                 )
             }
             is WeatherViewModel.ForecastState.Failure -> {

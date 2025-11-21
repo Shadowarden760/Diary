@@ -28,19 +28,21 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.homeapps.diary.BuildConfig
 import com.homeapps.diary.R
-import io.github.dellisd.spatialk.geojson.Position
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.maplibre.compose.camera.CameraPosition
 import org.maplibre.compose.camera.CameraState
+import org.maplibre.compose.map.GestureOptions
 import org.maplibre.compose.map.MapOptions
 import org.maplibre.compose.map.MaplibreMap
 import org.maplibre.compose.map.OrnamentOptions
+import org.maplibre.compose.map.RenderOptions
 import org.maplibre.compose.material3.CompassButton
 import org.maplibre.compose.material3.PointerPinButton
 import org.maplibre.compose.material3.ScaleBar
 import org.maplibre.compose.style.BaseStyle
+import org.maplibre.spatialk.geojson.Position
 import kotlin.time.Duration.Companion.milliseconds
 
 fun Modifier.onPointerInteractionStartEnd(
@@ -85,7 +87,11 @@ fun DiaryMap(
                 baseStyle = BaseStyle.Uri(
                     uri = "${BuildConfig.MAP_API_URL}/maps/streets-v2/style.json?key=${BuildConfig.MAPTILER_API_KEY}"
                 ),
-                options = MapOptions(ornamentOptions = OrnamentOptions.OnlyLogo),
+                options = MapOptions(
+                    renderOptions = RenderOptions(maximumFps = 120),
+                    ornamentOptions = OrnamentOptions.OnlyLogo,
+                    gestureOptions = GestureOptions.AllDisabled,
+                ),
                 cameraState = cameraState,
                 modifier = Modifier
                     .fillMaxSize()
@@ -110,7 +116,10 @@ fun DiaryMap(
                     onClick = {
                         CoroutineScope(Dispatchers.Main).launch {
                             cameraState.animateTo(
-                                finalPosition = CameraPosition(target = userPosition, zoom = cameraState.position.zoom),
+                                finalPosition = CameraPosition(
+                                    target = userPosition,
+                                    zoom = cameraState.position.zoom
+                                ),
                                 duration = 500.milliseconds
                             )
                         }
@@ -133,8 +142,8 @@ fun DiaryMap(
                     ),
                     modifier = Modifier
                         .padding(start = 8.dp)
-                        .absoluteOffset{
-                            target?.let{ IntOffset(x = it.x.toInt(), y = it.y.toInt()) } ?: IntOffset( x = 0, y = 0)
+                        .absoluteOffset {
+                            target?.let { IntOffset(x = it.x.toInt(), y = it.y.toInt()) } ?: IntOffset(x = 0, y = 0)
                         }
                 ) {
                     Icon(

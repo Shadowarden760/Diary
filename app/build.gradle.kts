@@ -1,10 +1,11 @@
+import com.android.build.api.dsl.ApplicationExtension
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.konan.properties.Properties
 import java.io.FileInputStream
 
 var appProperties = Properties()
-val appPropertiesFile = rootProject.file("app/app.properties")
-if (appPropertiesFile.exists()) {
+val appPropertiesFile: File? = rootProject.file("app/app.properties")
+if (appPropertiesFile != null && appPropertiesFile.exists()) {
     appProperties.load(FileInputStream(appPropertiesFile))
 } else {
     appProperties = System.getProperties()
@@ -12,7 +13,6 @@ if (appPropertiesFile.exists()) {
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.sqldelight)
@@ -26,7 +26,7 @@ kotlin {
     }
 }
 
-android {
+extensions.configure<ApplicationExtension> {
     namespace = "com.homeapps.diary"
     compileSdk = 36
 
@@ -34,8 +34,8 @@ android {
         applicationId = "com.homeapps.diary"
         minSdk = 26
         targetSdk = 36
-        versionCode = 64
-        versionName = "1.8.4"
+        versionCode = 65
+        versionName = "1.9.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -107,18 +107,6 @@ android {
             reset()
             include("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
             isUniversalApk = true
-        }
-    }
-
-    applicationVariants.configureEach {
-        this.outputs.forEach { output ->
-            output as com.android.build.gradle.internal.api.BaseVariantOutputImpl
-            val regex = Regex("-[\\w]+\\.apk$")
-            val matchResult = regex.find(output.outputFileName)
-            output.outputFileName = output.outputFileName.replace("app", "DiaryApp")
-            matchResult?.value?.let { substring ->
-                output.outputFileName = output.outputFileName.replace(substring, "-$versionName.apk")
-            }
         }
     }
 }

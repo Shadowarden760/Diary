@@ -34,7 +34,7 @@ extensions.configure<ApplicationExtension> {
         applicationId = "com.homeapps.diary"
         minSdk = 26
         targetSdk = 36
-        versionCode = 65
+        versionCode = 66
         versionName = "1.9.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -155,6 +155,9 @@ dependencies {
 
     // ICONS
     implementation(libs.erikflowers.weather.icons)
+
+    // THEME ANIMATION
+    implementation(libs.themeanimator)
 
     // SERIALIZATION/DESERIALIZATION
     implementation(libs.gson)

@@ -34,6 +34,7 @@ import com.homeapps.diary.ui.features.homealarm.AlarmViewModel
 import com.homeapps.diary.ui.features.notedetail.NoteDetailViewModel
 import com.homeapps.diary.ui.features.notelist.NoteListViewModel
 import com.homeapps.diary.ui.features.weather.WeatherViewModel
+import com.homeapps.diary.ui.theme.ThemeViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -49,14 +50,14 @@ val appModule = module {
     single<AlarmRepository> { AlarmRepositoryImpl(dao = AlarmsDatabaseDao(databaseDriver = get())) }
     single<AlarmScheduler> { AlarmSchedulerImpl(appContext = androidContext()) }
 
-    single { GetDarkThemeUseCase(settingsRepository = get()) }
-
     viewModel {
-        HomeViewModel(
-            appContext = androidContext(),
-            getDarkThemeUseCase = get(),
+        ThemeViewModel(
+            getDarkThemeUseCase = GetDarkThemeUseCase(settingsRepository = get()),
             setDarkThemeUseCase = SetDarkThemeUseCase(settingsRepository = get())
         )
+    }
+    viewModel {
+        HomeViewModel(appContext = androidContext())
     }
     viewModel {
         AlarmViewModel(

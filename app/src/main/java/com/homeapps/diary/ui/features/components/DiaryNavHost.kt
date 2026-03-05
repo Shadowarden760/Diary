@@ -41,7 +41,8 @@ fun DiaryNavHost(appState: DiaryAppState, innerPaddingValues: PaddingValues) {
         composable(DiaryRoute.Home.route) {
             HomeScreen(
                 goToAlarmScreen = goToAlarmFromHome,
-                innerPadding = innerPaddingValues
+                innerPadding = innerPaddingValues,
+                animationState = appState.themeAnimationState
             )
         }
 

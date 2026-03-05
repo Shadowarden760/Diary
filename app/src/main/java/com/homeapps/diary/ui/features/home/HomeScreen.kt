@@ -2,6 +2,7 @@ package com.homeapps.diary.ui.features.home
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,16 +25,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.homeapps.diary.BuildConfig
 import com.homeapps.diary.R
 import com.homeapps.diary.ui.features.home.components.DropDownLanguageMenu
-import com.homeapps.diary.ui.features.home.components.ThemeSwitcher
 import com.homeapps.diary.ui.features.home.components.featherIcon
+import io.github.themeanimator.ThemeAnimationState
+import io.github.themeanimator.button.ThemeSwitchButton
+import io.github.themeanimator.button.rememberLottieIconJson
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,8 +45,9 @@ fun HomeScreen(
     viewModel: HomeViewModel = koinViewModel(),
     goToAlarmScreen: () -> Unit,
     innerPadding: PaddingValues,
+    animationState: ThemeAnimationState
 ) {
-    val darkTheme = viewModel.darkTheme.collectAsStateWithLifecycle(initialValue = false)
+    val context = LocalContext.current
     val hasNotificationPermission = remember { mutableStateOf(viewModel.hasNotificationPermission()) }
     val notificationsPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
@@ -71,7 +75,7 @@ fun HomeScreen(
                 modifier = Modifier.padding(start = 8.dp)
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.ic_timer),
+                    painter = painterResource(id = R.drawable.ic_timer),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(35.dp)
@@ -82,9 +86,16 @@ fun HomeScreen(
                     viewModel.changeLanguage(newLanguage = selectedLanguage)
                 }
             )
-            ThemeSwitcher(
-                darkTheme = darkTheme.value,
-                onClick = { viewModel.setDarkTheme(darkTheme = !darkTheme.value) }
+            ThemeSwitchButton(
+                animationState = animationState,
+                buttonIcon = rememberLottieIconJson(
+                    startProgress = 0f,
+                    endProgress = 1f,
+                    animationSpec = tween(durationMillis = 300)
+                ) {
+                    context.assets.open("theme_anim.json").bufferedReader().use { it.readText() }
+                },
+                iconSize = 35.dp
             )
         }
         Spacer(modifier = Modifier.weight(0.5f))

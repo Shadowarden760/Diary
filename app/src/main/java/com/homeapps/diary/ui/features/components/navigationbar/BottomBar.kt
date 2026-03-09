@@ -10,40 +10,33 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import com.homeapps.diary.common.DiaryAppState
+import com.homeapps.diary.common.navigation.DiaryRoute
+import com.homeapps.diary.ui.TopLevelBackStack
 
 @Composable
-fun BottomBar(navHostController: NavHostController) {
-    val backStackEntry = navHostController.currentBackStackEntryAsState()
-    val currentDestination = backStackEntry.value?.destination
+fun BottomBar(appState: DiaryAppState, bottomItems: List<DiaryRoute>) {
     NavigationBar {
-        NavigationBarSection.sections.forEach { section ->
-            val selected = currentDestination?.hierarchy?.any {
-                it.route?.contains(section.route) == true
-            } == true
+        bottomItems.forEach { section ->
+            val selected = appState.topLevelBackStack.topLevelKey.value == section
             NavigationBarItem(
                 icon = {
                     Icon(
-                        painter = painterResource(section.icon),
+                        painter = painterResource(id = section.icon),
                         contentDescription = null
                     )
                 },
                 label = {
                     Text(
-                        text = stringResource(section.title),
+                        text = stringResource(id = section.title),
                         style = MaterialTheme.typography.bodyMedium
                     )
                 },
                 selected = selected,
                 onClick = {
-                    navHostController.navigate(section.route) {
-                        popUpTo(navHostController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
+                    appState.topLevelBackStack.switchTopLevel(key = section)
                 }
             )
         }

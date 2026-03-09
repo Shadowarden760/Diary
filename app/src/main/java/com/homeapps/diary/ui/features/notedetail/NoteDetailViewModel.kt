@@ -14,6 +14,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -25,11 +26,11 @@ class NoteDetailViewModel(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ): ViewModel() {
     private val diaryFileManager = DiaryFileManager(appContext)
-    private val _state = MutableStateFlow<NoteDetailState>(NoteDetailState.Default)
-    val state = _state.asStateFlow()
+    val state: StateFlow<NoteDetailState>
+        field = MutableStateFlow<NoteDetailState>(NoteDetailState.Default)
 
     fun updateState(newState: NoteDetailState) {
-        _state.value = newState
+        state.value = newState
     }
 
     fun getCurrentNote(noteId: Long) = viewModelScope.launch {
@@ -37,9 +38,9 @@ class NoteDetailViewModel(
             getNoteByIdUseCase(noteId = noteId)
         }
         if (note == null) {
-            updateState(NoteDetailState.Error)
+            updateState(newState = NoteDetailState.Error)
         } else {
-            updateState(NoteDetailState.CurrentNote(note))
+            updateState(newState = NoteDetailState.CurrentNote(note))
         }
     }
 

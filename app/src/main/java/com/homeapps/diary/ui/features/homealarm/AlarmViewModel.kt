@@ -13,7 +13,7 @@ import com.homeapps.diary.utils.DiaryAlarmReceiver
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -25,12 +25,12 @@ class AlarmViewModel(
     getAllAlarmUseCase: GetAllAlarmsUseCase,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ): ViewModel() {
-    private val _state = MutableStateFlow<AlarmScreenState>(AlarmScreenState.Default)
-    val state = _state.asStateFlow()
+    val state: StateFlow<AlarmScreenState>
+        field = MutableStateFlow<AlarmScreenState>(AlarmScreenState.Default)
     val alarms = getAllAlarmUseCase()
 
     fun resetState() {
-        _state.value = AlarmScreenState.Default
+        state.value = AlarmScreenState.Default
     }
 
     fun addNewAlarm(timeMillis: Long) = viewModelScope.launch {
@@ -38,7 +38,7 @@ class AlarmViewModel(
         val result = withContext(dispatcher) {
             addAlarmUseCase(intent = intent, timeMillis = timeMillis)
         }
-        _state.value = AlarmScreenState.AddNewAlarm(result)
+        state.value = AlarmScreenState.AddNewAlarm(result)
     }
 
     fun removeAlarm(alarmItem: AlarmItem) = viewModelScope.launch {
@@ -46,7 +46,7 @@ class AlarmViewModel(
         val result = withContext(dispatcher) {
             removeAlarmUseCase(intent = intent, alarmItem = alarmItem)
         }
-        _state.value = AlarmScreenState.RemoveAlarm(result)
+        state.value = AlarmScreenState.RemoveAlarm(result)
     }
 
     fun removeAllAlarms() = viewModelScope.launch {
@@ -54,7 +54,7 @@ class AlarmViewModel(
         val result = withContext(dispatcher) {
             removeAllAlarmsUseCase(intent = intent)
         }
-        _state.value = AlarmScreenState.RemoveAllAlarms(result)
+        state.value = AlarmScreenState.RemoveAllAlarms(result)
     }
 
     sealed class AlarmScreenState {

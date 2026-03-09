@@ -1,7 +1,14 @@
 package com.homeapps.diary.ui.features.components
 
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideIn
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOut
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.unit.center
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -9,9 +16,9 @@ import androidx.navigation.navArgument
 import com.homeapps.diary.common.DiaryAppState
 import com.homeapps.diary.common.navigation.DiaryRoute
 import com.homeapps.diary.common.navigation.DiaryRoute.Companion.NOTE_DETAIL_ARG_NOTE_ID
-import com.homeapps.diary.ui.features.components.navigationbar.NavigationBarSection
 import com.homeapps.diary.common.navigation.navigate
 import com.homeapps.diary.common.navigation.popUp
+import com.homeapps.diary.ui.features.components.navigationbar.NavigationBarSection
 import com.homeapps.diary.ui.features.home.HomeScreen
 import com.homeapps.diary.ui.features.homealarm.AlarmScreen
 import com.homeapps.diary.ui.features.notedetail.NoteDetailScreen
@@ -22,7 +29,9 @@ import com.homeapps.diary.ui.features.weather.WeatherScreen
 fun DiaryNavHost(appState: DiaryAppState, innerPaddingValues: PaddingValues) {
     NavHost(
         navController = appState.navController,
-        startDestination = NavigationBarSection.Home.route
+        startDestination = NavigationBarSection.Home.route,
+        enterTransition = { fadeIn() },
+        exitTransition = { fadeOut() },
     ) {
         val goToNoteDetailFromNoteList:(noteId: Long) -> Unit = { noteId ->
             appState.navigate(

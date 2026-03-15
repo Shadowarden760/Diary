@@ -1,9 +1,5 @@
-package com.homeapps.diary.ui.features.components
+package com.homeapps.diary.common.navigation
 
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
@@ -11,7 +7,6 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import com.homeapps.diary.common.DiaryAppState
-import com.homeapps.diary.common.navigation.DiaryRoute
 import com.homeapps.diary.ui.features.home.HomeScreen
 import com.homeapps.diary.ui.features.homealarm.AlarmScreen
 import com.homeapps.diary.ui.features.notedetail.NoteDetailScreen

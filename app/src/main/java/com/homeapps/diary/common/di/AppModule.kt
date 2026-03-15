@@ -1,5 +1,6 @@
 package com.homeapps.diary.common.di
 
+import com.homeapps.diary.common.navigation.NavViewModel
 import com.homeapps.diary.data.clients.ApiClient
 import com.homeapps.diary.data.clients.DatabaseDriver
 import com.homeapps.diary.data.datasources.alarms.AlarmsDatabaseDao
@@ -50,6 +51,9 @@ val appModule = module {
     single<AlarmRepository> { AlarmRepositoryImpl(dao = AlarmsDatabaseDao(databaseDriver = get())) }
     single<AlarmScheduler> { AlarmSchedulerImpl(appContext = androidContext()) }
 
+    viewModel {
+        NavViewModel()
+    }
     viewModel {
         ThemeViewModel(
             getDarkThemeUseCase = GetDarkThemeUseCase(settingsRepository = get()),

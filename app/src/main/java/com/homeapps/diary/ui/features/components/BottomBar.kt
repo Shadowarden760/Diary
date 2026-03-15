@@ -1,4 +1,4 @@
-package com.homeapps.diary.ui.features.components.navigationbar
+package com.homeapps.diary.ui.features.components
 
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -8,13 +8,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation3.runtime.NavBackStack
-import androidx.navigation3.runtime.NavKey
 import com.homeapps.diary.common.DiaryAppState
 import com.homeapps.diary.common.navigation.DiaryRoute
-import com.homeapps.diary.ui.TopLevelBackStack
 
 @Composable
 fun BottomBar(appState: DiaryAppState, bottomItems: List<DiaryRoute>) {
@@ -35,9 +30,7 @@ fun BottomBar(appState: DiaryAppState, bottomItems: List<DiaryRoute>) {
                     )
                 },
                 selected = selected,
-                onClick = {
-                    appState.topLevelBackStack.switchTopLevel(key = section)
-                }
+                onClick = { appState.topLevelBackStack.switchTopLevel(key = section) }
             )
         }
     }

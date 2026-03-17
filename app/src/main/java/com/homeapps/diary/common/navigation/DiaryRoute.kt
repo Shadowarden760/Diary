@@ -1,13 +1,17 @@
 package com.homeapps.diary.common.navigation
 
-sealed class DiaryRoute(val route: String) {
-    data object Home: DiaryRoute(route = "home")
-    data object Alarm: DiaryRoute(route = "home_alarm")
-    data object Weather: DiaryRoute(route = "weather")
-    data object NoteList: DiaryRoute(route = "notes")
-    data object NoteDetail: DiaryRoute(route = "notes_detail")
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import androidx.navigation3.runtime.NavKey
+import com.homeapps.diary.R
 
-    companion object {
-        const val NOTE_DETAIL_ARG_NOTE_ID = "noteId"
-    }
+sealed class DiaryRoute(
+    @param:StringRes val title: Int = 0,
+    @param:DrawableRes val icon: Int = 0,
+): NavKey {
+    data object Home: DiaryRoute(title = R.string.section_home, icon = R.drawable.ic_home)
+    data object Alarm: DiaryRoute()
+    data object Weather: DiaryRoute(title = R.string.section_weather, icon = R.drawable.ic_weather)
+    data object NoteList: DiaryRoute(title = R.string.section_notes, icon = R.drawable.ic_note)
+    data class NoteDetail(val noteId: Long): DiaryRoute()
 }

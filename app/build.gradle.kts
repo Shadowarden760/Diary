@@ -23,6 +23,7 @@ plugins {
 kotlin {
     compilerOptions {
         jvmTarget = JvmTarget.JVM_17
+        freeCompilerArgs.add("-Xexplicit-backing-fields")
     }
 }
 
@@ -34,8 +35,8 @@ extensions.configure<ApplicationExtension> {
         applicationId = "com.homeapps.diary"
         minSdk = 26
         targetSdk = 36
-        versionCode = 65
-        versionName = "1.9.0"
+        versionCode = 68
+        versionName = "1.9.2"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -139,6 +140,13 @@ dependencies {
     // KOIN
     implementation(libs.koin.androidx.compose)
 
+    //NAVIGATION
+    implementation(libs.androidx.navigation3.ui)
+    implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.lifecycle.viewmodel.navigation3)
+    implementation(libs.androidx.material3.adaptive.navigation3)
+    implementation(libs.kotlinx.serialization.core)
+
     // SQLDELIGHT
     implementation(libs.android.sqldelight.driver)
     implementation(libs.coroutines.extensions)
@@ -155,6 +163,9 @@ dependencies {
 
     // ICONS
     implementation(libs.erikflowers.weather.icons)
+
+    // THEME ANIMATION
+    implementation(libs.themeanimator)
 
     // SERIALIZATION/DESERIALIZATION
     implementation(libs.gson)

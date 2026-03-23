@@ -35,8 +35,8 @@ extensions.configure<ApplicationExtension> {
         applicationId = "com.homeapps.diary"
         minSdk = 26
         targetSdk = 36
-        versionCode = 68
-        versionName = "1.9.2"
+        versionCode = 69
+        versionName = "1.9.3"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -166,6 +166,9 @@ dependencies {
 
     // THEME ANIMATION
     implementation(libs.themeanimator)
+
+    // REORDERABLE
+    implementation(libs.reorderable)
 
     // SERIALIZATION/DESERIALIZATION
     implementation(libs.gson)

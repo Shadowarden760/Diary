@@ -4,6 +4,7 @@ data class NoteData(
     val noteId: Long,
     val noteTitle: String,
     val noteMessage: String,
+    val noteOrder: Long,
     val noteCreatedAt: Long,
     val noteUpdatedAt: Long,
 )

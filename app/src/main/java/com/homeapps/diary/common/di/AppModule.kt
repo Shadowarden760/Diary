@@ -76,7 +76,8 @@ val appModule = module {
         NoteListViewModel(
             createNewNoteUseCase = CreateNewNoteUseCase(notesRepository = get()),
             deleteNoteByIdUseCase = DeleteNoteByIdUseCase(notesRepository = get()),
-            getNotesFlowUseCase = GetNotesFlowUseCase(notesRepository = get())
+            getNotesFlowUseCase = GetNotesFlowUseCase(notesRepository = get()),
+            updateNoteUseCase = UpdateNoteUseCase(notesRepository = get())
         )
     }
     viewModel {

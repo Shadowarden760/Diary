@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.homeapps.diary.ui.features.notelist.components.NoteList
@@ -25,6 +26,7 @@ fun NoteListScreen(
         NoteList(
             noteList = notes.value,
             goToNoteDetail = goToNoteDetail,
+            updateNoteOrder = viewModel::updateNoteOrder,
             deleteNote = { noteId -> viewModel.deleteNote(noteId) }
         )
     }

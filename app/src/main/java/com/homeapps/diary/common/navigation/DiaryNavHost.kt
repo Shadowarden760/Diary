@@ -1,5 +1,8 @@
 package com.homeapps.diary.common.navigation
 
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
@@ -22,6 +25,9 @@ fun DiaryNavHost(appState: DiaryAppState, innerPaddingValues: PaddingValues) {
             rememberViewModelStoreNavEntryDecorator()
         ),
         onBack = { appState.topLevelBackStack.removeLast() },
+        transitionSpec = { fadeIn() togetherWith fadeOut() },
+        popTransitionSpec = { fadeIn() togetherWith fadeOut() },
+        predictivePopTransitionSpec = { fadeIn() togetherWith fadeOut() },
         entryProvider = entryProvider {
             val goBack: () -> Unit = {
                 appState.topLevelBackStack.removeLast()

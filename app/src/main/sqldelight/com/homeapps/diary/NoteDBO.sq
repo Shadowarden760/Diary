@@ -2,6 +2,7 @@ CREATE TABLE NoteDBO (
     noteId INTEGER PRIMARY KEY AUTOINCREMENT,
     noteTitle TEXT NOT NULL,
     noteMessage TEXT NOT NULL,
+    noteOrder INTEGER,
     noteCreatedAt INTEGER NOT NULL,
     noteUpdatedAt INTEGER NOT NULL
 );
@@ -16,12 +17,12 @@ FROM NoteDBO
 WHERE NoteDBO.noteId = ?;
 
 insertNewNote:
-INSERT INTO NoteDBO(noteTitle, noteMessage, noteCreatedAt, noteUpdatedAt)
-VALUES (?, ?, ?, ?);
+INSERT INTO NoteDBO(noteTitle, noteMessage, noteOrder, noteCreatedAt, noteUpdatedAt)
+VALUES (?, ?, ?, ?, ?);
 
 updateNote:
-REPLACE INTO NoteDBO(noteId, noteTitle, noteMessage, noteCreatedAt, noteUpdatedAt)
-VALUES (?, ?, ?, ?, ?);
+REPLACE INTO NoteDBO(noteId, noteTitle, noteMessage, noteOrder,  noteCreatedAt, noteUpdatedAt)
+VALUES (?, ?, ?, ?, ?, ?);
 
 deleteNoteById:
 DELETE FROM NoteDBO

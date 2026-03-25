@@ -17,7 +17,6 @@ leakcanaryAndroid = "2.14"
 lifecycleRuntimeKtx = "2.10.0"
 activityCompose = "1.12.4"
 composeBom = "2026.02.01"
-navigationCompose = "2.9.7"
 themeanimator = "0.0.18"
 uiTextGoogleFonts = "1.10.4"
 googleServices = "4.4.4"
@@ -27,13 +26,13 @@ nav3Core = "1.0.1"
 lifecycleViewmodelNav3 = "2.11.0-alpha01"
 material3AdaptiveNav3 = "1.3.0-alpha09"
 kotlinxSerializationCore = "1.9.0"
+reorderable = "3.0.0"
 
 [libraries]
 android-sqldelight-driver = { module = "app.cash.sqldelight:android-driver", version.ref = "androidSqlDelight" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 coroutines-extensions = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "androidSqlDelight" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinxSerializationCore" }
 androidx-navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "nav3Core" }
 androidx-navigation3-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "nav3Core" }
@@ -69,6 +68,7 @@ leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", ve
 maplibre-compose = { module = "org.maplibre.compose:maplibre-compose", version.ref = "maplibre" }
 maplibre-compose-material3 = { module = "org.maplibre.compose:maplibre-compose-material3", version.ref = "maplibre" }
 themeanimator = { module = "io.github.gleb-skobinsky:themeanimator", version.ref = "themeanimator" }
+reorderable = { module = "sh.calvin.reorderable:reorderable", version.ref = "reorderable" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

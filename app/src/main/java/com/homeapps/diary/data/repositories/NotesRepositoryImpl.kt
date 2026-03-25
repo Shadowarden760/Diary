@@ -17,7 +17,7 @@ class NotesRepositoryImpl(private val dao: NotesDatabaseDao): NotesRepository {
 
     override suspend fun getNoteById(noteId: Long): NoteData? = dao.getNoteById(noteId)?.toNoteData()
 
-    override suspend fun updateNote(note: NoteData): Long = dao.updateNote(note)
+    override suspend fun updateNote(note: NoteData, updateTime: Boolean): Long = dao.updateNote(note, updateTime)
 
     override suspend fun deleteNoteById(noteId: Long): Unit = dao.deleteNoteById(noteId)
 }

@@ -20,6 +20,7 @@ class NotesDatabaseDao(databaseDriver: DatabaseDriver) {
         queries.insertNewNote(
             noteTitle = "",
             noteMessage = "",
+            noteOrder = 0L,
             noteCreatedAt = System.currentTimeMillis(),
             noteUpdatedAt = System.currentTimeMillis()
         )
@@ -41,13 +42,14 @@ class NotesDatabaseDao(databaseDriver: DatabaseDriver) {
     }
 
 
-    suspend fun updateNote(note: NoteData): Long {
+    suspend fun updateNote(note: NoteData, updateTime: Boolean): Long {
         queries.updateNote(
             noteId = note.noteId,
             noteTitle = note.noteTitle,
             noteMessage = note.noteMessage,
+            noteOrder = note.noteOrder,
             noteCreatedAt = note.noteCreatedAt,
-            noteUpdatedAt = System.currentTimeMillis()
+            noteUpdatedAt = if (updateTime) System.currentTimeMillis() else note.noteUpdatedAt
         )
         return note.noteId
     }

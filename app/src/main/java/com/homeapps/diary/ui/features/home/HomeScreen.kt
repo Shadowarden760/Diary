@@ -5,7 +5,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -94,7 +93,7 @@ fun HomeScreen(
                     endProgress = 1f,
                     animationSpec = tween(durationMillis = 300)
                 ) {
-                    context.assets.open("theme_anim.json").bufferedReader().use { it.readText() }
+                    context.assets.open("theme_icon_anim.json").bufferedReader().use { it.readText() }
                 },
                 iconSize = 35.dp,
                 modifier = Modifier.padding(start = 5.dp)

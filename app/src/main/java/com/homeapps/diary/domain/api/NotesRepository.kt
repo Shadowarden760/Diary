@@ -13,7 +13,7 @@ interface NotesRepository {
 
     suspend fun getNoteById(noteId: Long): NoteData?
 
-    suspend fun updateNote(note: NoteData): Long
+    suspend fun updateNote(note: NoteData, updateTime: Boolean): Long
 
     suspend fun deleteNoteById(noteId: Long)
 }

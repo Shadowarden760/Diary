@@ -116,6 +116,7 @@ private fun NoteDataScreenPreview() {
             noteId = 0,
             noteTitle = "Title",
             noteMessage = "Veeeeeeeeeeeeery loooooooooooong meeeeeeeeeeeeeeessage",
+            noteOrder = 0L,
             noteUpdatedAt = 0L,
             noteCreatedAt = 0L
         ),

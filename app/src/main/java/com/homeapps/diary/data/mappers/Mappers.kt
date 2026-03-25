@@ -51,6 +51,7 @@ fun NoteDBO.toNoteData(): NoteData {
         noteId = this.noteId,
         noteTitle = this.noteTitle,
         noteMessage = this.noteMessage,
+        noteOrder = this.noteOrder ?: 0L,
         noteCreatedAt = this.noteCreatedAt,
         noteUpdatedAt = this.noteUpdatedAt,
     )

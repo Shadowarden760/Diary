@@ -33,7 +33,13 @@ class DatabaseDriver(private val appContext: Context) {
         }
 
         runCatching {
-            DiaryDB.Schema.migrate(driver = driver, oldVersion = 3, newVersion = DiaryDB.Schema.version)
+            DiaryDB.Schema.migrate(driver = driver, oldVersion = 3, newVersion = 4)
+        }.getOrElse { exception ->
+            print(exception.stackTrace)
+        }
+
+        runCatching {
+            DiaryDB.Schema.migrate(driver = driver, oldVersion = 4, newVersion = DiaryDB.Schema.version)
         }.getOrElse { exception ->
             print(exception.stackTrace)
         }

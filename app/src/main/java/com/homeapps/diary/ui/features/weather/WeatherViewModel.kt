@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.homeapps.diary.R
 import com.homeapps.diary.domain.models.weather.WeatherData
+import com.homeapps.diary.domain.usecases.logging.CreateLogMessageUseCase
 import com.homeapps.diary.domain.usecases.weather.GetForecastUseCase
 import com.homeapps.diary.domain.usecases.weather.GetIpAddressUseCase
 import com.homeapps.diary.utils.DiaryLocationManager
@@ -22,6 +23,7 @@ class WeatherViewModel(
     private val appContext: Context,
     private val getIpAddressUseCase: GetIpAddressUseCase,
     private val getForecastUseCase: GetForecastUseCase,
+    private val createLogMessageUseCase: CreateLogMessageUseCase,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ): ViewModel() {
     private val diaryLocationManager = DiaryLocationManager(appContext)

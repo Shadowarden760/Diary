@@ -1,9 +1,12 @@
 package com.homeapps.diary.data.mappers
 
 import com.homeapps.diary.AlarmDBO
+import com.homeapps.diary.LogMessageDBO
 import com.homeapps.diary.NoteDBO
 import com.homeapps.diary.data.datasources.weather.models.dto.ForecastDTO
+import com.homeapps.diary.domain.api.LoggingRepository
 import com.homeapps.diary.domain.models.alarm.AlarmItem
+import com.homeapps.diary.domain.models.logging.LogItem
 import com.homeapps.diary.domain.models.notes.NoteData
 import com.homeapps.diary.domain.models.weather.FutureWeatherData
 import com.homeapps.diary.domain.models.weather.HourlyWeatherData
@@ -62,4 +65,20 @@ fun AlarmDBO.toAlarmItem(): AlarmItem {
         alarmId = this.alarmId,
         alarmTimeMillis = this.alarmTimeMillis
     )
+}
+
+fun LogMessageDBO.toLogItem(): LogItem {
+    return LogItem(
+        logLevel = this.logMessageLevel.toLogLevel(),
+        logMessage = this.logMessageText,
+        logMessageCreatedAt = this.logMessageCreatedAt
+    )
+}
+
+private fun String.toLogLevel(): LoggingRepository.LogLevel {
+    return when(this) {
+        LoggingRepository.LogLevel.WARNING.level -> LoggingRepository.LogLevel.WARNING
+        LoggingRepository.LogLevel.ERROR.level -> LoggingRepository.LogLevel.ERROR
+        else -> LoggingRepository.LogLevel.INFO
+    }
 }

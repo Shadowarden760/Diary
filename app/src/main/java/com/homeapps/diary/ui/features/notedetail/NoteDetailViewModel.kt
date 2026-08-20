@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.homeapps.diary.R
 import com.homeapps.diary.domain.models.notes.NoteData
+import com.homeapps.diary.domain.usecases.logging.CreateLogMessageUseCase
 import com.homeapps.diary.domain.usecases.notes.GetNoteByIdUseCase
 import com.homeapps.diary.domain.usecases.notes.UpdateNoteUseCase
 import com.homeapps.diary.utils.DiaryFileManager
@@ -23,6 +24,7 @@ class NoteDetailViewModel(
     private val appContext: Context,
     private val getNoteByIdUseCase: GetNoteByIdUseCase,
     private val updateNoteUseCase: UpdateNoteUseCase,
+    private val createLogMessageUseCase: CreateLogMessageUseCase,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ): ViewModel() {
     private val diaryFileManager = DiaryFileManager(appContext)

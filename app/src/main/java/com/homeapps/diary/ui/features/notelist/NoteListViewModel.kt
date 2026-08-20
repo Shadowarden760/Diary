@@ -3,6 +3,7 @@ package com.homeapps.diary.ui.features.notelist
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.homeapps.diary.domain.models.notes.NoteData
+import com.homeapps.diary.domain.usecases.logging.CreateLogMessageUseCase
 import com.homeapps.diary.domain.usecases.notes.CreateNewNoteUseCase
 import com.homeapps.diary.domain.usecases.notes.DeleteNoteByIdUseCase
 import com.homeapps.diary.domain.usecases.notes.GetNotesFlowUseCase
@@ -19,6 +20,7 @@ class NoteListViewModel(
     private val deleteNoteByIdUseCase: DeleteNoteByIdUseCase,
     private val updateNoteUseCase: UpdateNoteUseCase,
     getNotesFlowUseCase: GetNotesFlowUseCase,
+    private val createLogMessageUseCase: CreateLogMessageUseCase,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ): ViewModel() {
     val notesFlow = getNotesFlowUseCase().distinctUntilChanged()

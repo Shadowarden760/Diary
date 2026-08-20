@@ -2,6 +2,7 @@ package com.homeapps.diary.ui.theme
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.homeapps.diary.domain.usecases.logging.CreateLogMessageUseCase
 import com.homeapps.diary.domain.usecases.settings.GetDarkThemeUseCase
 import com.homeapps.diary.domain.usecases.settings.SetDarkThemeUseCase
 import io.github.themeanimator.theme.Theme
@@ -13,7 +14,8 @@ import kotlinx.coroutines.flow.stateIn
 
 class ThemeViewModel(
     private val getDarkThemeUseCase: GetDarkThemeUseCase,
-    private val setDarkThemeUseCase: SetDarkThemeUseCase
+    private val setDarkThemeUseCase: SetDarkThemeUseCase,
+    private val createLogMessageUseCase: CreateLogMessageUseCase
 ): ViewModel(), ThemeProvider {
 
     override val currentTheme: StateFlow<Theme> = getDarkThemeUseCase().

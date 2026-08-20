@@ -9,6 +9,7 @@ import com.homeapps.diary.domain.usecases.alarm.AddAlarmUseCase
 import com.homeapps.diary.domain.usecases.alarm.GetAllAlarmsUseCase
 import com.homeapps.diary.domain.usecases.alarm.RemoveAlarmUseCase
 import com.homeapps.diary.domain.usecases.alarm.RemoveAllAlarmsUseCase
+import com.homeapps.diary.domain.usecases.logging.CreateLogMessageUseCase
 import com.homeapps.diary.utils.DiaryAlarmReceiver
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +24,7 @@ class AlarmViewModel(
     private val removeAlarmUseCase: RemoveAlarmUseCase,
     private val removeAllAlarmsUseCase: RemoveAllAlarmsUseCase,
     getAllAlarmUseCase: GetAllAlarmsUseCase,
+    private val createLogMessageUseCase: CreateLogMessageUseCase,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ): ViewModel() {
     val state: StateFlow<AlarmScreenState>

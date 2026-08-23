@@ -69,13 +69,13 @@ fun AlarmDBO.toAlarmItem(): AlarmItem {
 
 fun LogMessageDBO.toLogItem(): LogItem {
     return LogItem(
-        logLevel = this.logMessageLevel.toLogLevel(),
+        logLevel = this.logMessageLevel.toLogLevel().level,
         logMessage = this.logMessageText,
         logMessageCreatedAt = this.logMessageCreatedAt
     )
 }
 
-private fun String.toLogLevel(): LoggingRepository.LogLevel {
+fun String.toLogLevel(): LoggingRepository.LogLevel {
     return when(this) {
         LoggingRepository.LogLevel.WARNING.level -> LoggingRepository.LogLevel.WARNING
         LoggingRepository.LogLevel.ERROR.level -> LoggingRepository.LogLevel.ERROR

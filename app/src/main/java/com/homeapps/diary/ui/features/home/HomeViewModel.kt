@@ -20,6 +20,8 @@ class HomeViewModel(
     private val languageManager = LanguageManager(appContext = appContext)
     private val notificationManager = DiaryNotificationManager(appContext = appContext)
 
+    fun createLogMessage()
+
     fun changeLanguage(newLanguage: AppLanguage) {
         languageManager.changeLanguage(language = newLanguage)
     }

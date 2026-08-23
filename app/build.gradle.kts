@@ -33,7 +33,7 @@ extensions.configure<ApplicationExtension> {
         applicationId = "com.homeapps.diary"
         minSdk = 26
         targetSdk = 37
-        versionCode = 72
+        versionCode = 73
         versionName = "1.9.5"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -61,6 +61,7 @@ extensions.configure<ApplicationExtension> {
             applicationIdSuffix = ".release"
             versionNameSuffix = "-release"
             signingConfig = signingConfigs.getByName("release")
+            buildConfigField(type = "String", name = "LOG_LEVEL", value = "WARNING")
             buildConfigField(type = "String", name = "WEATHER_API_URL", value = appProperties.getProperty("WEATHER_API_URL"))
             buildConfigField(type = "String", name = "WEATHER_API_KEY", value = appProperties.getProperty("WEATHER_API_KEY"))
             buildConfigField(type = "String", name = "IP_API_URL", value = appProperties.getProperty("IP_API_URL"))
@@ -78,6 +79,7 @@ extensions.configure<ApplicationExtension> {
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
             signingConfig = signingConfigs.getByName("debug")
+            buildConfigField(type = "String", name = "LOG_LEVEL", value = "INFO")
             buildConfigField(type = "String", name = "WEATHER_API_URL", value = appProperties.getProperty("WEATHER_API_URL"))
             buildConfigField(type = "String", name = "WEATHER_API_KEY", value = appProperties.getProperty("WEATHER_API_KEY"))
             buildConfigField(type = "String", name = "IP_API_URL", value = appProperties.getProperty("IP_API_URL"))

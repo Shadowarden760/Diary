@@ -32,13 +32,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.homeapps.diary.BuildConfig
 import com.homeapps.diary.R
-import com.homeapps.diary.domain.api.LoggingRepository
 import com.homeapps.diary.ui.features.home.components.DropDownLanguageMenu
-import com.homeapps.diary.ui.features.home.components.featherIcon
+import com.homeapps.diary.ui.features.components.icons.featherIcon
 import io.github.themeanimator.ThemeAnimationState
 import io.github.themeanimator.button.ThemeSwitchButton
 import io.github.themeanimator.button.rememberLottieIconJson
-import io.github.themeanimator.theme.isDark
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -68,10 +69,28 @@ fun HomeScreen(
         modifier = Modifier.fillMaxSize().padding(innerPadding)
     ) {
         Row(
-            horizontalArrangement = Arrangement.End,
+            horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth().padding(top = 16.dp, end = 24.dp)
         ) {
+            IconButton(
+                onClick = {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        viewModel.getLogMessages()?.forEach {
+                            println(it.toString())
+                        }
+                    }
+                },
+                modifier = Modifier.padding(start = 16.dp)
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_bug_report),
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(35.dp)
+                )
+            }
+            Spacer(modifier = Modifier.weight(1f))
             IconButton(
                 onClick = goToAlarmScreen,
                 modifier = Modifier.padding(start = 8.dp)

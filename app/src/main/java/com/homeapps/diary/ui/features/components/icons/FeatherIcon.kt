@@ -1,4 +1,4 @@
-package com.homeapps.diary.ui.features.home.components
+package com.homeapps.diary.ui.features.components.icons
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor

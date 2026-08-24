@@ -9,6 +9,7 @@ import com.homeapps.diary.domain.models.notes.NoteData
 import com.homeapps.diary.domain.usecases.logging.CreateLogMessageUseCase
 import com.homeapps.diary.domain.usecases.notes.GetNoteByIdUseCase
 import com.homeapps.diary.domain.usecases.notes.UpdateNoteUseCase
+import com.homeapps.diary.ui.BaseViewModel
 import com.homeapps.diary.utils.DiaryFileManager
 import com.homeapps.diary.utils.DiarySnackBarManager
 import kotlinx.coroutines.CoroutineDispatcher
@@ -21,13 +22,18 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class NoteDetailViewModel(
-    private val appContext: Context,
+    appContext: Context,
     private val getNoteByIdUseCase: GetNoteByIdUseCase,
     private val updateNoteUseCase: UpdateNoteUseCase,
-    private val createLogMessageUseCase: CreateLogMessageUseCase,
+    createLogMessageUseCase: CreateLogMessageUseCase,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
-): ViewModel() {
-    private val diaryFileManager = DiaryFileManager(appContext)
+): BaseViewModel(
+    appContext = appContext,
+    createLogMessageUseCase = createLogMessageUseCase,
+    getLogMessagesUseCase = null,
+    deleteOldLogMessagesUseCase = null
+) {
+    private val diaryFileManager = DiaryFileManager(getAppContext())
     val state: StateFlow<NoteDetailState>
         field = MutableStateFlow<NoteDetailState>(NoteDetailState.Default)
 
@@ -69,11 +75,11 @@ class NoteDetailViewModel(
             var actionLabel: String? = null
             var action: () -> Unit = {}
             if (result != null) {
-                message = appContext.getString(R.string.note_detail_text_file_was_saved)
-                actionLabel = appContext.getString(R.string.note_detail_text_file_was_saved_cancellation)
+                message = getAppContext().getString(R.string.note_detail_text_file_was_saved)
+                actionLabel = getAppContext().getString(R.string.note_detail_text_file_was_saved_cancellation)
                 action = { deleteNoteFile(result) }
             } else {
-                message = appContext.getString(R.string.note_detail_text_file_was_not_saved)
+                message = getAppContext().getString(R.string.note_detail_text_file_was_not_saved)
             }
             snackBarManager.showSnackBar(
                 message = message,

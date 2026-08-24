@@ -99,6 +99,7 @@ val appModule = module {
     }
     viewModel {
         NoteListViewModel(
+            appContext = androidContext(),
             createNewNoteUseCase = CreateNewNoteUseCase(notesRepository = get()),
             deleteNoteByIdUseCase = DeleteNoteByIdUseCase(notesRepository = get()),
             getNotesFlowUseCase = GetNotesFlowUseCase(notesRepository = get()),

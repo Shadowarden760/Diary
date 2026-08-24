@@ -10,6 +10,7 @@ import com.homeapps.diary.domain.models.weather.WeatherData
 import com.homeapps.diary.domain.usecases.logging.CreateLogMessageUseCase
 import com.homeapps.diary.domain.usecases.weather.GetForecastUseCase
 import com.homeapps.diary.domain.usecases.weather.GetIpAddressUseCase
+import com.homeapps.diary.ui.BaseViewModel
 import com.homeapps.diary.utils.DiaryLocationManager
 import com.homeapps.diary.utils.DiarySnackBarManager
 import kotlinx.coroutines.CoroutineDispatcher
@@ -20,13 +21,18 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class WeatherViewModel(
-    private val appContext: Context,
+    appContext: Context,
     private val getIpAddressUseCase: GetIpAddressUseCase,
     private val getForecastUseCase: GetForecastUseCase,
-    private val createLogMessageUseCase: CreateLogMessageUseCase,
+    createLogMessageUseCase: CreateLogMessageUseCase,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
-): ViewModel() {
-    private val diaryLocationManager = DiaryLocationManager(appContext)
+): BaseViewModel(
+    appContext = appContext,
+    createLogMessageUseCase = createLogMessageUseCase,
+    getLogMessagesUseCase = null,
+    deleteOldLogMessagesUseCase = null
+) {
+    private val diaryLocationManager = DiaryLocationManager(appContext = getAppContext())
     val forecastState: StateFlow<ForecastState>
         field = MutableStateFlow<ForecastState>(ForecastState.Loading)
 
@@ -51,21 +57,21 @@ class WeatherViewModel(
                 when (locationError) {
                     DiaryLocationManager.LocationErrors.ERROR_NO_AVAILABLE_PROVIDERS -> {
                         snackBarManager.showSnackBar(
-                            message = appContext.getString(R.string.weather_text_no_available_providers),
+                            message = getAppContext().getString(R.string.weather_text_no_available_providers),
                             actionLabel = null,
                             action = {}
                         )
                     }
                     DiaryLocationManager.LocationErrors.ERROR_REQUESTING_LOCATION -> {
                         snackBarManager.showSnackBar(
-                            message = appContext.getString(R.string.weather_text_cant_get_GPS),
+                            message = getAppContext().getString(R.string.weather_text_cant_get_GPS),
                             actionLabel = null,
                             action = {}
                         )
                     }
                     DiaryLocationManager.LocationErrors.ERROR_LOCATION_TIMEOUT -> {
                         snackBarManager.showSnackBar(
-                            message = appContext.getString(R.string.weather_text_GPS_timeout),
+                            message = getAppContext().getString(R.string.weather_text_GPS_timeout),
                             actionLabel = null,
                             action = {}
                         )
@@ -88,14 +94,14 @@ class WeatherViewModel(
             when (forecastResult) {
                 is WeatherData -> forecastState.value = ForecastState.Success(data = forecastResult)
                 null -> forecastState.value = ForecastState.Failure(
-                    message = appContext.getString(R.string.weather_text_cant_get_weather_data)
+                    message = getAppContext().getString(R.string.weather_text_cant_get_weather_data)
                 )
             }
         } else {
             if (ipResponse.errorMessage.isNotEmpty()) {
                 forecastState.value = ForecastState.Failure(message = ipResponse.errorMessage)
             } else {
-                forecastState.value = ForecastState.Failure(message = appContext.getString(R.string.weather_text_cant_get_ip_address))
+                forecastState.value = ForecastState.Failure(message = getAppContext().getString(R.string.weather_text_cant_get_ip_address))
             }
         }
     }
@@ -116,7 +122,7 @@ class WeatherViewModel(
             }
             null -> {
                 forecastState.value = ForecastState.Failure(
-                    message = appContext.getString(R.string.weather_text_cant_get_weather_data)
+                    message = getAppContext().getString(R.string.weather_text_cant_get_weather_data)
                 )
             }
         }

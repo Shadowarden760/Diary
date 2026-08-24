@@ -1,5 +1,6 @@
 package com.homeapps.diary.ui.features.notelist
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.homeapps.diary.domain.models.notes.NoteData
@@ -8,6 +9,7 @@ import com.homeapps.diary.domain.usecases.notes.CreateNewNoteUseCase
 import com.homeapps.diary.domain.usecases.notes.DeleteNoteByIdUseCase
 import com.homeapps.diary.domain.usecases.notes.GetNotesFlowUseCase
 import com.homeapps.diary.domain.usecases.notes.UpdateNoteUseCase
+import com.homeapps.diary.ui.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -16,13 +18,19 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class NoteListViewModel(
+    appContext: Context,
     private val createNewNoteUseCase: CreateNewNoteUseCase,
     private val deleteNoteByIdUseCase: DeleteNoteByIdUseCase,
     private val updateNoteUseCase: UpdateNoteUseCase,
     getNotesFlowUseCase: GetNotesFlowUseCase,
-    private val createLogMessageUseCase: CreateLogMessageUseCase,
+    createLogMessageUseCase: CreateLogMessageUseCase,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
-): ViewModel() {
+): BaseViewModel(
+    appContext = appContext,
+    createLogMessageUseCase = createLogMessageUseCase,
+    getLogMessagesUseCase = null,
+    deleteOldLogMessagesUseCase = null
+) {
     val notesFlow = getNotesFlowUseCase().distinctUntilChanged()
 
     fun createNewNote(goToNote: (Long) -> Unit) = viewModelScope.launch {

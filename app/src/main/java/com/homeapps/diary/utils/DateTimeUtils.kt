@@ -1,6 +1,5 @@
 package com.homeapps.diary.utils
 
-import com.homeapps.diary.domain.models.logging.LogItem
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

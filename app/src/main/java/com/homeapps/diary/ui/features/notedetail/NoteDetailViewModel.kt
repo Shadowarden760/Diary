@@ -2,7 +2,6 @@ package com.homeapps.diary.ui.features.notedetail
 
 import android.content.Context
 import androidx.activity.result.ActivityResultLauncher
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.homeapps.diary.R
 import com.homeapps.diary.domain.models.notes.NoteData
@@ -17,7 +16,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -31,7 +29,6 @@ class NoteDetailViewModel(
     appContext = appContext,
     createLogMessageUseCase = createLogMessageUseCase,
     getLogMessagesUseCase = null,
-    deleteOldLogMessagesUseCase = null
 ) {
     private val diaryFileManager = DiaryFileManager(getAppContext())
     val state: StateFlow<NoteDetailState>

@@ -1,8 +1,6 @@
 package com.homeapps.diary.domain.models.logging
 
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import com.homeapps.diary.utils.DateTimeUtils.timeMillisToDate
 
 class LogItem(
     val logLevel: String,
@@ -11,11 +9,7 @@ class LogItem(
 ) {
 
     override fun toString(): String {
-        val format = "dd-MM-yyyy HH:mm:ss"
-        val formatter = SimpleDateFormat(format, Locale.getDefault())
-        val date = runCatching {
-            formatter.format(Date(logMessageCreatedAt))
-        }.getOrDefault("")
+        val date = timeMillisToDate(timeMillis = logMessageCreatedAt, format = "dd-MM-yyyy HH:mm:ss")
         return "[$date]  $logLevel  $logMessage"
     }
 }

@@ -38,6 +38,7 @@ import com.homeapps.diary.domain.usecases.settings.GetDarkThemeUseCase
 import com.homeapps.diary.domain.usecases.settings.SetDarkThemeUseCase
 import com.homeapps.diary.domain.usecases.weather.GetForecastUseCase
 import com.homeapps.diary.domain.usecases.weather.GetIpAddressUseCase
+import com.homeapps.diary.domain.workers.LoggingWorker
 import com.homeapps.diary.ui.features.home.HomeViewModel
 import com.homeapps.diary.ui.features.homealarm.AlarmViewModel
 import com.homeapps.diary.ui.features.notedetail.NoteDetailViewModel
@@ -45,6 +46,7 @@ import com.homeapps.diary.ui.features.notelist.NoteListViewModel
 import com.homeapps.diary.ui.features.weather.WeatherViewModel
 import com.homeapps.diary.ui.theme.ThemeViewModel
 import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.workmanager.dsl.worker
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -83,8 +85,7 @@ val appModule = module {
         HomeViewModel(
             appContext = androidContext(),
             createLogMessageUseCase = get(),
-            getLogMessagesUseCase = get(),
-            deleteOldLogMessagesUseCase = get()
+            getLogMessagesUseCase = get()
         )
     }
     viewModel {
@@ -121,6 +122,15 @@ val appModule = module {
             getIpAddressUseCase = GetIpAddressUseCase(weatherRepository = get()),
             getForecastUseCase = GetForecastUseCase(weatherRepository = get()),
             createLogMessageUseCase = get()
+        )
+    }
+
+    worker<LoggingWorker> { params ->
+        LoggingWorker(
+            appContext = androidContext(),
+            workerParams = params.get(),
+            createLogMessageUseCase = get(),
+            deleteOldLogMessagesUseCase = get()
         )
     }
 }

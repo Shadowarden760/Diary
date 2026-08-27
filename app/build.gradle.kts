@@ -33,7 +33,7 @@ extensions.configure<ApplicationExtension> {
         applicationId = "com.homeapps.diary"
         minSdk = 26
         targetSdk = 37
-        versionCode = 75
+        versionCode = 76
         versionName = "1.9.5"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -138,6 +138,7 @@ dependencies {
 
     // KOIN
     implementation(libs.koin.androidx.compose)
+    implementation(libs.koin.androidx.workmanager)
 
     //NAVIGATION
     implementation(libs.androidx.navigation3.ui)

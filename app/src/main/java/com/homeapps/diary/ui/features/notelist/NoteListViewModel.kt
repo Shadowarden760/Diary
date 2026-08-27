@@ -1,7 +1,6 @@
 package com.homeapps.diary.ui.features.notelist
 
 import android.content.Context
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.homeapps.diary.domain.models.notes.NoteData
 import com.homeapps.diary.domain.usecases.logging.CreateLogMessageUseCase
@@ -29,7 +28,6 @@ class NoteListViewModel(
     appContext = appContext,
     createLogMessageUseCase = createLogMessageUseCase,
     getLogMessagesUseCase = null,
-    deleteOldLogMessagesUseCase = null
 ) {
     val notesFlow = getNotesFlowUseCase().distinctUntilChanged()
 

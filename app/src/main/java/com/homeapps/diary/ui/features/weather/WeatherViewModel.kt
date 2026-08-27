@@ -3,7 +3,6 @@ package com.homeapps.diary.ui.features.weather
 import android.content.Context
 import android.location.Location
 import androidx.activity.result.ActivityResultLauncher
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.homeapps.diary.R
 import com.homeapps.diary.domain.models.weather.WeatherData
@@ -30,7 +29,6 @@ class WeatherViewModel(
     appContext = appContext,
     createLogMessageUseCase = createLogMessageUseCase,
     getLogMessagesUseCase = null,
-    deleteOldLogMessagesUseCase = null
 ) {
     private val diaryLocationManager = DiaryLocationManager(appContext = getAppContext())
     val forecastState: StateFlow<ForecastState>

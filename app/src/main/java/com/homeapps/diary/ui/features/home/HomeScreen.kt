@@ -32,8 +32,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.homeapps.diary.BuildConfig
 import com.homeapps.diary.R
-import com.homeapps.diary.ui.features.home.components.DropDownLanguageMenu
 import com.homeapps.diary.ui.features.components.icons.featherIcon
+import com.homeapps.diary.ui.features.home.components.DropDownLanguageMenu
 import io.github.themeanimator.ThemeAnimationState
 import io.github.themeanimator.button.ThemeSwitchButton
 import io.github.themeanimator.button.rememberLottieIconJson

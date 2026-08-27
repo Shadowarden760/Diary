@@ -30,7 +30,6 @@ class AlarmViewModel(
     appContext = appContext,
     createLogMessageUseCase = createLogMessageUseCase,
     getLogMessagesUseCase = null,
-    deleteOldLogMessagesUseCase = null
 ) {
     val state: StateFlow<AlarmScreenState>
         field = MutableStateFlow<AlarmScreenState>(AlarmScreenState.Default)

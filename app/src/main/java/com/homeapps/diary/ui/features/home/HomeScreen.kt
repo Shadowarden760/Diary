@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -32,6 +34,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.homeapps.diary.BuildConfig
 import com.homeapps.diary.R
+import com.homeapps.diary.ui.features.components.AlertDialogDiary
 import com.homeapps.diary.ui.features.components.icons.featherIcon
 import com.homeapps.diary.ui.features.home.components.DropDownLanguageMenu
 import io.github.themeanimator.ThemeAnimationState
@@ -57,6 +60,7 @@ fun HomeScreen(
     ) { permission ->
         hasNotificationPermission.value = permission
     }
+    val showLogMessagesDialog = remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         if (!hasNotificationPermission.value) {
@@ -71,20 +75,16 @@ fun HomeScreen(
         Row(
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth().padding(top = 16.dp, end = 24.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp, end = 24.dp)
         ) {
             IconButton(
-                onClick = {
-                    CoroutineScope(Dispatchers.IO).launch {
-                        viewModel.getLogMessages()?.forEach {
-                            println(it.toString())
-                        }
-                    }
-                },
+                onClick = { showLogMessagesDialog.value = true },
                 modifier = Modifier.padding(start = 16.dp)
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_bug_report),
+                    painter = painterResource(id = R.drawable.ic_download),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(35.dp)
@@ -146,6 +146,24 @@ fun HomeScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 24.dp)
+        )
+    }
+
+    if (showLogMessagesDialog.value) {
+        AlertDialogDiary(
+            dialogTitle = "Saving log messages",
+            dialogText = "Are you sure that all log messages will be saved to \"Downloads\" folder?",
+            icon = Icons.Filled.Info,
+            onConfirm = {
+                CoroutineScope(Dispatchers.IO).launch {
+                    viewModel.getLogMessages()?.forEach {
+                        println(it.toString())
+                    }
+                }
+                showLogMessagesDialog.value = false
+            },
+            onCancel = { showLogMessagesDialog.value = false },
+            onDismissRequest = { showLogMessagesDialog.value = false }
         )
     }
 }

@@ -1,6 +1,5 @@
 package com.homeapps.diary.common.di
 
-import com.homeapps.diary.BuildConfig
 import com.homeapps.diary.common.navigation.NavViewModel
 import com.homeapps.diary.data.clients.ApiClient
 import com.homeapps.diary.data.clients.DatabaseDriver
@@ -10,7 +9,6 @@ import com.homeapps.diary.data.datasources.notes.NotesDatabaseDao
 import com.homeapps.diary.data.datasources.settings.DiaryDataStore
 import com.homeapps.diary.data.datasources.weather.remote.WeatherApi
 import com.homeapps.diary.data.jobs.AlarmSchedulerImpl
-import com.homeapps.diary.data.mappers.toLogLevel
 import com.homeapps.diary.data.repositories.AlarmRepositoryImpl
 import com.homeapps.diary.data.repositories.LoggingRepositoryImpl
 import com.homeapps.diary.data.repositories.NotesRepositoryImpl
@@ -38,7 +36,8 @@ import com.homeapps.diary.domain.usecases.settings.GetDarkThemeUseCase
 import com.homeapps.diary.domain.usecases.settings.SetDarkThemeUseCase
 import com.homeapps.diary.domain.usecases.weather.GetForecastUseCase
 import com.homeapps.diary.domain.usecases.weather.GetIpAddressUseCase
-import com.homeapps.diary.domain.workers.LoggingWorker
+import com.homeapps.diary.domain.workers.LogDeleteWorker
+import com.homeapps.diary.domain.workers.LogSaveWorker
 import com.homeapps.diary.ui.features.home.HomeViewModel
 import com.homeapps.diary.ui.features.homealarm.AlarmViewModel
 import com.homeapps.diary.ui.features.notedetail.NoteDetailViewModel
@@ -61,12 +60,7 @@ val appModule = module {
     single<AlarmRepository> { AlarmRepositoryImpl(dao = AlarmsDatabaseDao(databaseDriver = get())) }
     single<AlarmScheduler> { AlarmSchedulerImpl(appContext = androidContext()) }
 
-    single<LoggingRepository> {
-        LoggingRepositoryImpl(
-            dao = LogDatabaseDao(databaseDriver = get()),
-            loggingLevel = BuildConfig.LOG_LEVEL.toLogLevel()
-        )
-    }
+    single<LoggingRepository> { LoggingRepositoryImpl(dao = LogDatabaseDao(databaseDriver = get())) }
     single<CreateLogMessageUseCase> { CreateLogMessageUseCase(loggingRepository = get()) }
     single<GetLogMessagesUseCase> { GetLogMessagesUseCase(loggingRepository = get()) }
     single<DeleteOldLogMessagesUseCase> { DeleteOldLogMessagesUseCase(loggingRepository = get()) }
@@ -125,12 +119,21 @@ val appModule = module {
         )
     }
 
-    worker<LoggingWorker> { params ->
-        LoggingWorker(
+    worker<LogDeleteWorker> { params ->
+        LogDeleteWorker(
             appContext = androidContext(),
             workerParams = params.get(),
             createLogMessageUseCase = get(),
             deleteOldLogMessagesUseCase = get()
+        )
+    }
+
+    worker< LogSaveWorker> { params ->
+        LogSaveWorker(
+            appContext = androidContext(),
+            workerParams = params.get(),
+            createLogMessageUseCase = get(),
+            getLogMessageUseCase = get()
         )
     }
 }

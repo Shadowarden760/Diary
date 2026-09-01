@@ -7,7 +7,7 @@ import com.homeapps.diary.domain.api.LoggingRepository
 import com.homeapps.diary.domain.usecases.logging.CreateLogMessageUseCase
 import com.homeapps.diary.domain.usecases.logging.DeleteOldLogMessagesUseCase
 
-class LoggingWorker(
+class LogDeleteWorker(
     appContext: Context,
     workerParams: WorkerParameters,
     private val createLogMessageUseCase: CreateLogMessageUseCase,
@@ -15,12 +15,14 @@ class LoggingWorker(
 ): CoroutineWorker(appContext = appContext, workerParams) {
 
     override suspend fun doWork(): Result {
-        createLogMessageUseCase(
-            logMessageLevel = LoggingRepository.LogLevel.INFO,
-            logMessageText = "Deleting old log messages..."
-        )
-        deleteOldLogMessagesUseCase(thresholdTimeMillis = DEFAULT_LOG_LIFE_MILLIS)
-        return Result.success()
+        val result = runCatching {
+            createLogMessageUseCase(
+                logMessageLevel = LoggingRepository.LogLevel.INFO,
+                logMessageText = "Deleting old log messages..."
+            )
+            deleteOldLogMessagesUseCase(thresholdTimeMillis = DEFAULT_LOG_LIFE_MILLIS)
+        }
+        return if (result.isSuccess) Result.success() else Result.failure()
     }
 
     companion object {

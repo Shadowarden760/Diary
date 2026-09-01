@@ -40,9 +40,6 @@ import com.homeapps.diary.ui.features.home.components.DropDownLanguageMenu
 import io.github.themeanimator.ThemeAnimationState
 import io.github.themeanimator.button.ThemeSwitchButton
 import io.github.themeanimator.button.rememberLottieIconJson
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -55,10 +52,19 @@ fun HomeScreen(
 ) {
     val context = LocalContext.current
     val hasNotificationPermission = remember { mutableStateOf(viewModel.hasNotificationPermission()) }
+    val hasStoragePermission = remember { mutableStateOf(viewModel.hasStoragePermissions()) }
     val notificationsPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { permission ->
         hasNotificationPermission.value = permission
+    }
+    val storagePermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        hasStoragePermission.value = permissions.all { it.value }
+        if (hasStoragePermission.value) {
+            viewModel.saveLogDataToTXT()
+        }
     }
     val showLogMessagesDialog = remember { mutableStateOf(false) }
 
@@ -70,7 +76,9 @@ fun HomeScreen(
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize().padding(innerPadding)
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(innerPadding)
     ) {
         Row(
             horizontalArrangement = Arrangement.Start,
@@ -114,7 +122,9 @@ fun HomeScreen(
                     endProgress = 1f,
                     animationSpec = tween(durationMillis = 300)
                 ) {
-                    context.assets.open("theme_icon_anim.json").bufferedReader().use { it.readText() }
+                    context.assets.open("theme_icon_anim.json").bufferedReader().use {
+                        it.readText()
+                    }
                 },
                 iconSize = 35.dp,
                 modifier = Modifier.padding(start = 5.dp)
@@ -151,14 +161,14 @@ fun HomeScreen(
 
     if (showLogMessagesDialog.value) {
         AlertDialogDiary(
-            dialogTitle = "Saving log messages",
-            dialogText = "Are you sure that all log messages will be saved to \"Downloads\" folder?",
+            dialogTitle = stringResource(R.string.home_saving_log_messages),
+            dialogText = stringResource(R.string.home_save_log_messages_folder),
             icon = Icons.Filled.Info,
             onConfirm = {
-                CoroutineScope(Dispatchers.IO).launch {
-                    viewModel.getLogMessages()?.forEach {
-                        println(it.toString())
-                    }
+                if (viewModel.hasStoragePermissions()) {
+                    viewModel.saveLogDataToTXT()
+                } else {
+                    viewModel.requestStoragePermissions(storagePermissionLauncher)
                 }
                 showLogMessagesDialog.value = false
             },

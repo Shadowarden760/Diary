@@ -2,18 +2,12 @@ package com.homeapps.diary.data.repositories
 
 import com.homeapps.diary.LogMessageDBO
 import com.homeapps.diary.data.datasources.logging.LogDatabaseDao
-import com.homeapps.diary.data.mappers.toLogLevel
 import com.homeapps.diary.domain.api.LoggingRepository
 
-class LoggingRepositoryImpl(
-    private val dao: LogDatabaseDao,
-    loggingLevel: LoggingRepository.LogLevel
-): LoggingRepository {
-    override val logLevel = loggingLevel
+class LoggingRepositoryImpl(private val dao: LogDatabaseDao): LoggingRepository {
 
     override suspend fun getAllLogMessages(): List<LogMessageDBO> {
         return dao.getAllLogMessages()
-            .filter { it.logMessageLevel.toLogLevel().weight <= logLevel.weight }
     }
 
     override suspend fun createLogMessage(

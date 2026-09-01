@@ -30,7 +30,7 @@ class NoteDetailViewModel(
     createLogMessageUseCase = createLogMessageUseCase,
     getLogMessagesUseCase = null,
 ) {
-    private val diaryFileManager = DiaryFileManager(getAppContext())
+    private val diaryFileManager = DiaryFileManager(appContext = getAppContext())
     val state: StateFlow<NoteDetailState>
         field = MutableStateFlow<NoteDetailState>(NoteDetailState.Default)
 

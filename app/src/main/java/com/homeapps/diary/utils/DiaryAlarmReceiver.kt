@@ -6,7 +6,9 @@ import android.content.Context
 import android.content.Intent
 import com.homeapps.diary.domain.api.AlarmRepository
 import com.homeapps.diary.domain.api.AlarmScheduler
+import com.homeapps.diary.domain.api.LoggingRepository
 import com.homeapps.diary.domain.models.alarm.AlarmItem
+import com.homeapps.diary.domain.usecases.logging.CreateLogMessageUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -14,10 +16,10 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import kotlin.math.max
 
-
 class DiaryAlarmReceiver: BroadcastReceiver(), KoinComponent {
     private val alarmRepository: AlarmRepository by inject()
     private val alarmScheduler: AlarmScheduler by inject()
+    private val createLogMessageUseCase: CreateLogMessageUseCase by inject()
 
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
@@ -27,7 +29,7 @@ class DiaryAlarmReceiver: BroadcastReceiver(), KoinComponent {
                 }
             }
         } else {
-            val alarmItemId = intent.getLongExtra("ALARM_ID", -1L)
+            val alarmItemId = intent.getLongExtra(AlarmScheduler.ALARM_ID, -1L)
             if (alarmItemId != -1L) {
                 CoroutineScope(Dispatchers.IO).launch {
                     alarmRepository.getAlarmById(alarmItemId)?.let {
@@ -48,5 +50,9 @@ class DiaryAlarmReceiver: BroadcastReceiver(), KoinComponent {
         alarmRepository.updateAlarm(alarmId = alarmItem.alarmId, newTime = nextTriggerTime)?.let {
             alarmScheduler.alarmSchedule(intent = intent, alarmItem = it)
         }
+        createLogMessageUseCase(
+            logMessageLevel = LoggingRepository.LogLevel.INFO,
+            logMessageText = "${DiaryAlarmReceiver::class.java}: next alarm time: ${DateTimeUtils.timeMillisToDate(timeMillis = nextTriggerTime)}"
+        )
     }
 }

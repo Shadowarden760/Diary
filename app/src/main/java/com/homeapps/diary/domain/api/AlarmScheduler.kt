@@ -8,4 +8,8 @@ interface AlarmScheduler {
     fun alarmSchedule(intent: Intent, alarmItem: AlarmItem): Boolean
 
     fun alarmCancel(intent: Intent, alarmItem: AlarmItem): Boolean
+
+    companion object {
+        const val ALARM_ID = "ALARM_ID"
+    }
 }

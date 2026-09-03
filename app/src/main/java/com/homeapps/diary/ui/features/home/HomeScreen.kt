@@ -1,5 +1,6 @@
 package com.homeapps.diary.ui.features.home
 
+import android.content.Context
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.tween
@@ -32,20 +33,28 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.work.WorkInfo
 import com.homeapps.diary.BuildConfig
 import com.homeapps.diary.R
+import com.homeapps.diary.domain.api.LoggingRepository
 import com.homeapps.diary.ui.features.components.AlertDialogDiary
 import com.homeapps.diary.ui.features.components.icons.featherIcon
 import com.homeapps.diary.ui.features.home.components.DropDownLanguageMenu
+import com.homeapps.diary.utils.DiarySnackBarManager
 import io.github.themeanimator.ThemeAnimationState
 import io.github.themeanimator.button.ThemeSwitchButton
 import io.github.themeanimator.button.rememberLottieIconJson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = koinViewModel(),
+    snackBarManager: DiarySnackBarManager,
     goToAlarmScreen: () -> Unit,
     innerPadding: PaddingValues,
     animationState: ThemeAnimationState
@@ -57,13 +66,25 @@ fun HomeScreen(
         contract = ActivityResultContracts.RequestPermission()
     ) { permission ->
         hasNotificationPermission.value = permission
+        viewModel.createLogMessage(
+            logLevel = LoggingRepository.LogLevel.INFO,
+            logMessage = "Notification permission: ${hasStoragePermission.value}"
+        )
     }
     val storagePermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
         hasStoragePermission.value = permissions.all { it.value }
+        viewModel.createLogMessage(
+            logLevel = LoggingRepository.LogLevel.INFO,
+            logMessage = "Storage permission: ${hasStoragePermission.value}"
+        )
         if (hasStoragePermission.value) {
-            viewModel.saveLogDataToTXT()
+            savingLogDataToFile(
+                appContext = viewModel.getAppContext(),
+                snackBarManager = snackBarManager,
+                savingLogData = { viewModel.saveLogDataToTXT() }
+            )
         }
     }
     val showLogMessagesDialog = remember { mutableStateOf(false) }
@@ -166,7 +187,11 @@ fun HomeScreen(
             icon = Icons.Filled.Info,
             onConfirm = {
                 if (viewModel.hasStoragePermissions()) {
-                    viewModel.saveLogDataToTXT()
+                    savingLogDataToFile(
+                        appContext = viewModel.getAppContext(),
+                        snackBarManager = snackBarManager,
+                        savingLogData = { viewModel.saveLogDataToTXT() }
+                    )
                 } else {
                     viewModel.requestStoragePermissions(storagePermissionLauncher)
                 }
@@ -175,5 +200,34 @@ fun HomeScreen(
             onCancel = { showLogMessagesDialog.value = false },
             onDismissRequest = { showLogMessagesDialog.value = false }
         )
+    }
+}
+
+private fun savingLogDataToFile(
+    appContext: Context,
+    snackBarManager: DiarySnackBarManager,
+    savingLogData: () -> Flow<WorkInfo?>
+) {
+    CoroutineScope(context = Dispatchers.IO).launch {
+        val savingLogsStatus = savingLogData()
+        savingLogsStatus.collect { workInfo ->
+            when (workInfo?.state) {
+                WorkInfo.State.SUCCEEDED -> {
+                    snackBarManager.showSnackBar(
+                        message = appContext.getString(R.string.home_log_file_was_saved_successfully),
+                        actionLabel = null,
+                        action = {}
+                    )
+                }
+                WorkInfo.State.FAILED -> {
+                    snackBarManager.showSnackBar(
+                        message = appContext.getString(R.string.home_log_file_wasn_t_saved),
+                        actionLabel = null,
+                        action = {}
+                    )
+                }
+                else -> { /* do nothing */ }
+            }
+        }
     }
 }

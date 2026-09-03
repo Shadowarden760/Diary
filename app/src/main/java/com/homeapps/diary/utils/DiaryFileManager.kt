@@ -23,16 +23,15 @@ class DiaryFileManager(private val appContext: Context) {
         return storagePermissions.all { ContextCompat.checkSelfPermission(appContext, it) == PackageManager.PERMISSION_GRANTED }
     }
 
-    fun <T> saveDataToFile(data: T, fileName: String): String? {
+    fun <T> saveDataToFile(data: T, fileName: String): Pair<Boolean, String> {
         return runCatching {
             val downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
             val newFile = File(downloadDir, fileName)
             val stringData = if (data is String) data else gson.toJson(data)
             newFile.writeText(stringData)
-            newFile.absolutePath
+            Pair(true, newFile.absolutePath)
         }.getOrElse { exception ->
-            exception.printStackTrace()
-            null
+            Pair(false, exception.stackTrace.contentToString())
         }
     }
 

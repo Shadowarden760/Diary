@@ -13,6 +13,8 @@
     <string name="home_text_creator" translatable="false">Created by Shadowarden760</string>
     <string name="home_saving_log_messages">Saving log messages</string>
     <string name="home_save_log_messages_folder">Are you sure that all log messages will be saved to \"Downloads\" folder?</string>
+    <string name="home_log_file_was_saved_successfully">Log file was saved successfully</string>
+    <string name="home_log_file_wasn_t_saved">Log file wasn\'t saved</string>
 
     <string name="alarm_button_reset_alarms">Reset alarms</string>
     <string name="alarm_button_confirm_alarm">Confirm alarm</string>

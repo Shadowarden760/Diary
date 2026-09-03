@@ -11,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
+
 open class BaseViewModel(
     private val appContext: Context,
     private val createLogMessageUseCase: CreateLogMessageUseCase,

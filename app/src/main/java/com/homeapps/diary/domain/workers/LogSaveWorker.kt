@@ -31,15 +31,15 @@ class LogSaveWorker(
                 data = getLogMessageUseCase().joinToString(separator = "\n") { it.toString() },
                 fileName = "diary_log_${date}.txt"
             )
-            if (filename != null) {
+            if (filename.first) {
                 createLogMessageUseCase(
                     logMessageLevel = LoggingRepository.LogLevel.INFO,
-                    logMessageText = "Logs were saved to $filename"
+                    logMessageText = "Logs were saved to ${filename.second}"
                 )
             } else {
                 createLogMessageUseCase(
                     logMessageLevel = LoggingRepository.LogLevel.ERROR,
-                    logMessageText = "Logs were not saved..."
+                    logMessageText = "Logs were not saved - ${filename.second}"
                 )
             }
         }

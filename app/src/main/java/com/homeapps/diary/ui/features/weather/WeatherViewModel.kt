@@ -5,6 +5,7 @@ import android.location.Location
 import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.viewModelScope
 import com.homeapps.diary.R
+import com.homeapps.diary.domain.api.LoggingRepository
 import com.homeapps.diary.domain.models.weather.WeatherData
 import com.homeapps.diary.domain.usecases.logging.CreateLogMessageUseCase
 import com.homeapps.diary.domain.usecases.weather.GetForecastUseCase
@@ -39,6 +40,10 @@ class WeatherViewModel(
     fun hasLocationPermissions() = diaryLocationManager.hasLocationPermissions()
 
     fun getLocationPermissions(launcher: ActivityResultLauncher<Array<String>>) {
+        createLogMessage(
+            logLevel = LoggingRepository.LogLevel.INFO,
+            logMessage = "${WeatherViewModel::class.java}: getting location permission"
+        )
         launcher.launch(diaryLocationManager.locationPermissions)
     }
 
@@ -46,6 +51,10 @@ class WeatherViewModel(
         userLocale: String,
         snackBarManager: DiarySnackBarManager,
     ) = viewModelScope.launch {
+        createLogMessage(
+            logLevel = LoggingRepository.LogLevel.INFO,
+            logMessage = "${WeatherViewModel::class.java}: getting weather by Location"
+        )
         forecastState.value = ForecastState.Loading
         diaryLocationManager.requestSingleLocationUpdate(
             onLocationReceived = { location ->
@@ -81,14 +90,26 @@ class WeatherViewModel(
     }
 
     fun loadWeatherByIp(userLocale: String) = viewModelScope.launch {
+        createLogMessage(
+            logLevel = LoggingRepository.LogLevel.INFO,
+            logMessage = "${WeatherViewModel::class.java}: getting weather by IP"
+        )
         forecastState.value = ForecastState.Loading
         val ipResponse = withContext(dispatcher) {
             getIpAddressUseCase()
         }
+        createLogMessage(
+            logLevel = LoggingRepository.LogLevel.INFO,
+            logMessage = "${WeatherViewModel::class.java}: current ip - ${ipResponse.ip}"
+        )
         if (ipResponse.ip != null) {
             val forecastResult = withContext(dispatcher) {
                 getForecastUseCase(qParams = ipResponse.ip, locale = userLocale)
             }
+            createLogMessage(
+                logLevel = LoggingRepository.LogLevel.INFO,
+                logMessage = "${WeatherViewModel::class.java}: weather forecast was get - $forecastResult"
+            )
             when (forecastResult) {
                 is WeatherData -> forecastState.value = ForecastState.Success(data = forecastResult)
                 null -> forecastState.value = ForecastState.Failure(
@@ -105,12 +126,20 @@ class WeatherViewModel(
     }
 
     private fun onLocationReceived(location: Location, userLocale: String) = viewModelScope.launch {
+        createLogMessage(
+            logLevel = LoggingRepository.LogLevel.INFO,
+            logMessage = "${WeatherViewModel::class.java}: location was received (${location.latitude}, ${location.longitude})"
+        )
         val forecastResult = withContext(dispatcher) {
             getForecastUseCase(
                 qParams = "${location.latitude},${location.longitude}",
                 locale = userLocale
             )
         }
+        createLogMessage(
+            logLevel = LoggingRepository.LogLevel.INFO,
+            logMessage = "${WeatherViewModel::class.java}: weather forecast was get - $forecastResult"
+        )
         when (forecastResult) {
             is WeatherData -> {
                 forecastState.value = ForecastState.Success(

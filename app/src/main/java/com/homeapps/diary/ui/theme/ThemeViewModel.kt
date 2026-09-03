@@ -2,6 +2,7 @@ package com.homeapps.diary.ui.theme
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.homeapps.diary.domain.api.LoggingRepository
 import com.homeapps.diary.domain.usecases.logging.CreateLogMessageUseCase
 import com.homeapps.diary.domain.usecases.settings.GetDarkThemeUseCase
 import com.homeapps.diary.domain.usecases.settings.SetDarkThemeUseCase
@@ -28,6 +29,10 @@ class ThemeViewModel(
         )
 
     override suspend fun updateTheme(theme: Theme) {
-        setDarkThemeUseCase.invoke(darkTheme = theme is Theme.Dark)
+        createLogMessageUseCase(
+            logMessageLevel = LoggingRepository.LogLevel.INFO,
+            logMessageText = "${ThemeViewModel::class.java}: Theme was changed: dark theme - ${theme is Theme.Dark}"
+        )
+        setDarkThemeUseCase(darkTheme = theme is Theme.Dark)
     }
 }

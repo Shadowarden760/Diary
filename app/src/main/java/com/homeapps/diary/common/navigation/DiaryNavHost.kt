@@ -35,6 +35,7 @@ fun DiaryNavHost(appState: DiaryAppState, innerPaddingValues: PaddingValues) {
 
             entry<DiaryRoute.Home> {
                 HomeScreen(
+                    snackBarManager = appState.snackBarManager,
                     goToAlarmScreen = { appState.topLevelBackStack.add(DiaryRoute.Alarm) },
                     innerPadding = innerPaddingValues,
                     animationState = appState.themeAnimationState

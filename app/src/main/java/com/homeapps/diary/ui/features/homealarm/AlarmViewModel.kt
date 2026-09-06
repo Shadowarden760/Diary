@@ -2,13 +2,16 @@ package com.homeapps.diary.ui.features.homealarm
 
 import android.content.Context
 import android.content.Intent
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.homeapps.diary.domain.api.LoggingRepository
 import com.homeapps.diary.domain.models.alarm.AlarmItem
 import com.homeapps.diary.domain.usecases.alarm.AddAlarmUseCase
 import com.homeapps.diary.domain.usecases.alarm.GetAllAlarmsUseCase
 import com.homeapps.diary.domain.usecases.alarm.RemoveAlarmUseCase
 import com.homeapps.diary.domain.usecases.alarm.RemoveAllAlarmsUseCase
+import com.homeapps.diary.domain.usecases.logging.CreateLogMessageUseCase
+import com.homeapps.diary.ui.BaseViewModel
+import com.homeapps.diary.utils.DateTimeUtils
 import com.homeapps.diary.utils.DiaryAlarmReceiver
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -18,13 +21,18 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class AlarmViewModel(
-    private val appContext: Context,
+    appContext: Context,
     private val addAlarmUseCase: AddAlarmUseCase,
     private val removeAlarmUseCase: RemoveAlarmUseCase,
     private val removeAllAlarmsUseCase: RemoveAllAlarmsUseCase,
     getAllAlarmUseCase: GetAllAlarmsUseCase,
+    createLogMessageUseCase: CreateLogMessageUseCase,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
-): ViewModel() {
+): BaseViewModel(
+    appContext = appContext,
+    createLogMessageUseCase = createLogMessageUseCase,
+    getLogMessagesUseCase = null,
+) {
     val state: StateFlow<AlarmScreenState>
         field = MutableStateFlow<AlarmScreenState>(AlarmScreenState.Default)
     val alarms = getAllAlarmUseCase()
@@ -34,27 +42,39 @@ class AlarmViewModel(
     }
 
     fun addNewAlarm(timeMillis: Long) = viewModelScope.launch {
-        val intent = Intent(appContext, DiaryAlarmReceiver::class.java)
+        val intent = Intent(getAppContext(), DiaryAlarmReceiver::class.java)
         val result = withContext(dispatcher) {
             addAlarmUseCase(intent = intent, timeMillis = timeMillis)
         }
-        state.value = AlarmScreenState.AddNewAlarm(result)
+        createLogMessage(
+            logLevel = LoggingRepository.LogLevel.INFO,
+            logMessage = "${AlarmViewModel::class.java}: new alarm (${DateTimeUtils.timeMillisToDate(timeMillis = timeMillis)}) status - $result"
+        )
+        state.value = AlarmScreenState.AddNewAlarm(status = result)
     }
 
     fun removeAlarm(alarmItem: AlarmItem) = viewModelScope.launch {
-        val intent = Intent(appContext, DiaryAlarmReceiver::class.java)
+        val intent = Intent(getAppContext(), DiaryAlarmReceiver::class.java)
         val result = withContext(dispatcher) {
             removeAlarmUseCase(intent = intent, alarmItem = alarmItem)
         }
-        state.value = AlarmScreenState.RemoveAlarm(result)
+        createLogMessage(
+            logLevel = LoggingRepository.LogLevel.INFO,
+            logMessage = "${AlarmViewModel::class.java}: delete alarm (${DateTimeUtils.timeMillisToDate(timeMillis = alarmItem.alarmTimeMillis)}) status - $result"
+        )
+        state.value = AlarmScreenState.RemoveAlarm(status = result)
     }
 
     fun removeAllAlarms() = viewModelScope.launch {
-        val intent = Intent(appContext, DiaryAlarmReceiver::class.java)
+        val intent = Intent(getAppContext(), DiaryAlarmReceiver::class.java)
         val result = withContext(dispatcher) {
             removeAllAlarmsUseCase(intent = intent)
         }
-        state.value = AlarmScreenState.RemoveAllAlarms(result)
+        createLogMessage(
+            logLevel = LoggingRepository.LogLevel.INFO,
+            logMessage = "${AlarmViewModel::class.java}: delete all alarms status - $result"
+        )
+        state.value = AlarmScreenState.RemoveAllAlarms(status = result)
     }
 
     sealed class AlarmScreenState {

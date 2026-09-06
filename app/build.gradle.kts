@@ -16,8 +16,6 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.sqldelight)
-    alias(libs.plugins.google.services)
-    alias(libs.plugins.firebase.crashlytics)
 }
 
 kotlin {
@@ -29,14 +27,14 @@ kotlin {
 
 extensions.configure<ApplicationExtension> {
     namespace = "com.homeapps.diary"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.homeapps.diary"
         minSdk = 26
-        targetSdk = 36
-        versionCode = 70
-        versionName = "1.9.4"
+        targetSdk = 37
+        versionCode = 79
+        versionName = "1.9.5"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -138,6 +136,7 @@ dependencies {
 
     // KOIN
     implementation(libs.koin.androidx.compose)
+    implementation(libs.koin.androidx.workmanager)
 
     //NAVIGATION
     implementation(libs.androidx.navigation3.ui)
@@ -179,16 +178,10 @@ dependencies {
     // LEAK CANARY
     debugImplementation(libs.leakcanary.android)
 
-    // FIREBASE ANALYTICS, CRASHLYTICS
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.crashlytics.ndk)
-    implementation(libs.firebase.analytics)
-
     // TESTS
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)

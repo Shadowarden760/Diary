@@ -1,5 +1,6 @@
 package com.homeapps.diary.ui.features.home
 
+import android.content.Context
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.tween
@@ -13,6 +14,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -30,30 +33,61 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.work.WorkInfo
 import com.homeapps.diary.BuildConfig
 import com.homeapps.diary.R
+import com.homeapps.diary.domain.api.LoggingRepository
+import com.homeapps.diary.ui.features.components.AlertDialogDiary
+import com.homeapps.diary.ui.features.components.icons.featherIcon
 import com.homeapps.diary.ui.features.home.components.DropDownLanguageMenu
-import com.homeapps.diary.ui.features.home.components.featherIcon
+import com.homeapps.diary.utils.DiarySnackBarManager
 import io.github.themeanimator.ThemeAnimationState
 import io.github.themeanimator.button.ThemeSwitchButton
 import io.github.themeanimator.button.rememberLottieIconJson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = koinViewModel(),
+    snackBarManager: DiarySnackBarManager,
     goToAlarmScreen: () -> Unit,
     innerPadding: PaddingValues,
     animationState: ThemeAnimationState
 ) {
     val context = LocalContext.current
     val hasNotificationPermission = remember { mutableStateOf(viewModel.hasNotificationPermission()) }
+    val hasStoragePermission = remember { mutableStateOf(viewModel.hasStoragePermissions()) }
     val notificationsPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { permission ->
         hasNotificationPermission.value = permission
+        viewModel.createLogMessage(
+            logLevel = LoggingRepository.LogLevel.INFO,
+            logMessage = "Notification permission: ${hasStoragePermission.value}"
+        )
     }
+    val storagePermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        hasStoragePermission.value = permissions.all { it.value }
+        viewModel.createLogMessage(
+            logLevel = LoggingRepository.LogLevel.INFO,
+            logMessage = "Storage permission: ${hasStoragePermission.value}"
+        )
+        if (hasStoragePermission.value) {
+            savingLogDataToFile(
+                appContext = viewModel.getAppContext(),
+                snackBarManager = snackBarManager,
+                savingLogData = { viewModel.saveLogDataToTXT() }
+            )
+        }
+    }
+    val showLogMessagesDialog = remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         if (!hasNotificationPermission.value) {
@@ -63,13 +97,29 @@ fun HomeScreen(
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize().padding(innerPadding)
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(innerPadding)
     ) {
         Row(
-            horizontalArrangement = Arrangement.End,
+            horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth().padding(top = 16.dp, end = 24.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp, end = 24.dp)
         ) {
+            IconButton(
+                onClick = { showLogMessagesDialog.value = true },
+                modifier = Modifier.padding(start = 16.dp)
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_download),
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(35.dp)
+                )
+            }
+            Spacer(modifier = Modifier.weight(1f))
             IconButton(
                 onClick = goToAlarmScreen,
                 modifier = Modifier.padding(start = 8.dp)
@@ -93,7 +143,9 @@ fun HomeScreen(
                     endProgress = 1f,
                     animationSpec = tween(durationMillis = 300)
                 ) {
-                    context.assets.open("theme_icon_anim.json").bufferedReader().use { it.readText() }
+                    context.assets.open("theme_icon_anim.json").bufferedReader().use {
+                        it.readText()
+                    }
                 },
                 iconSize = 35.dp,
                 modifier = Modifier.padding(start = 5.dp)
@@ -126,5 +178,56 @@ fun HomeScreen(
                 .fillMaxWidth()
                 .padding(bottom = 24.dp)
         )
+    }
+
+    if (showLogMessagesDialog.value) {
+        AlertDialogDiary(
+            dialogTitle = stringResource(R.string.home_saving_log_messages),
+            dialogText = stringResource(R.string.home_save_log_messages_folder),
+            icon = Icons.Filled.Info,
+            onConfirm = {
+                if (viewModel.hasStoragePermissions()) {
+                    savingLogDataToFile(
+                        appContext = viewModel.getAppContext(),
+                        snackBarManager = snackBarManager,
+                        savingLogData = { viewModel.saveLogDataToTXT() }
+                    )
+                } else {
+                    viewModel.requestStoragePermissions(storagePermissionLauncher)
+                }
+                showLogMessagesDialog.value = false
+            },
+            onCancel = { showLogMessagesDialog.value = false },
+            onDismissRequest = { showLogMessagesDialog.value = false }
+        )
+    }
+}
+
+private fun savingLogDataToFile(
+    appContext: Context,
+    snackBarManager: DiarySnackBarManager,
+    savingLogData: () -> Flow<WorkInfo?>
+) {
+    CoroutineScope(context = Dispatchers.IO).launch {
+        val savingLogsStatus = savingLogData()
+        savingLogsStatus.collect { workInfo ->
+            when (workInfo?.state) {
+                WorkInfo.State.SUCCEEDED -> {
+                    snackBarManager.showSnackBar(
+                        message = appContext.getString(R.string.home_log_file_was_saved_successfully),
+                        actionLabel = null,
+                        action = {}
+                    )
+                }
+                WorkInfo.State.FAILED -> {
+                    snackBarManager.showSnackBar(
+                        message = appContext.getString(R.string.home_log_file_wasn_t_saved),
+                        actionLabel = null,
+                        action = {}
+                    )
+                }
+                else -> { /* do nothing */ }
+            }
+        }
     }
 }

@@ -3,12 +3,14 @@ package com.homeapps.diary.ui.features.weather
 import android.content.Context
 import android.location.Location
 import androidx.activity.result.ActivityResultLauncher
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.homeapps.diary.R
+import com.homeapps.diary.domain.api.LoggingRepository
 import com.homeapps.diary.domain.models.weather.WeatherData
+import com.homeapps.diary.domain.usecases.logging.CreateLogMessageUseCase
 import com.homeapps.diary.domain.usecases.weather.GetForecastUseCase
 import com.homeapps.diary.domain.usecases.weather.GetIpAddressUseCase
+import com.homeapps.diary.ui.BaseViewModel
 import com.homeapps.diary.utils.DiaryLocationManager
 import com.homeapps.diary.utils.DiarySnackBarManager
 import kotlinx.coroutines.CoroutineDispatcher
@@ -19,12 +21,17 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class WeatherViewModel(
-    private val appContext: Context,
+    appContext: Context,
     private val getIpAddressUseCase: GetIpAddressUseCase,
     private val getForecastUseCase: GetForecastUseCase,
+    createLogMessageUseCase: CreateLogMessageUseCase,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
-): ViewModel() {
-    private val diaryLocationManager = DiaryLocationManager(appContext)
+): BaseViewModel(
+    appContext = appContext,
+    createLogMessageUseCase = createLogMessageUseCase,
+    getLogMessagesUseCase = null,
+) {
+    private val diaryLocationManager = DiaryLocationManager(appContext = getAppContext())
     val forecastState: StateFlow<ForecastState>
         field = MutableStateFlow<ForecastState>(ForecastState.Loading)
 
@@ -33,6 +40,10 @@ class WeatherViewModel(
     fun hasLocationPermissions() = diaryLocationManager.hasLocationPermissions()
 
     fun getLocationPermissions(launcher: ActivityResultLauncher<Array<String>>) {
+        createLogMessage(
+            logLevel = LoggingRepository.LogLevel.INFO,
+            logMessage = "${WeatherViewModel::class.java}: getting location permission"
+        )
         launcher.launch(diaryLocationManager.locationPermissions)
     }
 
@@ -40,6 +51,10 @@ class WeatherViewModel(
         userLocale: String,
         snackBarManager: DiarySnackBarManager,
     ) = viewModelScope.launch {
+        createLogMessage(
+            logLevel = LoggingRepository.LogLevel.INFO,
+            logMessage = "${WeatherViewModel::class.java}: getting weather by Location"
+        )
         forecastState.value = ForecastState.Loading
         diaryLocationManager.requestSingleLocationUpdate(
             onLocationReceived = { location ->
@@ -49,21 +64,21 @@ class WeatherViewModel(
                 when (locationError) {
                     DiaryLocationManager.LocationErrors.ERROR_NO_AVAILABLE_PROVIDERS -> {
                         snackBarManager.showSnackBar(
-                            message = appContext.getString(R.string.weather_text_no_available_providers),
+                            message = getAppContext().getString(R.string.weather_text_no_available_providers),
                             actionLabel = null,
                             action = {}
                         )
                     }
                     DiaryLocationManager.LocationErrors.ERROR_REQUESTING_LOCATION -> {
                         snackBarManager.showSnackBar(
-                            message = appContext.getString(R.string.weather_text_cant_get_GPS),
+                            message = getAppContext().getString(R.string.weather_text_cant_get_GPS),
                             actionLabel = null,
                             action = {}
                         )
                     }
                     DiaryLocationManager.LocationErrors.ERROR_LOCATION_TIMEOUT -> {
                         snackBarManager.showSnackBar(
-                            message = appContext.getString(R.string.weather_text_GPS_timeout),
+                            message = getAppContext().getString(R.string.weather_text_GPS_timeout),
                             actionLabel = null,
                             action = {}
                         )
@@ -75,36 +90,56 @@ class WeatherViewModel(
     }
 
     fun loadWeatherByIp(userLocale: String) = viewModelScope.launch {
+        createLogMessage(
+            logLevel = LoggingRepository.LogLevel.INFO,
+            logMessage = "${WeatherViewModel::class.java}: getting weather by IP"
+        )
         forecastState.value = ForecastState.Loading
         val ipResponse = withContext(dispatcher) {
             getIpAddressUseCase()
         }
+        createLogMessage(
+            logLevel = LoggingRepository.LogLevel.INFO,
+            logMessage = "${WeatherViewModel::class.java}: current ip - ${ipResponse.ip}"
+        )
         if (ipResponse.ip != null) {
             val forecastResult = withContext(dispatcher) {
                 getForecastUseCase(qParams = ipResponse.ip, locale = userLocale)
             }
+            createLogMessage(
+                logLevel = LoggingRepository.LogLevel.INFO,
+                logMessage = "${WeatherViewModel::class.java}: weather forecast was get - $forecastResult"
+            )
             when (forecastResult) {
                 is WeatherData -> forecastState.value = ForecastState.Success(data = forecastResult)
                 null -> forecastState.value = ForecastState.Failure(
-                    message = appContext.getString(R.string.weather_text_cant_get_weather_data)
+                    message = getAppContext().getString(R.string.weather_text_cant_get_weather_data)
                 )
             }
         } else {
             if (ipResponse.errorMessage.isNotEmpty()) {
                 forecastState.value = ForecastState.Failure(message = ipResponse.errorMessage)
             } else {
-                forecastState.value = ForecastState.Failure(message = appContext.getString(R.string.weather_text_cant_get_ip_address))
+                forecastState.value = ForecastState.Failure(message = getAppContext().getString(R.string.weather_text_cant_get_ip_address))
             }
         }
     }
 
     private fun onLocationReceived(location: Location, userLocale: String) = viewModelScope.launch {
+        createLogMessage(
+            logLevel = LoggingRepository.LogLevel.INFO,
+            logMessage = "${WeatherViewModel::class.java}: location was received (${location.latitude}, ${location.longitude})"
+        )
         val forecastResult = withContext(dispatcher) {
             getForecastUseCase(
                 qParams = "${location.latitude},${location.longitude}",
                 locale = userLocale
             )
         }
+        createLogMessage(
+            logLevel = LoggingRepository.LogLevel.INFO,
+            logMessage = "${WeatherViewModel::class.java}: weather forecast was get - $forecastResult"
+        )
         when (forecastResult) {
             is WeatherData -> {
                 forecastState.value = ForecastState.Success(
@@ -114,7 +149,7 @@ class WeatherViewModel(
             }
             null -> {
                 forecastState.value = ForecastState.Failure(
-                    message = appContext.getString(R.string.weather_text_cant_get_weather_data)
+                    message = getAppContext().getString(R.string.weather_text_cant_get_weather_data)
                 )
             }
         }

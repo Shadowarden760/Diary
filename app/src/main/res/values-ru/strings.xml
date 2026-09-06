@@ -42,4 +42,8 @@
     <string name="alarm_text_set_your_alarm">Установите напоминание</string>
     <string name="alarm_text_your_alarms">Ваши напоминания</string>
     <string name="note_detail_text_characters">Символов: %1$d</string>
+    <string name="home_saving_log_messages">Сохранение журнала событий</string>
+    <string name="home_save_log_messages_folder">Необходимо сохранить все события в папку \"Загрузки\"?</string>
+    <string name="home_log_file_was_saved_successfully">Журнал событий был успешно сохранен</string>
+    <string name="home_log_file_wasn_t_saved">Журнал событий не был сохранен</string>
 </resources>

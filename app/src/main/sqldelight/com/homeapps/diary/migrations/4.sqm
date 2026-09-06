@@ -1,0 +1,6 @@
+CREATE TABLE LogMessageDBO (
+    logMessageId INTEGER PRIMARY KEY AUTOINCREMENT,
+    logMessageLevel TEXT NOT NULL,
+    logMessageText TEXT NOT NULL,
+    logMessageCreatedAt INTEGER NOT NULL
+);

@@ -37,7 +37,8 @@ fun AlertDialogDiary(
         title = {
             Text(
                 text = dialogTitle,
-                style = MaterialTheme.typography.headlineMedium
+                style = MaterialTheme.typography.headlineMedium,
+                textAlign = TextAlign.Center
             )
         },
         text = {

@@ -2,12 +2,14 @@ package com.homeapps.diary.ui.features.notedetail
 
 import android.content.Context
 import androidx.activity.result.ActivityResultLauncher
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.homeapps.diary.R
+import com.homeapps.diary.domain.api.LoggingRepository
 import com.homeapps.diary.domain.models.notes.NoteData
+import com.homeapps.diary.domain.usecases.logging.CreateLogMessageUseCase
 import com.homeapps.diary.domain.usecases.notes.GetNoteByIdUseCase
 import com.homeapps.diary.domain.usecases.notes.UpdateNoteUseCase
+import com.homeapps.diary.ui.BaseViewModel
 import com.homeapps.diary.utils.DiaryFileManager
 import com.homeapps.diary.utils.DiarySnackBarManager
 import kotlinx.coroutines.CoroutineDispatcher
@@ -15,17 +17,21 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class NoteDetailViewModel(
-    private val appContext: Context,
+    appContext: Context,
     private val getNoteByIdUseCase: GetNoteByIdUseCase,
     private val updateNoteUseCase: UpdateNoteUseCase,
+    createLogMessageUseCase: CreateLogMessageUseCase,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
-): ViewModel() {
-    private val diaryFileManager = DiaryFileManager(appContext)
+): BaseViewModel(
+    appContext = appContext,
+    createLogMessageUseCase = createLogMessageUseCase,
+    getLogMessagesUseCase = null,
+) {
+    private val diaryFileManager = DiaryFileManager(appContext = getAppContext())
     val state: StateFlow<NoteDetailState>
         field = MutableStateFlow<NoteDetailState>(NoteDetailState.Default)
 
@@ -34,9 +40,11 @@ class NoteDetailViewModel(
     }
 
     fun getCurrentNote(noteId: Long) = viewModelScope.launch {
-        val note = withContext(dispatcher) {
-            getNoteByIdUseCase(noteId = noteId)
-        }
+        val note = withContext(dispatcher) { getNoteByIdUseCase(noteId = noteId) }
+        createLogMessage(
+            logLevel = LoggingRepository.LogLevel.INFO,
+            logMessage = "${NoteDetailViewModel::class.java}: getting current note $note"
+        )
         if (note == null) {
             updateState(newState = NoteDetailState.Error)
         } else {
@@ -45,12 +53,20 @@ class NoteDetailViewModel(
     }
 
     fun saveUpdatedNote(updatedNote: NoteData) = CoroutineScope(dispatcher).launch {
+        createLogMessage(
+            logLevel = LoggingRepository.LogLevel.INFO,
+            logMessage = "${NoteDetailViewModel::class.java}: saving note $updatedNote"
+        )
         updateNoteUseCase(updatedNote)
     }
 
     fun hasStoragePermissions()= diaryFileManager.hasStoragePermissions()
 
     fun requestStoragePermissions(launcher: ActivityResultLauncher<Array<String>>) {
+        createLogMessage(
+            logLevel = LoggingRepository.LogLevel.INFO,
+            logMessage = "${NoteDetailViewModel::class.java}: requesting storage permission..."
+        )
         launcher.launch(diaryFileManager.storagePermissions)
     }
 
@@ -66,13 +82,17 @@ class NoteDetailViewModel(
             var message: String
             var actionLabel: String? = null
             var action: () -> Unit = {}
-            if (result != null) {
-                message = appContext.getString(R.string.note_detail_text_file_was_saved)
-                actionLabel = appContext.getString(R.string.note_detail_text_file_was_saved_cancellation)
-                action = { deleteNoteFile(result) }
+            if (result.first) {
+                message = getAppContext().getString(R.string.note_detail_text_file_was_saved)
+                actionLabel = getAppContext().getString(R.string.note_detail_text_file_was_saved_cancellation)
+                action = { deleteNoteFile(result.second) }
             } else {
-                message = appContext.getString(R.string.note_detail_text_file_was_not_saved)
+                message = getAppContext().getString(R.string.note_detail_text_file_was_not_saved)
             }
+            createLogMessage(
+                logLevel = LoggingRepository.LogLevel.INFO,
+                logMessage = "${NoteDetailViewModel::class.java}: saving note to file result - $message"
+            )
             snackBarManager.showSnackBar(
                 message = message,
                 actionLabel = actionLabel,
@@ -82,6 +102,10 @@ class NoteDetailViewModel(
     }
 
     private fun deleteNoteFile(filePath: String?): Boolean {
+        createLogMessage(
+            logLevel = LoggingRepository.LogLevel.INFO,
+            logMessage = "${NoteDetailViewModel::class.java}: deleting note file $filePath"
+        )
         return diaryFileManager.deleteFile(filePath = filePath)
     }
 

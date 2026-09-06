@@ -1,6 +1,5 @@
 package com.homeapps.diary.ui.features.notelist.components
 
-import android.util.Log
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding

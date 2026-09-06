@@ -14,7 +14,7 @@ class AlarmSchedulerImpl(private val appContext: Context): AlarmScheduler {
 
     override fun alarmSchedule(intent: Intent, alarmItem: AlarmItem): Boolean {
         return try {
-            intent.putExtra("ALARM_ID", alarmItem.alarmId)
+            intent.putExtra(AlarmScheduler.ALARM_ID, alarmItem.alarmId)
             alarmManager.setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,
                 alarmItem.alarmTimeMillis,
@@ -36,7 +36,7 @@ class AlarmSchedulerImpl(private val appContext: Context): AlarmScheduler {
     }
 
     override fun alarmCancel(intent: Intent, alarmItem: AlarmItem): Boolean {
-        intent.putExtra("ALARM_ID", alarmItem.alarmId)
+        intent.putExtra(AlarmScheduler.ALARM_ID, alarmItem.alarmId)
         val pendingIntent = PendingIntent.getBroadcast(
             appContext,
             alarmItem.alarmId.toInt(),

@@ -2,7 +2,6 @@ package com.homeapps.diary.data.clients
 
 import android.content.Context
 import app.cash.sqldelight.async.coroutines.synchronous
-import app.cash.sqldelight.db.AfterVersion
 import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 import com.homeapps.diary.DiaryDB
@@ -23,19 +22,25 @@ class DatabaseDriver(private val appContext: Context) {
         runCatching {
             DiaryDB.Schema.migrate(driver = driver, oldVersion = 0, newVersion = 1)
         }.getOrElse { exception ->
-            print(exception.stackTrace)
+            print(exception.stackTrace.contentToString())
         }
 
         runCatching {
             DiaryDB.Schema.migrate(driver = driver, oldVersion = 1, newVersion = 3)
         }.getOrElse { exception ->
-            print(exception.stackTrace)
+            print(exception.stackTrace.contentToString())
         }
 
         runCatching {
-            DiaryDB.Schema.migrate(driver = driver, oldVersion = 3, newVersion = DiaryDB.Schema.version)
+            DiaryDB.Schema.migrate(driver = driver, oldVersion = 3, newVersion = 4)
         }.getOrElse { exception ->
-            print(exception.stackTrace)
+            print(exception.stackTrace.contentToString())
+        }
+
+        runCatching {
+            DiaryDB.Schema.migrate(driver = driver, oldVersion = 4, newVersion = DiaryDB.Schema.version)
+        }.getOrElse { exception ->
+            print(exception.stackTrace.contentToString())
         }
     }
 }

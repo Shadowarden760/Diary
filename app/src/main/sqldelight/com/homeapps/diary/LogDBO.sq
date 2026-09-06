@@ -1,0 +1,21 @@
+CREATE TABLE LogMessageDBO (
+    logMessageId INTEGER PRIMARY KEY AUTOINCREMENT,
+    logMessageLevel TEXT NOT NULL,
+    logMessageText TEXT NOT NULL,
+    logMessageCreatedAt INTEGER NOT NULL
+);
+
+getAllLogMessages:
+SELECT LogMessageDBO.*
+FROM LogMessageDBO;
+
+insertNewLogMessage:
+INSERT INTO LogMessageDBO(logMessageLevel, logMessageText, logMessageCreatedAt)
+VALUES (?, ?, ?);
+
+deleteOldLogMessages:
+DELETE FROM LogMessageDBO
+WHERE LogMessageDBO.logMessageCreatedAt < ?;
+
+lastInsertedLogMessageId:
+SELECT last_insert_rowid();
